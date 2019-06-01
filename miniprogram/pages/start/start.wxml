@@ -14,7 +14,7 @@
       <view class="bd">
          <image class="smalltitle" src="/static/images/more/confirm-word1.png"></image>
         <view class="confirm-btn" bindtap='goToIndex'>
-          <text >一起打球吧</text>
+          <text >Let's find it!</text>
         </view>
         <text class="copyright">© 2019 Monster北京女篮俱乐部</text>
       </view>

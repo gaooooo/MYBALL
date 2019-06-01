@@ -10,7 +10,7 @@ Page({
   
   goToIndex:function(){
     wx.switchTab({
-      url: '/pages/my/my',
+      url: '/pages/index/index',
     });
   },
   onLoad:function(){
