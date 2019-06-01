@@ -93,7 +93,6 @@ Page({
   getUserInfoHandler: function(e){
     console.log(e)
     let d = e.detail.userInfo
-    debugger
     this.setData({
       userTx: d.avatarUrl,
       username: d.nickName

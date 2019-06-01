@@ -14,7 +14,7 @@
     <view class="mod-a mt20">
       <!-- 活动类别 -->
       <view class="mod t-sign-time">
-        <text class="key">俱乐部类别</text>
+        <text class="key">球局类别</text>
         <picker bindchange="bindTypeChange" value="{{typeIndex}}" range="{{types}}">
           <view class="value" name="types">{{types[typeIndex]}}
             <image class="arrow-r" src="/static/images/arrow-r-0.png"></image>
@@ -24,14 +24,14 @@
 
       <!-- 活动地点 -->
       <view class="mod t-address" bindtap="chooseLocation">
-        <text class="key">球员地点</text>
+        <text class="key">球局地点</text>
         <text name="address" class="value" bindtap="addressChange" value="{{address}}">{{address}}</text>
         <image class="arrow-r" src="/static/images/arrow-r-0.png"></image>
       </view>
 
       <!-- 有效时间 -->
       <view class="mod t-sign-time">
-        <text class="key">活动时间</text>
+        <text class="key">球局时间</text>
         <picker mode="date" value="{{date}}" start="{{date}}" end="2020-09-01" bindchange="bindDateChange">
           <view class="value" name="endtime">{{date}}
             <image class="arrow-r" src="/static/images/arrow-r-0.png"></image>

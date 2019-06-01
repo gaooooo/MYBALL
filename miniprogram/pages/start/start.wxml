@@ -4,7 +4,7 @@
     <image class="remind-img" src="/static/images/more/loading.gif"></image>
   </view>
   <block wx:else>
-    <image class="title" src="http://mmbiz.qpic.cn/mmbiz_jpg/DVwWsnT1J7vF4c034nc20ULSiaj2TEuKIZHibbcuEMRq3y7kMJIYRzqxlJcumf5qkMxGRNxoy36UicuC0aDRgqs4Q/0?wx_fmt=jpeg"></image>
+    <image class="title" src="/static/images/more/start-banner.png"></image>
     <view class="content">
       <view class="hd" style="transform:rotateZ({{angle}}deg);">
         <image class="logo" src="{{userInfo.avatarUrl}}"></image>
