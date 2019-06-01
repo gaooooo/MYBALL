@@ -1,0 +1,27 @@
+/* pages/itemDetail/itemDetail.wxss */
+
+@import '../index/index.wxss';
+
+.noComment{
+  font-size: 28rpx;
+  margin-top: 30rpx;
+  color: #ccc;
+  background-color: #fff
+}
+
+
+
+.bottomInput{
+  width: 100%;
+  height: 100rpx;
+}
+
+
+.inputB{
+  width: 95%;
+  height: 80rpx;
+  line-height: 80rpx;
+  border: 1px solid #f4f4f4;
+  border-radius: 10rpx;
+  background: #f9f9f9;
+}

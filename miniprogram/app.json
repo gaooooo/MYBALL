@@ -1,0 +1,69 @@
+{
+  "pages": [
+    "pages/start/start",
+    "pages/index/index",
+    "pages/post/post",
+    "pages/detail/detail",
+    "pages/search/search",
+    "pages/showinmap/showinmap",
+    "pages/friends/index/index",
+    "pages/friends/publish/publish",
+    "pages/friends/itemDetail/itemDetail",
+    "pages/logs/logs",
+    "pages/updAct/updAct",
+    "pages/my/projectbrief/projectbrief",
+    "pages/my/aboutus/aboutus",
+    "pages/my/myjoin/myjoin",
+    "pages/my/mylaunch/mylaunch",
+    "pages/my/mycollection/mycollection",
+    "pages/my/issues/issues",
+    "pages/my/more/more",
+    "pages/my/logs/logs",
+    "pages/my/message/message",
+    "pages/my/my"
+  ],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarBackgroundColor": "#118fff",
+    "navigationBarTitleText": "女篮吧",
+    "backgroundColor": "#fff"
+  },
+  "tabBar": {
+    "color": "#9BABBA",
+    "selectedColor": "#495056",
+    "borderStyle": "white",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "球局",
+        "iconPath": "static/images/tar-home.png",
+        "selectedIconPath": "static/images/tar-home-on.png"
+      },
+      {
+        "pagePath": "pages/post/post",
+        "text": "发起球局",
+        "iconPath": "static/images/tar-about.png",
+        "selectedIconPath": "static/images/tar-about-on.png"
+      },
+      {
+        "pagePath": "pages/friends/index/index",
+        "text": "球友圈",
+        "iconPath": "static/images/tar-topic.png",
+        "selectedIconPath": "static/images/tar-topic-on.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的",
+        "iconPath": "static/images/tar-about.png",
+        "selectedIconPath": "static/images/tar-about-on.png"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "cloud": true,
+  "sitemapLocation": "sitemap.json"
+}

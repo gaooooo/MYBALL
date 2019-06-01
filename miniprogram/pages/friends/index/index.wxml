@@ -1,0 +1,45 @@
+<!--index.wxml-->
+<scroll-view scroll-y>
+    <view class='single' wx:for="{{datas}}" wx:key="{{index}}">
+       
+        <image class="avatar" src="{{item.userImg || defaultImg}}" mode="cover"></image>
+         <view class='main'>
+             <view class='nickname'>{{item.username}}</view>
+             <view wx:if="{{item.content != 'null'}}">
+                 <view class='main-comtent' style='{{isShowOrHideComtent ? "" : "max-height: 60pt"}}'>
+                 {{item.content}}
+                 </view>
+                 <!-- <text class='comtent-showOrHide' catchtap='ShowOrHideComtent'>{{allOrPart}}</text> -->
+             </view>
+             <view class='imgArea' wx:if="{{item.image && item.image.length > 0}}" bindtap='showImg' data-Outidx="{{index}}">
+                  <view wx:for="{{item.image}}" wx:for-item='imgItem' wx:key="{{index}}">
+                     <image src="{{imgItem}}" mode='aspectFill' data-imgidx="{{index}}" />
+                 </view>
+             </view>
+             <view class='location' wx:if="{{item.location != 'null' && item.location}}">
+                 <text class='iconfont icon-zuobiaonormal'></text>
+                 <text>{{item.location}}</text>
+             </view>
+             <view class='btnsRow flexRowL timeArea'>
+                <text>{{item.time || "10秒前"}}</text>
+                <view class='ml60  flexC' bindtap='zan' data-index='{{index}}'>
+                  <image src='{{item.zanUrl}}' class='btns ml20' ></image> 
+                  <text class='ml10'> {{item.vote || 0}}</text>
+                </view>
+                <view class='ml60  flexC' bindtap='nav2Detail'  data-id='{{item.id}}'><image src='../../images/comment.png' class='btns ml40'></image> <text class='ml10'> {{item.commentNum || 0}}</text></view>
+                <view class='ml60 '><label class='flexC'> <image src='../../images/share.png' class='btns ml40'></image> <text class='ml10'> {{item.shareNum || 0}}</text> <button open-type='share' hidden='hidden'  data-qiuId='{{item.id}}' data-shareNum='{{item.shareNum}}'></button> </label> </view>
+              </view>
+         </view>
+     </view>
+
+<view class='pushTop' bindtap='refresh'>上拉|点击刷新...</view>
+</scroll-view>
+
+<navigator url='../publish/publish' class='posiFix'>
+  <image src='../../images/add.png' class='addIcon' > </image>
+</navigator>
+
+
+
+
+
