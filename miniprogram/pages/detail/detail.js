@@ -266,11 +266,6 @@ Page({
               success: function (result) {
                 var title = result[0].get("title");
                 var content = result[0].get("content");
-                var publisher = {
-                  objectId: '19a3c85d90',
-                  nickname: '小七',
-                  userPic: 'https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eoLPB1plCstcPmaz5gTiaJMicYjJFYcw97ibvolyib8ziayzzFDEttNviaPePACh30naC3O1Qiczr0dVt7fw/132'
-                };
                 var acttype = result[0].get("acttype");
                 var acttypename = getTypeName(acttype);
                 var isShow = result[0].get("isShow");
@@ -285,12 +280,12 @@ Page({
                 var agreeNum = result[0].get("likenum");
                 var liker = result[0].get("liker");
                 var commentNum = result[0].get("commentnum");
-                var publisherName = publisher.nickname;
-                var objectIds = publisher.id;
+                var publisherName = result[0].get("publisher").nickname;
+                var objectId = result[0].get("publisher").objectId;
                 var publisherPic;
                 var url;
-                if (publisher.userPic) {
-                  publisherPic = publisher.userPic;
+                if (result[0].get("publisher").userPic) {
+                  publisherPic = result[0].get("publisher").userPic;
                 }
                 else {
                   publisherPic = "/static/images/icon/user_defaulthead@2x.png";
@@ -301,7 +296,7 @@ Page({
                 else {
                   url = "http://bmob-cdn-23402.b0.upaiyun.com/2019/06/02/b4d010bb40a328a880abacedcf5b4ad8.png";
                 }
-                if (publisher.id == ress.data) {
+                if (result[0].get("publisher").id == ress.data) {
                   that.setData({
                     isMine: true
                   })
@@ -323,7 +318,7 @@ Page({
                   joinnumber: joinnumber,
                   publisherPic: publisherPic,
                   publisherName: publisherName,
-                  objectIds: objectIds,
+                  objectIds: objectId,
                   loading: true
                 })
                 for (var i = 0; i < liker.length; i++) {

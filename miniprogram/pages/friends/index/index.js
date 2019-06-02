@@ -147,14 +147,14 @@ Page({
     }         
     //设置页码
     this.setPage(page);
-    
-    db.collection('funnys').orderBy('id', 'desc').where(
-      {
-        // id: _.lt((page + 1) * 10).and(_.gt(page * 10)),
-        // validStatus: _.neq(0)
-      }
-    ).get({
+    db.collection('users').orderBy('id', 'desc').get({
       success: res => {
+        console.log(6666, res)
+      }
+    });
+    db.collection('funnys').orderBy('id', 'desc').get({
+      success: res => {
+        console.log('cccccc', res)
         wx.hideLoading()
         var D = res.data;
         D.forEach(function(item, i){
@@ -176,7 +176,7 @@ Page({
       }
     })
   },
- refresh: function(){
+  refresh: function(){
     var page = this.getPage()
     // wx.startPullDownRefresh()
     this.search(Number(page)+1)
@@ -210,7 +210,7 @@ Page({
         }
       })
       return {
-        title: "我发现了一个好笑的东西,分享给你 --女篮吧",
+        title: "发现你身边的球局吧 --女篮吧",
         path: '/pages/itemDetail/itemDetail?id=' + res.target.dataset.qiuid + '&isShareTip=1',
         imageUrl: ''
       }
@@ -225,7 +225,7 @@ Page({
   },
   nav2Detail: function(e){
     wx.navigateTo({
-      url: '../itemDetail/itemDetail?id=' + e.currentTarget.dataset.id,
+      url: '../itemDetail/itemDetail?id=' + e.currentTarget.dataset._id,
     })
   }
 
