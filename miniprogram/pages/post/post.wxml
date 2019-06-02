@@ -36,9 +36,18 @@
           <view class="value" name="endtime">{{date}}
             <image class="arrow-r" src="/static/images/arrow-r-0.png"></image>
           </view>
-        </picker>
+        </picker>至
+        <picker mode="date" value="{{date}}" start="{{date}}" end="2020-09-01" bindchange="bindDateChange">
+            <view class="value" name="endtime">{{date}}
+              <image class="arrow-r" src="/static/images/arrow-r-0.png"></image>
+            </view>
+          </picker>
       </view>
-
+      <!-- 是否公开 -->
+      <view class="mod  t-sport-hide">
+          <text class="key">活动是否私有</text>
+          <switch type="switch" bindchange="switchPublicChange" name="switchPublishHide" />
+        </view>
       <!-- 限制人数 -->
       <view class="mod  t-early">
         <text class="key">限制人数</text>
@@ -129,7 +138,7 @@
             <view class="notice-q">1、为什么需要填写真实姓名与联系方式等信息？</view>
             <view class="notice-a">
               <text>线上报名，线下联系；填写真实有效的联系信息更加有利于活动的开展</text>
-              <text>联系方式有三种选择，分别是微信号，QQ号以及手机号，这三种联系方式在目前生活中是最为普遍的</text>         
+              <text>联系方式有两种选择，分别是手机号以及微信号，这两种联系方式在目前生活中是最为普遍的</text>         
               <text>当有用户报名您的发起时，即可查看您填写的联系信息，以便加入者与您联系,没有加入的用户无法查看您的联系信息</text>    
                <text>活动的群二维码主要用于活动的交流与联系,可以视活动的大小上传或者不上传</text>
             </view>

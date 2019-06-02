@@ -22,7 +22,7 @@ Page({
    */
   data: {
     notice_status: false,
-    accounts: ["微信号", "QQ号", "手机号"],
+    accounts: ["手机号", "微信号"],
     accountIndex: 0,
     peopleHide: false,
     isAgree: false,
@@ -368,11 +368,9 @@ Page({
     var contactindex = this.data.accountIndex;
 
     if (contactindex == 0) {
-      var contactWay = "微信号";
-    } else if (contactindex == 1) {
-      var contactWay = "QQ号";
-    } else if (contactindex == 2) {
       var contactWay = "手机号";
+    } else if (contactindex == 1) {
+      var contactWay = "微信号";
     }
     var contactValue = e.detail.value.contactValue;
 
@@ -421,11 +419,6 @@ Page({
       this.setData({
         showTopTips: true,
         TopTips: '手机号格式不正确'
-      });
-    } else if (contactWay == "QQ号" && !qqReg.test(contactValue)) {
-      this.setData({
-        showTopTips: true,
-        TopTips: 'QQ号格式不正确'
       });
     } else {
       that.setData({
@@ -614,8 +607,7 @@ function getTypeName(acttype) {
 //根据联系方式确定序号
 function getContactIndex(name) {
   var accountIndex = 0;
-  if (name == "微信号") accountIndex = 0;
-  else if (name == "QQ号") accountIndex = 1;
-  else if (name == "手机号") accountIndex = 2;
+  if (name == "手机号") accountIndex = 0;
+  else if (name == "微信号") accountIndex = 1;
   return accountIndex;
 }

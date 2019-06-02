@@ -9,12 +9,9 @@
     </label>
     <view class='user-info'>
       <text>{{username}}</text>
-      <image wx:if="{{userInfo.gender == 1}}" src="/static/images/m3.png"></image>
-      <image wx:if="{{userInfo.gender == 2}}" src="/static/images/w3.png"></image>
-      <image wx:if="{{userInfo.gender == 0 || userInfo.gender==''}}" src="/static/images/sex.png"></image>
     </view>
   </view>
-  <view style='background-color: #fff;' class='bottom-box'>
+  <!-- <view style='background-color: #fff;' class='bottom-box'>
     <view class="list-box">
       <view class="icon-text">
         <span>步数</span>
@@ -27,35 +24,45 @@
       </view>
       <text>21</text>
     </view>
-  </view>
-  <view class="thirdblock" style='margin-top:80px;'>
-    <view class="itemself" bindtap="click_myLaunch" data-index="1">
+  </view> -->
+  
+  
+  <view class="thirdblock" style='margin-top:10px;'>
+    <view class="itemself" bindtap="click_myMessage" data-index="1">
+        <image src="/static/images/icon/plus.png" class="itemself_ico"></image>
+        <span>我的消息</span>
+      </view>
+    <view class="itemself" bindtap="click_myLaunch" data-index="2">
       <image src="/static/images/icon/times.png" class="itemself_ico"></image>
-      <span>我的发起</span>
+      <span>我发布的球局</span>
     </view>
-    <view class="itemself" bindtap="click_myJoin" data-index="2">
+    <view class="itemself" bindtap="click_myJoin" data-index="3">
       <image src="/static/images/icon/jssq.png" class="itemself_ico"></image>
-      <span>我的加入</span>
+      <span>我加入的球局</span>
     </view>
-    <view class="itemself" bindtap="click_myCollection" data-index="3">
+    <view class="itemself" bindtap="click_myCollection" data-index="4">
       <image src="/static/images/icon/status.png" class="itemself_ico"></image>
-      <span>我的收藏</span>
+      <span>我收藏的球局</span>
     </view>
-    <view class="itemself" bindtap="click_projectBrief" data-index="4">
+    <view class="itemself" bindtap="click_myFriend" data-index="5">
+        <image src="/static/images/icon/times.png" class="itemself_ico"></image>
+        <span>我发布的球友圈</span>
+      </view>
+      <view class="itemself" bindtap="click_myComment" data-index="6">
+        <image src="/static/images/icon/times.png" class="itemself_ico"></image>
+        <span>我评论的球友圈</span>
+      </view>
+    <view class="itemself" bindtap="click_projectBrief" data-index="7">
       <image src="/static/images/icon/specialty.png" class="itemself_ico"></image>
       <span>项目简介</span>
     </view>
-    <view class="itemself" bindtap="click_Tick" data-index="5">
+    <view class="itemself" bindtap="click_Tick" data-index="8">
       <image src="/static/images/icon/tick2.png " class="itemself_ico"></image>
       <span>反馈建议</span>
     </view>
-    <view class="itemself" bindtap="click_more" data-index="6">
-      <image src="/static/images/icon/plus.png " class="itemself_ico"></image>
+    <view class="itemself" bindtap="click_more" data-index="9">
+      <image src="/static/images/icon/about.png " class="itemself_ico"></image>
       <span>更多信息</span>
-    </view>
-    <view class="itemself" bindtap="click_myMessage" data-index="7">
-      <image src="/static/images/tar-topic.png" class="itemself_ico"></image>
-      <span>我的消息</span>
     </view>
   </view>
   <view class="h10"></view>

@@ -90,6 +90,22 @@ Page({
       });
     }
   },
+  click_myFriend: function() {
+    if (!this.buttonClicked) {
+      util.buttonClicked(this);
+      wx.navigateTo({
+        url: '/pages/friends/upload/upload',
+      });
+    }
+  },
+  click_myComment: function() {
+    if (!this.buttonClicked) {
+      util.buttonClicked(this);
+      wx.navigateTo({
+        url: '/pages/friends/comment/comment',
+      });
+    }
+  },
   getUserInfoHandler: function(e){
     console.log(e)
     let d = e.detail.userInfo

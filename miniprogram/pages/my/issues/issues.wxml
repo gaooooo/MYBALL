@@ -36,7 +36,7 @@
         </view>
       </view>
 
-      <text class="issues-remind">若要了解更多反馈信息，请访问 —— http://together.demgo.me/。</text>
+      <text class="issues-remind">若要了解更多反馈信息，请访问Monster北京女篮公众号。</text>
     </block>
   </view>
 
@@ -64,7 +64,7 @@
         </view>
       </block>
 
-      <text class="issues-remind ">您可以加入"一起 "用户反馈QQ群285263346进行即时反馈。</text>
+      <text class="issues-remind ">您可以添加小M微信号13167502057进行即时反馈。</text>
       <button class="submit-btn" loading="{{isLoading}}" hover-start-time="200" disabled="{{isdisabled}}" formType="submit">提交反馈</button>
     </form>
   </block>

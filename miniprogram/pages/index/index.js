@@ -126,7 +126,7 @@ Page({
     self = this;
     var Diary = Bmob.Object.extend("Events");
     var query = new Bmob.Query(Diary);
-    query.equalTo("isShow",1); //只统计公开显示的活动
+    query.equalTo("isShow", 1); //只统计公开显示的活动
     query.count({
       success: function (count) {
         var totalPage = 0;
@@ -531,14 +531,11 @@ Page({
 //根据活动类型获取活动类型名称
 function getTypeName(acttype) {
   var acttypeName = "";
-  if (acttype == 1) acttypeName = "个人";
-  else if (acttype == 2) acttypeName = "MONSTER";
-  // else if (acttype == 3) acttypeName = "MONSTER";
-  // else if (acttype == 4) acttypeName = "个人";
-  // else if (acttype == 5) acttypeName = "个人";
-  // else if (acttype == 6) acttypeName = "个人";
-  // else if (acttype == 7) acttypeName = "个人";
-  // else if (acttype == 8) acttypeName = "MONSTER";
-  // else if (acttype == 9) acttypeName = "MONSTER";
+  if (acttype == 1) acttypeName = "常规球局";
+  else if (acttype == 2) acttypeName = "自由球局";
+  // else if (acttype == 3) acttypeName = "训练局";
+  // else if (acttype == 4) acttypeName = "比赛局";
+  // else if (acttype == 5) acttypeName = "嗨皮局";
+  // else if (acttype == 6) acttypeName = "其他";
   return acttypeName;
 }

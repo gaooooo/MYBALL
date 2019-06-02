@@ -13,7 +13,7 @@
   padding-top: 7.5px;
   background-color: #fff;
   border-bottom: 1rpx solid rgb(230, 230, 230);
-  margin-left: 25%;
+  margin-left: 15%;
   margin-right: 12.5%;
 }
 
@@ -96,7 +96,6 @@
 .user .user-box .user-info text {
   width: 200rpx;
   height: 28px;
-  float: left;
 }
 
 .user .user-box .user-info image {

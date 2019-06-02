@@ -14,9 +14,9 @@ var likerlist;
 let commentText; //评论输入框内容
 Page({
   data: {
-    accounts: ["微信号", "QQ号", "手机号"],
+    accounts: ["手机号", "微信号"],
     accountIndex: 0,
-    actStatusArray:["准备中","进行中","已结束"],
+    actStatusArray:["报名中","进行中","已结束"],
     statusIndex:0,
     realname: "",
     contactValue: "",
@@ -1199,7 +1199,7 @@ Page({
   stuSubmit:function(event){
     var statusIndex = that.data.statusIndex;
     if (statusIndex == 0) {
-      var Statusname = "准备中";
+      var Statusname = "报名中";
     } else if (statusIndex == 1) {
       var Statusname = "进行中";
     } else if (statusIndex == 2) {
@@ -1255,16 +1255,13 @@ Page({
       })
     }
     if (contactindex == 0) {
-      var contactWay = "微信号";
-    } else if (contactindex == 1) {
-      var contactWay = "QQ号";
-    } else if (contactindex == 2) {
       var contactWay = "手机号";
+    } else if (contactindex == 1) {
+      var contactWay = "微信号";
     }
     var realname = event.detail.value.realname;
     var contactValue = event.detail.value.contactValue;
     var wxReg = new RegExp("^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}$");
-    var qqReg = new RegExp("[1-9][0-9]{4,}");
     var phReg = new RegExp("0?(13|14|15|17|18|19)[0-9]{9}");
     var nameReg = new RegExp("^[\u4e00-\u9fa5]{2,4}$");
     if (realname == "") {
@@ -1291,11 +1288,6 @@ Page({
       this.setData({
         showTopTips: true,
         TopTips: '手机号格式不正确'
-      });
-    } else if (contactWay == "QQ号" && !qqReg.test(contactValue)) {
-      this.setData({
-        showTopTips: true,
-        TopTips: 'QQ号格式不正确'
       });
     } else {
       wx.getStorage({
@@ -1479,16 +1471,13 @@ Page({
   updSubmit: function (event) {
     var jocountIndex = that.data.jocountIndex;
     if (jocountIndex == 0) {
-      var contactWay = "微信号";
-    } else if (jocountIndex == 1) {
-      var contactWay = "QQ号";
-    } else if (jocountIndex == 2) {
       var contactWay = "手机号";
+    } else if (jocountIndex == 1) {
+      var contactWay = "微信号";
     }
     var realname = event.detail.value.joinname;
     var contactValue = event.detail.value.jocontactValue;
     var wxReg = new RegExp("^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}$");
-    var qqReg = new RegExp("[1-9][0-9]{4,}");
     var phReg = new RegExp("0?(13|14|15|17|18|19)[0-9]{9}");
     var nameReg = new RegExp("^[\u4e00-\u9fa5]{2,4}$");
     if (realname == "") {
@@ -1515,11 +1504,6 @@ Page({
       this.setData({
         showTopTips: true,
         TopTips: '手机号格式不正确'
-      });
-    } else if (contactWay == "QQ号" && !qqReg.test(contactValue)) {
-      this.setData({
-        showTopTips: true,
-        TopTips: 'QQ号格式不正确'
       });
     } else {
       var Contacts = Bmob.Object.extend("Contacts");
@@ -1847,9 +1831,8 @@ Page({
 //根据联系方式确定序号
 function getContactIndex(name) {
   var accountIndex = 0;
-  if (name == "微信号") accountIndex = 0;
-  else if (name == "QQ号") accountIndex = 1;
-  else if (name == "手机号") accountIndex = 2;
+  if (name == "手机号") accountIndex = 0;
+  else if (name == "微信号") accountIndex = 1;
   return accountIndex;
 }
 

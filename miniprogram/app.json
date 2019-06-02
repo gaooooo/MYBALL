@@ -9,6 +9,8 @@
     "pages/friends/index/index",
     "pages/friends/publish/publish",
     "pages/friends/itemDetail/itemDetail",
+    "pages/friends/upload/upload",
+    "pages/friends/comment/comment",
     "pages/logs/logs",
     "pages/updAct/updAct",
     "pages/my/projectbrief/projectbrief",

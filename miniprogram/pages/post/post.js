@@ -18,9 +18,10 @@ Page({
    */
   data: {
     notice_status: false,
-    accounts: ["微信号", "QQ号", "手机号"],
+    accounts: ["手机号", "微信号"],
     accountIndex: 0,
     peopleHide: false,
+    isSportHide: false,
     isAgree: false,
     date: formate_data(myDate),
     address: '点击选择位置',
@@ -31,7 +32,7 @@ Page({
     noteMaxLen: 200,//备注最多字数
     content: "",
     noteNowLen: 0,//备注当前字数
-    types: ["运动", "游戏", "交友", "旅行", "读书", "竞赛", "电影", "音乐", "其他"],
+    types: ["常规球局", "自由球局", "训练局", "比赛局", "嗨皮局", "其他"],
     typeIndex: "0",
     showInput: false,//显示输入真实姓名,
   },
@@ -187,6 +188,18 @@ Page({
       })
     }
   },
+   //限制人数
+   switchPublicChange: function (e) {
+    if (e.detail.value == false) {
+      this.setData({
+        isSportHide: false
+      })
+    } else if (e.detail.value == true) {
+      this.setData({
+        isSportHide: true
+      })
+    }
+  },
 
   //改变时间
   bindDateChange: function (e) {
@@ -271,22 +284,19 @@ Page({
     var longitude = this.data.longitude; //经度
     var latitude = this.data.latitude;//纬度
     var switchHide = e.detail.value.switchHide;
-    var peoplenum = e.detail.value.peoplenum;
+    var peoplenum = e.detail.value.peoplenum || 0;
     console.log(peoplenum);
     var content = e.detail.value.content;
     //------发布者真实信息------
     var realname = e.detail.value.realname;
     var contactindex = this.data.accountIndex;
     if (contactindex == 0) {
-      var contactWay = "微信号";
-    } else if (contactindex == 1) {
-      var contactWay = "QQ号";
-    } else if (contactindex == 2) {
       var contactWay = "手机号";
+    } else if (contactindex == 1) {
+      var contactWay = "微信号";
     }
     var contactValue = e.detail.value.contactValue;
     var wxReg = new RegExp("^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$");
-    var qqReg = new RegExp("[1-9][0-9]{4,}");
     var phReg = /^1[34578]\d{9}$/;
     var nameReg = new RegExp("^[\u4e00-\u9fa5]{2,4}$");
     //先进行表单非空验证
@@ -335,11 +345,6 @@ Page({
         showTopTips: true,
         TopTips: '手机号格式不正确'
       });
-    } else if (contactWay == "QQ号" && !qqReg.test(contactValue)) {
-      this.setData({
-        showTopTips: true,
-        TopTips: 'QQ号格式不正确'
-      });
     } else {
       console.log('校验完毕');
       that.setData({
@@ -366,6 +371,11 @@ Page({
           } else if (!that.data.peopleHide) {
             diary.set("peoplenum", "-1");
           }
+          if (that.data.isSportHide) {
+            diary.set("isShow", 0);
+          } else {
+            diary.set("isShow", 1);
+          }
           diary.set("content", content);
           diary.set("publisher", me);
           diary.set("likenum", 0);
@@ -389,7 +399,7 @@ Page({
               var event = new Events();
               event.id = result.id;
               query.set("Status", 0);
-              query.set("Statusname", "准备中");
+              query.set("Statusname", "报名中");
               query.set("event", event);
               //如果上传了群二维码
               if (that.data.isCodeSrc == true) {
@@ -452,12 +462,12 @@ Page({
                   codeSrc: "",
                   isCodeSrc: false
 
-                })
+                }) 
               });
             },
             error: function (result, error) {
               //添加失败
-              console.log("发布失败=" + error);
+              console.log("发布失败=" + error.message);
               common.dataLoading("发起失败", "loading");
               that.setData({
                 isLoading: false,
