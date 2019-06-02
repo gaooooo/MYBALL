@@ -16,7 +16,7 @@ exports.main = async (event, context) => {
 
   try {
     return await db.collection('funnys').where({
-      id: Number(id)
+      _id: id
     }).update({
       data: {
         comment: comment,

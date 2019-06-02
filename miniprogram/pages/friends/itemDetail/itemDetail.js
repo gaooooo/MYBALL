@@ -71,13 +71,13 @@ Page({
     // getAllData(this);
   },
   search: function(id){
-    let idNum = 0;
-    if (Number(id) || Number(id) == 0)
-      idNum = Number(id)
-    else
-      idNum = this.data.itemId;
+    // let idNum = 0;
+    // if (Number(id) || Number(id) == 0)
+    //   idNum = Number(id)
+    // else
+    //   idNum = this.data.itemId;
     db.collection('funnys').where({
-      id: _.eq(idNum)
+      _id: _.eq(id)
     }).get({
       success: res => {
         console.log(res)
@@ -151,6 +151,7 @@ Page({
           console.log('comment新增失败', e)
         }
       })
+      debugger
       wx.cloud.callFunction({
         name: 'comment',
         data: {
@@ -193,7 +194,7 @@ Page({
       wx.cloud.callFunction({
         name: 'shareHandler',
         data: {
-          id: res.target.dataset.qiuid,
+          id: res.target.dataset.id,
           shareNum: Number(res.target.dataset.sharenum) + 1
         },
         success: e => {
@@ -209,7 +210,7 @@ Page({
       })
       return {
         title: "我发现了一个好笑的东西,分享给你 --女篮吧",
-        path: '/pages/itemDetail/itemDetail?id=' + res.target.dataset.qiuid + '&isShareTip=1',
+        path: '/pages/itemDetail/itemDetail?id=' + res.target.dataset._id + '&isShareTip=1',
         imageUrl: ''
       }
     }
