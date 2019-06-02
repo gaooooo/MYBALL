@@ -4,7 +4,7 @@
   <view class="user-face-wrapper">
     <image mode="aspectFill" src="/static/images/icon/backGround.png" style="height: 150px" class="loginbg"></image>
     <label>
-    <image class="user-face" src="{{userInfo.avatarUrl || defaultUrl}}"></image>
+    <image class="user-face" src="{{defaultUrl}}"></image>
     <button open-type='getUserInfo' bindgetuserinfo='getUserInfoHandler'></button>
     </label>
     <view class='user-info'>

@@ -166,12 +166,7 @@ Page({
     query.find({
       success: function (results) {
         for (var i = 0; i < results.length; i++) {
-          var publisher = {
-            objectId: '19a3c85d90',
-            nickname: '小七',
-            userPic: 'https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eoLPB1plCstcPmaz5gTiaJMicYjJFYcw97ibvolyib8ziayzzFDEttNviaPePACh30naC3O1Qiczr0dVt7fw/132'
-          };
-          var publisherId = publisher.objectId;
+          var publisherId = results[i].get("publisher").objectId;
           var title = results[i].get("title");
           var content = results[i].get("content");
           var acttype = results[i].get("acttype");
@@ -195,8 +190,8 @@ Page({
           }else {
             _url = "http://bmob-cdn-14867.b0.upaiyun.com/2017/12/01/89a6eba340008dce801381c4550787e4.png";
           }
-          var publisherName = publisher.nickname;
-          var publisherPic = publisher.userPic;
+          var publisherName = results[i].get("publisher").nickname;
+          var publisherPic = results[i].get("publisher").userPic;
           var jsonA;
           jsonA = {
             "title": title || '',
@@ -246,12 +241,7 @@ Page({
     query.find({
       success: function (results) {
         for (var i = 0; i < results.length; i++) {
-          var publisher = {
-            objectId: '19a3c85d90',
-            nickname: '小七',
-            userPic: 'https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eoLPB1plCstcPmaz5gTiaJMicYjJFYcw97ibvolyib8ziayzzFDEttNviaPePACh30naC3O1Qiczr0dVt7fw/132'
-          };
-          var publisherId =  publisher.objectId;
+          var publisherId =  results[i].get("publisher").objectId;
           var title = results[i].get("title");
           var content = results[i].get("content");
           var acttype = results[i].get("acttype");
@@ -272,10 +262,10 @@ Page({
           if (actpic) {
             _url = results[i].get("actpic")._url;
           } else {
-            _url = "https://mmbiz.qpic.cn/mmbiz_jpg/DVwWsnT1J7tvnZxelQAxRtpsdbHLCp2NmQA7yBajXAHHMFMjaIuJfiaNJkIzjIOS5sQveaBc3oxe26ITQyJbuhw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1";
+            _url = "http://bmob-cdn-23402.b0.upaiyun.com/2019/06/02/b4d010bb40a328a880abacedcf5b4ad8.png";
           }
-          var publisherName = publisher.nickname;
-          var publisherPic = publisher.userPic;
+          var publisherName = results[i].get("publisher").nickname;
+          var publisherPic = results[i].get("publisher").userPic;
           var jsonA;
           jsonA = {
             "title": title || '',

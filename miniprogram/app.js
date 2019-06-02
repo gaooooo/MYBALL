@@ -31,84 +31,86 @@ App({
       if (value) {
       } else {
         console.log('执行login1')
-        wx.login({
-          success: function (res) {
-            if (res.code) {
-              console.log('执行login2', res);
-            }
-          }
-        });
-        wx.login({
-          success: function (res) {
-            if (res.code) {
-              Bmob.User.requestOpenId(res.code, {
-                success: function (userData) {
-                  wx.getUserInfo({
-                    success: function (result) {
-                      var userInfo = result.userInfo
-                      var nickName = userInfo.nickName
-                      var avatarUrl = userInfo.avatarUrl
-                      var sex = userInfo.gender
-                      Bmob.User.logIn(nickName, userData.openid, {
-                        success: function (user) {
-                          try {
-                            wx.setStorageSync('user_openid', user.get('userData').openid)
-                            wx.setStorageSync('user_id', user.id)
-                            wx.setStorageSync('my_nick', user.get("nickname"))
-                            wx.setStorageSync('my_username', user.get("username"))
-                            wx.setStorageSync('my_sex', user.get("sex"))
-                            wx.setStorageSync('my_avatar', user.get("userPic"))
-                          } catch (e) {
-                          }
-                          console.log("登录成功");
-                        },
-                        error: function (user, error) {
-                          if (error.code == '101') {
-                            var user = new Bmob.User();//开始注册用户
-                            user.set('username', nickName);
-                            user.set('password', userData.openid);
-                            user.set("nickname", nickName);
-                            user.set("userPic", avatarUrl);
-                            user.set("userData", userData);
-                            user.set('sex', sex);
-                            user.set('feednum',0);
-                            user.signUp(null, {
-                              success: function (result) {
-                                console.log('注册成功');
-                                try {//将返回的3rd_session存储到缓存中
-                                  wx.setStorageSync('user_openid', user.get('userData').openid)
-                                  wx.setStorageSync('user_id', user.id)
-                                  wx.setStorageSync('my_nick', user.get("nickname"))
-                                  wx.setStorageSync('my_username', user.get("username"))
-                                  wx.setStorageSync('my_sex', user.get("sex"))
-                                  wx.setStorageSync('my_avatar', user.get("userPic"))
-                                } catch (e) {
-                                }
-                              },
-                              error: function (userData, error) {
-                                console.log("openid=" + userData);
-                                console.log(error)
-                              }
-                            });
+        // wx.login({
+        //   success: function (res) {
+        //     if (res.code) {
+        //       console.log('执行login2', res);
+        //     }
+        //   }
+        // });
+        // wx.login({
+        //   success: function (res) {
+        //     if (res.code) {
+        //       Bmob.User.requestOpenId(res.code, {
+        //         success: function (userData) {
+        //           debugger  
+        //           wx.getUserInfo({
+        //             success: function (result) {
+        //               debugger
+        //               var userInfo = result.userInfo
+        //               var nickName = userInfo.nickName
+        //               var avatarUrl = userInfo.avatarUrl
+        //               var sex = userInfo.gender
+        //               Bmob.User.logIn(nickName, userData.openid, {
+        //                 success: function (user) {
+        //                   try {
+        //                     wx.setStorageSync('user_openid', user.get('userData').openid)
+        //                     wx.setStorageSync('user_id', user.id)
+        //                     wx.setStorageSync('my_nick', user.get("nickname"))
+        //                     wx.setStorageSync('my_username', user.get("username"))
+        //                     wx.setStorageSync('my_sex', user.get("sex"))
+        //                     wx.setStorageSync('my_avatar', user.get("userPic"))
+        //                   } catch (e) {
+        //                   }
+        //                   console.log("登录成功");
+        //                 },
+        //                 error: function (user, error) {
+        //                   if (error.code == '101') {
+        //                     var user = new Bmob.User();//开始注册用户
+        //                     user.set('username', nickName);
+        //                     user.set('password', userData.openid);
+        //                     user.set("nickname", nickName);
+        //                     user.set("userPic", avatarUrl);
+        //                     user.set("userData", userData);
+        //                     user.set('sex', sex);
+        //                     user.set('feednum',0);
+        //                     user.signUp(null, {
+        //                       success: function (result) {
+        //                         console.log('注册成功');
+        //                         try {//将返回的3rd_session存储到缓存中
+        //                           wx.setStorageSync('user_openid', user.get('userData').openid)
+        //                           wx.setStorageSync('user_id', user.id)
+        //                           wx.setStorageSync('my_nick', user.get("nickname"))
+        //                           wx.setStorageSync('my_username', user.get("username"))
+        //                           wx.setStorageSync('my_sex', user.get("sex"))
+        //                           wx.setStorageSync('my_avatar', user.get("userPic"))
+        //                         } catch (e) {
+        //                         }
+        //                       },
+        //                       error: function (userData, error) {
+        //                         console.log("openid=" + userData);
+        //                         console.log(error)
+        //                       }
+        //                     });
 
-                          }
-                        }
-                      });
-                    }
-                  })
-                },
-                error: function (error) {
-                  console.log("Error: " + error.code + " " + error.message);
-                }
-              });
-            } else {
-              console.log('获取用户登录态失败1！' + res.errMsg)
-            }
-          },
-          complete: function (e) {
-            console.log('获取用户登录态失败2！' + e)
-          }
-        });
+        //                   }
+        //                 }
+        //               });
+        //             }
+        //           })
+        //         },
+        //         error: function (error) {
+        //           console.log("Error: " + error.code + " " + error.message);
+        //         }
+        //       });
+        //     } else {
+        //       console.log('获取用户登录态失败1！' + res.errMsg)
+        //     }
+        //   },
+        //   complete: function (e) {
+        //     console.log('获取用户登录态失败2！' + e)
+        //   }
+        // });
       }
     } catch (e) {
       console.log("登陆失败")

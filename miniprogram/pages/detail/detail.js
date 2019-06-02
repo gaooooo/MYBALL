@@ -299,7 +299,7 @@ Page({
                   url = result[0].get("actpic")._url;
                 }
                 else {
-                  url = "https://mmbiz.qpic.cn/mmbiz_jpg/DVwWsnT1J7tvnZxelQAxRtpsdbHLCp2NmQA7yBajXAHHMFMjaIuJfiaNJkIzjIOS5sQveaBc3oxe26ITQyJbuhw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1";
+                  url = "http://bmob-cdn-23402.b0.upaiyun.com/2019/06/02/b4d010bb40a328a880abacedcf5b4ad8.png";
                 }
                 if (publisher.id == ress.data) {
                   that.setData({
