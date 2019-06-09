@@ -13,7 +13,7 @@
 
     <view class="mod-a mt20">
       <!-- 活动类别 -->
-      <view class="mod t-sign-time">
+      <view class="mod t-underline">
         <text class="key">球局类别</text>
         <picker bindchange="bindTypeChange" value="{{typeIndex}}" range="{{types}}">
           <view class="value" name="types">{{types[typeIndex]}}
@@ -23,40 +23,50 @@
       </view>
 
       <!-- 活动地点 -->
-      <view class="mod t-address" bindtap="chooseLocation">
+      <view class="mod t-address t-underline" bindtap="addressChange">
         <text class="key">球局地点</text>
         <text name="address" class="value" bindtap="addressChange" value="{{address}}">{{address}}</text>
         <image class="arrow-r" src="/static/images/arrow-r-0.png"></image>
       </view>
 
       <!-- 有效时间 -->
-      <view class="mod t-sign-time">
+      <view class="mod">
         <text class="key">球局时间</text>
-        <picker mode="date" value="{{date}}" start="{{date}}" end="2020-09-01" bindchange="bindDateChange">
+        <!-- <picker mode="date" value="{{date}}" start="{{date}}" end="2020-09-01" bindchange="bindDateChange">
           <view class="value" name="endtime">{{date}}
             <image class="arrow-r" src="/static/images/arrow-r-0.png"></image>
           </view>
-        </picker>至
-        <picker mode="date" value="{{date}}" start="{{date}}" end="2020-09-01" bindchange="bindDateChange">
-            <view class="value" name="endtime">{{date}}
-              <image class="arrow-r" src="/static/images/arrow-r-0.png"></image>
-            </view>
-          </picker>
+        </picker> -->
+        <picker mode="multiSelector" value="{{dateTime}}" bindchange="changeDateTime" bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray}}">
+          <view class="tui-picker-detail">
+             {{dateTimeArray[0][dateTime[0]]}}-{{dateTimeArray[1][dateTime[1]]}}-{{dateTimeArray[2][dateTime[2]]}} {{dateTimeArray[3][dateTime[3]]}}:{{dateTimeArray[4][dateTime[4]]}}
+            <image class="arrow-r" src="/static/images/arrow-r-0.png"></image>
+          </view>
+        </picker>
+      </view>
+      <view class="mod  t-underline">
+        至
+        <picker mode="multiSelector" value="{{dateTime1}}" bindchange="changeDateTime1" bindcolumnchange="changeDateTimeColumn1" range="{{dateTimeArray1}}">
+          <view class="tui-picker-detail">
+            {{dateTimeArray1[0][dateTime1[0]]}}-{{dateTimeArray1[1][dateTime1[1]]}}-{{dateTimeArray1[2][dateTime1[2]]}} {{dateTimeArray1[3][dateTime1[3]]}}:{{dateTimeArray1[4][dateTime1[4]]}}
+            <image class="arrow-r" src="/static/images/arrow-r-0.png"></image>
+          </view>
+        </picker>
       </view>
       <!-- 是否公开 -->
-      <view class="mod  t-sport-hide">
+      <view class="mod  t-sport-hide t-underline">
           <text class="key">活动是否私有</text>
           <switch type="switch" bindchange="switchPublicChange" name="switchPublishHide" />
         </view>
       <!-- 限制人数 -->
-      <view class="mod  t-early">
+      <view class="mod">
         <text class="key">限制人数</text>
         <switch type="switch" bindchange="switch1Change" name="switchHide" />
       </view>
 
       <!-- 人数设置 -->
       <view wx:if="{{peopleHide}}">
-        <view class="mod t-name">
+        <view class="mod  value t-underline">
           <text class="key">人数设置</text>
           <input name="peoplenum" type="number" class="input" maxlength="100" placeholder='请输入人数' value="{{peoplenum}}" />
           <image class="arrow-r" src="/static/images/arrow-r-0.png"></image>

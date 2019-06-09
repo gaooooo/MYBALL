@@ -523,9 +523,9 @@ function getTypeName(acttype) {
   var acttypeName = "";
   if (acttype == 1) acttypeName = "常规球局";
   else if (acttype == 2) acttypeName = "自由球局";
-  // else if (acttype == 3) acttypeName = "训练局";
-  // else if (acttype == 4) acttypeName = "比赛局";
-  // else if (acttype == 5) acttypeName = "嗨皮局";
-  // else if (acttype == 6) acttypeName = "其他";
+  else if (acttype == 3) acttypeName = "训练局";
+  else if (acttype == 4) acttypeName = "比赛局";
+  else if (acttype == 5) acttypeName = "嗨皮局";
+  else if (acttype == 6) acttypeName = "其他";
   return acttypeName;
 }
