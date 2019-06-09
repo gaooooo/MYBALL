@@ -36,7 +36,7 @@
 
     <!--活动地点item，当经纬度都为0时，不渲染-->
     <view class="detail_input" style="padding-bottom:15rpx;">
-      <text class="des_txt detail_txt">活动地点</text>
+      <text class="des_txt detail_txt">球局地点</text>
       <view class="detail_row_right actAddress">
         <!--活动地点-->
         <view class="txt-overflow">{{address}}</view>
@@ -53,15 +53,15 @@
 
     <!--活动时间item-->
     <view class="detail_input">
-      <text class="des_txt detail_txt">有效时间</text>
+      <text class="des_txt detail_txt">球局时间</text>
       <view class="detail_row_right">
         <!--时间-->
-        <text>{{endtime}}</text>
+        <text>{{starttime}}-{{endtime}}</text>
       </view>
       <view class="detail_lineh"></view>
     </view>
     <view class="detail_input">
-      <text class="des_txt detail_txt">活动类型</text>
+      <text class="des_txt detail_txt">球局类型</text>
       <view class="detail_row_right">
         <!--活动类型-->
         <text bindtap="showCostTab" class="green_txt" style="fonts-zie:28rpx">{{acttypename}}</text>
@@ -97,7 +97,7 @@
       </text>
         <view class="detail-tabar-border {{status==0?'detail-tabar-bg':''}}"></view>
       </view>
-      <view wx:if="{{join ==1 || join == 3}}" class="xiangqing" bindtap="changePage">
+      <view wx:if="{{isMe}}" class="xiangqing" bindtap="changePage">
         <text class="sort1" id="1">联系
       </text>
         <view class="detail-tabar-border {{status==1?'detail-tabar-bg':''}}"></view>
@@ -208,24 +208,27 @@
 <!--我要加入-->
 <view class="bottom">
   <view class="bottom-beta-box">
+    
+    <form bindtap="click_join_state" data-join="{{join}}" wx:if="{{isMe}}" report-submit="true">
+      <button class="textarea1_case_sign {{!isJoin?'un-has':'has'}}" form-type="submit">
+        <view >改变状态</view>
+      </button>
+    </form>
     <form bindtap="click_join" data-join="{{join}}" report-submit="true">
-      <button class="textarea1_case_sign {{join == 0?'un-has':'has'}}" form-type="submit">
-        <view wx:if="{{join == 3}}">改变状态</view>
-        <view wx:if="{{join != 3}}">
+      <button class="textarea1_case_sign {{!isJoin?'un-has':'has'}} {{isMe ? '' : 'textarea1_case_sign2'}}" form-type="submit">
           <view wx:if="{{peoplenum < 0}}">
-            <view wx:if="{{join == 0}}">现在加入</view>
-            <view wx:elif="{{join == 1}}">取消加入</view>
+            <view wx:if="{{!isJoin}}">现在加入</view>
+            <view wx:elif="{{isJoin}}">取消加入</view>
           </view>
           <view wx:if="{{peoplenum > 0}}">
-            <view wx:if="{{peoplenum-joinnumber > 0 && join == 0}}">现在加入</view>
-            <view wx:elif="{{peoplenum-joinnumber > 0 && join == 1}}">取消加入</view>
+            <view wx:if="{{peoplenum-joinnumber > 0 && !isJoin}}">现在加入</view>
+            <view wx:elif="{{peoplenum-joinnumber > 0 && isJoin}}">取消加入</view>
             <view wx:else="{{peoplenum-joinnumber <= 0 }}">人数已满</view>
           </view>
-        </view>
       </button>
     </form>
     <form bindtap="click_favo" data-favo="{{favo}}" report-submit="true">
-      <button class="textarea1_case_sign {{favo == 0?'un-has':'has'}}" form-type="submit">
+      <button class="textarea1_case_sign {{favo == 0?'un-has':'has'}} {{isMe ? '' : 'textarea1_case_sign2'}}" form-type="submit">
         <view wx:if="{{favo == 0}}">立即收藏</view>
         <view wx:if="{{favo == 1}}">取消收藏</view>
         <view wx:if="{{favo == 3}}">
@@ -235,7 +238,7 @@
         </view>
       </button>
     </form>
-    <view wx:if="{{join == 1 || join == 3}}">
+    <view wx:if="{{isJoin || isMe}}">
       <button class="textarea1_case_sign2"></button>
       <template is="actQrCode" data="{{qrcodeHe,qrcode}}" />
       <import src="../../components/button/button.wxml" />

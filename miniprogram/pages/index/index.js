@@ -172,6 +172,7 @@ Page({
           var acttype = results[i].get("acttype");
           var isShow = results[i].get("isShow");
           var endtime = results[i].get("endtime");
+          var starttime = results[i].get("starttime");
           var address = results[i].get("address");
           var addressdetail = results[i].get("addressdetail");
           var peoplenum = results[i].get("peoplenum");
@@ -199,6 +200,7 @@ Page({
             "acttype": acttype || '',
             "isShow": isShow,
             "endtime": endtime || '',
+            "starttime": starttime || '',
             "address": address || '',
             "addressdetail": addressdetail || '',
             "peoplenum": peoplenum || '',
@@ -246,6 +248,7 @@ Page({
           var content = results[i].get("content");
           var acttype = results[i].get("acttype");
           var endtime = results[i].get("endtime");
+          var starttime = results[i].get("starttime");
           var address = results[i].get("address");
           var acttypename = getTypeName(acttype); //根据类型id获取类型名称
           var isShow = results[i].get("isShow");
@@ -274,6 +277,7 @@ Page({
             "acttypename": acttypename || '',
             "isShow": isShow,
             "endtime": endtime || '',
+            "starttime": starttime || '',
             "address": address || '',
             "peoplenum": peoplenum || '',
             "id": id || '',

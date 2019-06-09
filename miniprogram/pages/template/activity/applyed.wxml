@@ -6,7 +6,7 @@
     </view>
     <view class="nickTime">
       <view class="nickArea">
-        <text class="nick">{{item.joinusername}}</text>
+        <text class="nick">{{item.realname}}</text>
       </view>
       <text class="postTime" style="color:rgb(191,191,191);font-size:24rpx">{{item.jointime}}</text>
     </view>

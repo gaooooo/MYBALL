@@ -56,7 +56,7 @@
         </view>
         <image mode="aspectFill" class="photo" src="{{item.actPic}}" wx:if="{{item.actPic}}" data-actid="{{item.id}}" data-pubid='{{item.publisherId}}' bindtap="click_activity"></image>
         
-        <text class="time">时间：{{ item.endtime }}</text>
+        <text class="time">时间：{{item.starttime}} - {{ item.endtime }}</text>
         <text class="location">地点：{{ item.address }}</text>
         <text class="time">报名人数：{{ item.peoplenum < 0 ? '不限' : (item.joinnumber || 0) + '/' + item.peoplenum}}</text>
 

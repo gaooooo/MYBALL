@@ -354,8 +354,6 @@ float: right;
   height: 60rpx;
   width: 200rpx;
   border-radius: 50rpx;
-  margin-right: 50rpx;
-  margin-left: 50rpx;
   display: flex;
   align-items: center;
   justify-content: center;

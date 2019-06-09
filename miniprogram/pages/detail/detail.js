@@ -39,6 +39,7 @@ Page({
     agree: 0,
     favo: 0,
     join: 0,
+    isJson: false,
     isMe: false,
     isToResponse: false,
 
@@ -170,7 +171,7 @@ Page({
 
           that.setData({
             favo: 3, //表示无法收藏
-            join: 3, //已经无法加入
+            // join: 3, //已经无法加入
             isMe: true,
           })
           console.log("这是我的发起");
@@ -202,61 +203,63 @@ Page({
             clearInterval(myInterval); //清除定时器
             //确定收藏状态与加入状态
             //如果这条发起不是自己发的
-            if (that.data.isMe == false) {
-              var userQuery = new Bmob.Query(Bmob.User);
-              userQuery.equalTo("objectId", ress.data);
-              userQuery.find({
-                success: function (result) {
-                  var favoArray = result[0].get("eventFavo");
-                  var joinArray = result[0].get("eventJoin");
-                  var isFavo = false;
-                  var isJoin = false;
-                  if (favoArray != null) {
-                    if (favoArray.length > 0) {
-                      for (var i = 0; i < favoArray.length; i++) {
-                        if (favoArray[i] == optionId) {
-                          favoArray.splice(i, 1);
-                          isFavo = true;
-                          break;
-                        }
-                      }
-                    }
-                  }
-                  if (joinArray != null) {
-                    if (joinArray.length > 0) {
-                      for (var i = 0; i < joinArray.length; i++) {
-                        if (joinArray[i] == optionId) {
-                          joinArray.splice(i, 1);
-                          isJoin = true;
-                          break;
-                        }
-                      }
-                    }
-                  }
-                  if (isFavo == "1") {
-                    that.setData({
-                      favo: 1
-                    })
-                  } else if (isFavo == "0") {
-                    that.setData({
-                      favo: 0
-                    })
-                  }
-                  if (isJoin == "1") {
-                    that.setData({
-                      join: 1
-                    })
-                  } else if (isJoin == "0") {
-                    that.setData({
-                      join: 0
-                    })
-                  }
-                },
-                error: function (error) {
-                  console.log(error)
-                }
-              });
-            }
+            // if (that.data.isMe == false) {
+              // var userQuery = new Bmob.Query(Bmob.User);
+              // userQuery.equalTo("objectId", ress.data);
+              // userQuery.find({
+              //   success: function (result) {
+              //     var favoArray = result[0].get("eventFavo");
+              //     var joinArray = result[0].get("eventJoin");
+              //     var isFavo = false;
+              //     var isJoin = false;
+              //     if (favoArray != null) {
+              //       if (favoArray.length > 0) {
+              //         for (var i = 0; i < favoArray.length; i++) {
+              //           if (favoArray[i] == optionId) {
+              //             favoArray.splice(i, 1);
+              //             isFavo = true;
+              //             break;
+              //           }
+              //         }
+              //       }
+              //     }
+              //     if (joinArray != null) {
+              //       if (joinArray.length > 0) {
+              //         for (var i = 0; i < joinArray.length; i++) {
+              //           if (joinArray[i] == optionId) {
+              //             joinArray.splice(i, 1);
+              //             isJoin = true;
+              //             break;
+              //           }
+              //         }
+              //       }
+              //     }
+              //     if (isFavo == "1") {
+              //       that.setData({
+              //         favo: 1,
+              //       })
+              //     } else if (isFavo == "0") {
+              //       that.setData({
+              //         favo: 0
+              //       })
+              //     }
+              //     if (isJoin == "1") {
+              //       that.setData({
+              //         join: 1,
+              //         isJson: true
+              //       })
+              //     } else if (isJoin == "0") {
+              //       that.setData({
+              //         join: 0,
+              //         isJson: false
+              //       })
+              //     }
+              //   },
+              //   error: function (error) {
+              //     console.log(error)
+              //   }
+              // });
+           // }
             //查询活动信息
             var Diary = Bmob.Object.extend("Events");
             var query = new Bmob.Query(Diary);
@@ -270,6 +273,7 @@ Page({
                 var acttypename = getTypeName(acttype);
                 var isShow = result[0].get("isShow");
                 var endtime = result[0].get("endtime");
+                var starttime = result[0].get("starttime");
                 var createdAt = result[0].createdAt;
                 var pubtime = util.getDateDiff(createdAt);
                 var address = result[0].get("address");
@@ -279,6 +283,7 @@ Page({
                 var joinnumber = result[0].get("joinnumber"); //已经加入的人数
                 var agreeNum = result[0].get("likenum");
                 var liker = result[0].get("liker");
+                var joinArray = result[0].get("joinArray");
                 var commentNum = result[0].get("commentnum");
                 var publisherName = result[0].get("publisher").nickname;
                 var objectId = result[0].get("publisher").objectId;
@@ -311,6 +316,7 @@ Page({
                   acttypename: acttypename,
                   isShow: isShow,
                   endtime: endtime,
+                  starttime: starttime,
                   address: address,
                   longitude: longitude,//经度
                   latitude: latitude,//纬度
@@ -327,6 +333,16 @@ Page({
                     isLike = 1;
                     that.setData({
                       agree: isLike
+                    })
+                    break;
+                  }
+                }
+                for (var i = 0; i < joinArray.length; i++) {
+                  var isJoin = 0;
+                  if (joinArray[i] == ress.data) {
+                    isJoin = 1;
+                    that.setData({
+                      isJoin: !!isJoin
                     })
                     break;
                   }
@@ -462,7 +478,7 @@ Page({
               adcontactValue: adcontactValue,
               loading: true
             })
-          } else {
+          }
             if (joinuserid == wx.getStorageSync("user_id")) {
               console.log("获取加入者信息成功");
               var id = result[i].id;
@@ -504,7 +520,7 @@ Page({
               joinList: joinlist,
               loading: true
             })
-          }
+        
         }
       },
       error: function (error) {
@@ -1015,24 +1031,27 @@ Page({
   },
 
   //-----------------加入与收藏------------
+  // 改变状态
+  click_join_state: function(event) {
+    // join
+    this.setData({
+      showStuDialog: true
+    });
+  },
   //现在加入功能
   click_join: function (event) {
-    var join = that.data.join;
+    var isJoin = that.data.isJoin;
     if (that.data.peoplenum > 0 && (that.data.peoplenum - that.data.joinnumber) <= 0) { //如果人加入满了
       wx.showModal({
         title: '温馨提示',
         content: '此活动参加人数已满',
         showCancel: true,
       })
-    } else if (join == "3") { //如果是自己的发起,弹出改变活动状态的弹窗
-      this.setData({
-        showStuDialog: true
-      });
-    } else if (join == "0") {//如果没有加入，弹出联系表单
+    } else if (!isJoin) {//如果没有加入，弹出联系表单
       this.setData({
         showDialog: !this.data.showDialog
       });
-    } else if (join == "1") { //如果已经加入，则不弹出表单，点击取消加入（删除有关消息）
+    } else if (isJoin) { //如果已经加入，则不弹出表单，点击取消加入（删除有关消息）
       wx, wx.showModal({
         title: '温馨提示',
         content: '确定取消加入吗？',
@@ -1061,12 +1080,17 @@ Page({
                     console.log("删除联系表中的数据成功");
                     that.setData({
                       join: 0,
+                      isJoin: false,
                     })
                   },
                   error: function (err) {
                     console.log("删除联系表中的数据失败");
                     // 删除失败
                   }
+                })
+                that.setData({
+                  join: 0,
+                  isJoin: false,
                 })
                 //取消加入之后生成消息存在表中，默认未未读
                 var isme = new Bmob.User();
@@ -1237,18 +1261,20 @@ Page({
 
   //加入操作
   joinSubmit: function (event) {
-    var join = that.data.join;
+    var isJoin = that.data.isJoin;
     var contactindex = that.data.accountIndex;
-    if (join == "0") { // 未加入，点击加入
-      that.setData({
-        join: 1
-      })
-    }
-    else if (join == "1") { //已加入，点击取消加入
-      that.setData({
-        join: 0
-      })
-    }
+    // if (!isJoin) { // 未加入，点击加入
+    //   that.setData({
+    //     join: 1,
+    //     isJoin: true,
+    //   })
+    // }
+    // else if (isJoin) { //已加入，点击取消加入
+    //   that.setData({
+    //     join: 0,
+    //     isJoin: false,
+    //   })
+    // }
     if (contactindex == 0) {
       var contactWay = "手机号";
     } else if (contactindex == 1) {
@@ -1834,14 +1860,11 @@ function getContactIndex(name) {
 //根据活动类型获取活动类型名称
 function getTypeName(acttype) {
   var acttypeName = "";
-  if (acttype == 1) acttypeName = "运动";
-  else if (acttype == 2) acttypeName = "游戏";
-  else if (acttype == 3) acttypeName = "交友";
-  else if (acttype == 4) acttypeName = "旅行";
-  else if (acttype == 5) acttypeName = "读书";
-  else if (acttype == 6) acttypeName = "竞赛";
-  else if (acttype == 7) acttypeName = "电影";
-  else if (acttype == 8) acttypeName = "音乐";
-  else if (acttype == 9) acttypeName = "其他";
+  if (acttype == 1) acttypeName = "常规球局";
+  else if (acttype == 2) acttypeName = "自由球局";
+  else if (acttype == 3) acttypeName = "训练局";
+  else if (acttype == 4) acttypeName = "比赛局";
+  else if (acttype == 5) acttypeName = "嗨皮局";
+  else if (acttype == 6) acttypeName = "其他";
   return acttypeName;
 }
