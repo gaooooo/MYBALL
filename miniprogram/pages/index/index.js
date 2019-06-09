@@ -178,6 +178,7 @@ Page({
           var peoplenum = results[i].get("peoplenum");
           var likenum = results[i].get("likenum");
           var liker = results[i].get("liker");
+          var joinArray = results[i].get("joinArray");
           var isLike = 0;
           var commentnum = results[i].get("commentnum");
           
@@ -189,7 +190,7 @@ Page({
           if(actpic){
             _url = results[i].get("actpic")._url;
           }else {
-            _url = "http://bmob-cdn-14867.b0.upaiyun.com/2017/12/01/89a6eba340008dce801381c4550787e4.png";
+            _url = "http://bmob-cdn-23402.b0.upaiyun.com/2019/06/02/b4d010bb40a328a880abacedcf5b4ad8.png";
           }
           var publisherName = results[i].get("publisher").nickname;
           var publisherPic = results[i].get("publisher").userPic;
@@ -204,6 +205,7 @@ Page({
             "address": address || '',
             "addressdetail": addressdetail || '',
             "peoplenum": peoplenum || '',
+            "joinnumber": !joinArray ? 0 : joinArray.length, 
             "id": id || '',
             "publisherPic": publisherPic || '',
             "publisherName": publisherName || '',
@@ -255,6 +257,7 @@ Page({
           var peoplenum = results[i].get("peoplenum");
           var likenum = results[i].get("likenum");
           var liker = results[i].get("liker");
+          var joinArray = results[i].get("joinArray");
           var isLike = 0;
           var commentnum = results[i].get("commentnum");
           var id = results[i].id;
@@ -280,6 +283,7 @@ Page({
             "starttime": starttime || '',
             "address": address || '',
             "peoplenum": peoplenum || '',
+            "joinnumber": !joinArray ? 0 : joinArray.length, 
             "id": id || '',
             "publisherPic": publisherPic || '',
             "publisherName": publisherName || '',
