@@ -190,7 +190,7 @@ Page({
           if(actpic){
             _url = results[i].get("actpic")._url;
           }else {
-            _url = "http://bmob-cdn-23402.b0.upaiyun.com/2019/06/02/b4d010bb40a328a880abacedcf5b4ad8.png";
+            _url = "cloud://ballclub-55903b.6261-ballclub-55903b/ic_activity.png";
           }
           var publisherName = results[i].get("publisher").nickname;
           var publisherPic = results[i].get("publisher").userPic;
@@ -268,7 +268,7 @@ Page({
           if (actpic) {
             _url = results[i].get("actpic")._url;
           } else {
-            _url = "http://bmob-cdn-23402.b0.upaiyun.com/2019/06/02/b4d010bb40a328a880abacedcf5b4ad8.png";
+            _url = "cloud://ballclub-55903b.6261-ballclub-55903b/ic_activity.png";
           }
           var publisherName = results[i].get("publisher").nickname;
           var publisherPic = results[i].get("publisher").userPic;

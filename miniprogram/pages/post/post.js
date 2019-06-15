@@ -473,7 +473,7 @@ Page({
                   var me = new Bmob.User();
                   me.id = ress.data;
                   contact.set("publisher", me); //发布人是自己
-                  contact.set("currentUser", me); //参加的人也是自己
+                  // contact.set("currentUser", me); //只是信息发布但是不参加
                   contact.set("event", event);
                   contact.set("realname", realname);
                   contact.set("contactWay", contactWay);

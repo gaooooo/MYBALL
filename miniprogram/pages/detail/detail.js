@@ -299,7 +299,7 @@ Page({
                   url = result[0].get("actpic")._url;
                 }
                 else {
-                  url = "http://bmob-cdn-23402.b0.upaiyun.com/2019/06/02/b4d010bb40a328a880abacedcf5b4ad8.png";
+                  url = "cloud://ballclub-55903b.6261-ballclub-55903b/ic_activity.png";
                 }
                 if (result[0].get("publisher").id == ress.data) {
                   that.setData({
@@ -462,11 +462,11 @@ Page({
     queryJoin.find({
       success: function (result) {
         for (var i = 0; i < result.length; i++) {
-          var joinuserid = result[i].get("currentUser").objectId; //加入的人的objectIdd
-          var publisherid = result[i].get("publisher").objectId; //发起者的objectId
+          var joinuserid = result[i].get("currentUser") ? result[i].get("currentUser").objectId : null; //加入的人的objectIdd
+          var publisherid = result[i].get("publisher") ? result[i].get("publisher").objectId : null; //发起者的objectId
           //先获取发起人的联系信息
-          if (joinuserid == publisherid) {
-            console.log("获取发起者信息成功");
+          if (publisherid && !joinuserid) {
+            console.log("获取发起者信息成功,joinuserid,publisherid,user_id", joinuserid, publisherid, wx.getStorageSync("user_id"));
             var id = result[i].id;
             var adminname = result[i].get("realname"); //加入的人的真实姓名
             var adcontactWay = result[i].get("contactWay"); //联系方式名称
@@ -478,6 +478,7 @@ Page({
               adcontactValue: adcontactValue,
               loading: true
             })
+            continue;
           }
             if (joinuserid == wx.getStorageSync("user_id")) {
               console.log("获取加入者信息成功");
@@ -622,6 +623,9 @@ Page({
               that.upLike(ress); //点赞表里的添加数据
               result[0].set('likenum', result[0].get('likenum') + 1);
             }
+            that.setData({
+              likerList: [...likerArray]
+            })
             result[0].save();
 
             //在生成消息之前，先遍历消息表，如果要生成的消息在表中已经存在，则不生成消息
