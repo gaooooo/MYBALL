@@ -211,16 +211,21 @@
     
     <form bindtap="click_join_state" data-join="{{join}}" wx:if="{{isMe}}" report-submit="true">
       <button class="textarea1_case_sign {{!isJoin?'un-has':'has'}}" form-type="submit">
-        <view >改变状态</view>
+        <view wx:if="{{actstatus == 2}}" style="opacity:0.6">改变状态</view>
+        <view wx:else>改变状态</view>
       </button>
     </form>
     <form bindtap="click_join" data-join="{{join}}" report-submit="true">
       <button class="textarea1_case_sign {{!isJoin?'un-has':'has'}} {{isMe ? '' : 'textarea1_case_sign2'}}" form-type="submit">
-          <view wx:if="{{peoplenum < 0}}">
+        <view wx:if="{{actstatus == 2}}">
+          <view wx:if="{{!isJoin}}" style="opacity:0.6">现在加入</view>
+          <view wx:elif="{{isJoin}}" style="opacity:0.6">取消加入</view>
+        </view>  
+        <view wx:elif="{{peoplenum < 0}}">
             <view wx:if="{{!isJoin}}">现在加入</view>
             <view wx:elif="{{isJoin}}">取消加入</view>
           </view>
-          <view wx:if="{{peoplenum > 0}}">
+          <view wx:else="{{peoplenum > 0}}">
             <view wx:if="{{peoplenum-joinnumber > 0 && !isJoin}}">现在加入</view>
             <view wx:elif="{{peoplenum-joinnumber > 0 && isJoin}}">取消加入</view>
             <view wx:else="{{peoplenum-joinnumber <= 0 }}">人数已满</view>

@@ -158,7 +158,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.initButton()
     that = this;
     var openid = wx.getStorageSync("user_openid");
     optionId = options.actid;
@@ -168,7 +167,6 @@ Page({
       key: 'user_id',
       success: function (ress) {
         if (publisherId == ress.data) {
-
           that.setData({
             favo: 3, //表示无法收藏
             // join: 3, //已经无法加入
@@ -176,6 +174,7 @@ Page({
           })
           console.log("这是我的发起");
         }
+        that.initButton();
       },
     })
 
@@ -194,6 +193,23 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    let userOpenId = wx.getStorageSync('user_openid')
+    if (!userOpenId) {
+      wx.showToast({
+        title: '您还未登录,请先登录~',
+        icon: 'none'
+      })
+
+      setTimeout(() => {
+        wx.switchTab({
+          url: '../my/my',
+        })
+      }, 1500)
+    } else {
+      this.refreshDatail()
+    }
+  },
+  refreshDatail: function() {
     var myInterval = setInterval(getReturn, 500);//半秒定时查询
     function getReturn() {
       wx.getStorage({
@@ -690,7 +706,7 @@ Page({
             console.log(error)
           }
         });
-        that.onShow();
+        that.refreshDatail();
       },
     })
   },
@@ -805,7 +821,7 @@ Page({
               object.save();
             }
           })
-          that.onShow();
+          that.refreshDatail();
         }
       }
     });
@@ -912,7 +928,7 @@ Page({
                       });
                       that.setData({ commentText: '' })
                       that.hideCommentDialog();
-                      that.onShow();
+                      that.refreshDatail();
                     },
                     error: function (object, error) {
                       //查询失败
@@ -1038,13 +1054,29 @@ Page({
   // 改变状态
   click_join_state: function(event) {
     // join
+    const that = this;
+    if (that.data.actstatus == 2){ //如果当前活动已结束
+      wx.showModal({
+        title: '温馨提示',
+        content: '已结束的发起不能修改状态',
+      })
+      return;
+    }
     this.setData({
       showStuDialog: true
     });
   },
   //现在加入功能
   click_join: function (event) {
+    const that = this;
     var isJoin = that.data.isJoin;
+    if (that.data.actstatus == 2){ //如果当前活动已结束
+      wx.showModal({
+        title: '温馨提示',
+        content: '已结束的发起不能加入或取消',
+      })
+      return;
+    }
     if (that.data.peoplenum > 0 && (that.data.peoplenum - that.data.joinnumber) <= 0) { //如果人加入满了
       wx.showModal({
         title: '温馨提示',
@@ -1162,7 +1194,7 @@ Page({
                             console.log("取消参加失败");
                           }
                         })
-                        that.onShow();
+                        that.refreshDatail();
                       }
                     });
                   },
@@ -1260,7 +1292,7 @@ Page({
         console.log("改变状态失败"+error);
       }
     });
-    that.onShow();
+    that.refreshDatail();
   },
 
   //加入操作
@@ -1477,7 +1509,7 @@ Page({
                       console.log("参加失败");
                     }
                   })
-                  that.onShow();
+                  that.refreshDatail();
                 }
               });
             },
@@ -1564,7 +1596,7 @@ Page({
               console.log("修改失败");
             }
           });
-          that.onShow();
+          that.refreshDatail();
         },
       })
       that.setData({
@@ -1602,7 +1634,7 @@ Page({
                   console.log("撤离失败" + error);
                 }
               });
-              that.onShow();
+              that.refreshDatail();
             }
           }
         })
@@ -1624,7 +1656,7 @@ Page({
                   console.log("公开失败" + error);
                 }
               });
-              that.onShow();
+              that.refreshDatail();
             }
           }  
         })
@@ -1787,11 +1819,11 @@ Page({
   },
   //----------------------悬浮按钮操作--------------------------------------
   initButton(position = 'bottomRight') {
+    const that = this;
     this.setData({
       opened: !1,
     })
-
-    this.button = $wuxButton.init('br', {
+    const options = {
       position: position,
       buttons: [
         {
@@ -1799,7 +1831,7 @@ Page({
           icon: "http://bmob-cdn-14867.b0.upaiyun.com/2017/12/02/e049248040b452cd805877235b8b9e0c.png",
         },
         {
-          label: "修改信息",
+          label: "修改报名信息",
           icon: "http://bmob-cdn-14867.b0.upaiyun.com/2017/12/02/9134d4a24058705f80a61ec82455fe47.png",
         },
       ],
@@ -1822,17 +1854,17 @@ Page({
           }
         }
         else if (index === 1) {
+          that.setData({
+            showUpdDialog: true
+          })
+        } if (index === 2) {
           let actid = optionId;
           let pubid = publisherId;
           if (that.data.isMe) { //如果是当前用户的发起
             wx.navigateTo({
               url: '/pages/updAct/updAct?actid=' + actid + "&pubid=" + pubid,
             })
-          } else {
-            that.setData({
-              showUpdDialog: true
-            })
-          }
+          } 
         }
         return true
       },
@@ -1841,7 +1873,14 @@ Page({
           opened,
         })
       },
-    })
+    }
+    if (that.data.isMe) { //如果是当前用户的发起
+      options.buttons.push({
+        label: "修改活动信息",
+        icon: "http://bmob-cdn-14867.b0.upaiyun.com/2017/12/02/9134d4a24058705f80a61ec82455fe47.png",
+      })
+    }
+    this.button = $wuxButton.init('br', options);
   },
   switchChange(e) {
     e.detail.value ? this.button.open() : this.button.close()

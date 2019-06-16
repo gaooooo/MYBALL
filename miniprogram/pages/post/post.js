@@ -105,22 +105,6 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  // onShow: function () {
-  //   var myInterval = setInterval(getReturn, 500); ////半秒定时查询
-  //   function getReturn() {
-  //     wx.getStorage({
-  //       key: 'user_openid',
-  //       success: function (ress) {
-  //         if (ress.data) {
-  //           clearInterval(myInterval)
-  //           that.setData({
-  //             loading: true
-  //           })
-  //         }
-  //       }
-  //     })
-  //   }
-  // },
   onShow: function(){
     let userOpenId = wx.getStorageSync('user_openid')
     if (!userOpenId) {
@@ -465,6 +449,7 @@ Page({
               wx.getStorage({
                 key: 'user_id',
                 success: function (ress) {
+                  debugger
                   var Contacts = Bmob.Object.extend("Contacts");
                   var contact = new Contacts();
                   var Events = Bmob.Object.extend("Events");
@@ -473,7 +458,7 @@ Page({
                   var me = new Bmob.User();
                   me.id = ress.data;
                   contact.set("publisher", me); //发布人是自己
-                  // contact.set("currentUser", me); //只是信息发布但是不参加
+                  contact.set("currentUser", me); //参加的人也是自己
                   contact.set("event", event);
                   contact.set("realname", realname);
                   contact.set("contactWay", contactWay);
