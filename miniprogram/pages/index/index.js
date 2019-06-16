@@ -188,7 +188,7 @@ Page({
           var _url
           var actpic = results[i].get("actpic");
           if(actpic){
-            _url = results[i].get("actpic")._url;
+            _url = results[i].get("actpic");
           }else {
             _url = "cloud://ballclub-55903b.6261-ballclub-55903b/ic_activity.png";
           }
@@ -266,7 +266,7 @@ Page({
           var _url
           var actpic = results[i].get("actpic");
           if (actpic) {
-            _url = results[i].get("actpic")._url;
+            _url = results[i].get("actpic");
           } else {
             _url = "cloud://ballclub-55903b.6261-ballclub-55903b/ic_activity.png";
           }

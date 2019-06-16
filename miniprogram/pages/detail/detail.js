@@ -312,7 +312,7 @@ Page({
                   publisherPic = "/static/images/icon/user_defaulthead@2x.png";
                 }
                 if (result[0].get("actpic")) {
-                  url = result[0].get("actpic")._url;
+                  url = result[0].get("actpic");
                 }
                 else {
                   url = "cloud://ballclub-55903b.6261-ballclub-55903b/ic_activity.png";
@@ -394,7 +394,7 @@ Page({
         var url;
         var qrcode = result[0].get("qrcode");
         if (qrcode) {
-          url = result[0].get("qrcode")._url;
+          url = result[0].get("qrcode");
         }
         else {
           url = null;
@@ -1828,11 +1828,11 @@ Page({
       buttons: [
         {
           label: "群二维码",
-          icon: "http://bmob-cdn-14867.b0.upaiyun.com/2017/12/02/e049248040b452cd805877235b8b9e0c.png",
+          icon: "/static/images/more/ewm.png",
         },
         {
           label: "修改报名信息",
-          icon: "http://bmob-cdn-14867.b0.upaiyun.com/2017/12/02/9134d4a24058705f80a61ec82455fe47.png",
+          icon: "/static/images/icon/jssq.png",
         },
       ],
       buttonClicked(index, item) {
@@ -1877,7 +1877,7 @@ Page({
     if (that.data.isMe) { //如果是当前用户的发起
       options.buttons.push({
         label: "修改活动信息",
-        icon: "http://bmob-cdn-14867.b0.upaiyun.com/2017/12/02/9134d4a24058705f80a61ec82455fe47.png",
+        icon: "/static/images/icon/times.png",
       })
     }
     this.button = $wuxButton.init('br', options);

@@ -1,4 +1,6 @@
 //index.js
+
+var util = require('../../../utils/util.js');
 const app = getApp()
 
 
@@ -89,6 +91,7 @@ Page({
         datas: D,
         voteArr: arr
       })
+      D[id].zanUrl = this.data.zanIcon
     }else{
       arr.push(D[id].id)
       this.setData({
@@ -158,7 +161,10 @@ Page({
         wx.hideLoading()
         var D = res.data;
         D.forEach(function(item, i){
-          D[i].zanUrl = that.data.zanIcon
+          D[i].zanUrl = that.data.zanIcon;
+          if (item.createdAt) {
+            D[i].time = util.getDateDiff(item.createdAt, 1);
+          }
         })
         console.log(D)
         this.setData({

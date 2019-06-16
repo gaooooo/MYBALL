@@ -25,8 +25,8 @@ function getDateTimeStamp(dateStr) {
   return Date.parse(dateStr.replace(/-/gi, "/"));
 }
 //格式化时间
-function getDateDiff(dateStr) {
-  var publishTime = getDateTimeStamp(dateStr) / 1000,
+function getDateDiff(dateStr, isDate) {
+  var publishTime = !isDate ? getDateTimeStamp(dateStr) / 1000 : dateStr,
     d_seconds,
     d_minutes,
     d_hours,
@@ -93,10 +93,14 @@ function buttonClicked(self) {
     })
   }, 500)
 }
-
+const typeC = (o) => {
+  var str = Object.prototype.toString.call(o);
+  return str.match(/\[object (.*?)\]/)[1].toLowerCase();
+}
 module.exports = {
   formatTime: formatTime,
   getDateDiff: getDateDiff,
   buttonClicked: buttonClicked,
+  typeC: typeC,
 }
 

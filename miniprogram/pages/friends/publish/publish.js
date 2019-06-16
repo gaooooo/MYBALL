@@ -142,14 +142,14 @@ Page({
       })
       return
     }
+    wx.showLoading({
+      title: '文件上传中',
+    })
     if (!self.data.imgArr || self.data.imgArr.lengt === 0) {
       self.handleSave();
       wx.hideLoading();
       return
     }
-    wx.showLoading({
-      title: '文件上传中',
-    })
     const filePath = self.data.imgArr;
     let cloudPath = '', uploadCompletedCount = 0, imgArr = [];
     filePath.forEach((item, i)=>{
@@ -192,7 +192,8 @@ Page({
       shareNum: 0,
       commentNum: 0,
       validStatus: 0,
-      validTime: 0
+      validTime: 0,
+      createdAt: +new Date(),
     }
     //validStatus: 审核状态, 通过时候 +1, 反对时候-1
     //validTime: 审核次数, 最多5次,如果反对的人大于等于3,则不通过

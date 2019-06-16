@@ -2,7 +2,7 @@
 const db = wx.cloud.database()
 const _ = db.command
 var app = getApp()
-const util = require('../util/util.js');
+var util = require('../../../utils/util.js');
 
 Page({
 
@@ -71,18 +71,19 @@ Page({
     // getAllData(this);
   },
   search: function(id){
-    // let idNum = 0;
-    // if (Number(id) || Number(id) == 0)
-    //   idNum = Number(id)
-    // else
-    //   idNum = this.data.itemId;
-    db.collection('funnys').where({
-      _id: _.eq(id)
-    }).get({
+    const query = Object.create(null);
+    if (id) {
+      query._id = _.eq(id)
+    }
+    db.collection('funnys').where(query).get({
       success: res => {
         console.log(res)
         let D = res.data;
-
+        D.forEach(function(item, i){
+          if (item.createdAt) {
+            D[i].time = util.getDateDiff(item.createdAt, 1);
+          }
+        })
         this.setData({
           data: D[0]
         })
@@ -151,7 +152,6 @@ Page({
           console.log('comment新增失败', e)
         }
       })
-      debugger
       wx.cloud.callFunction({
         name: 'comment',
         data: {
@@ -201,7 +201,7 @@ Page({
           wx.showToast({
             title: '分享成功',
           })
-          that.search(that.data.pageId)
+          that.search()
           console.log(e)
         },
         fail: e => {
