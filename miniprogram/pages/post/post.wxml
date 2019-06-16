@@ -32,11 +32,6 @@
       <!-- 有效时间 -->
       <view class="mod">
         <text class="key">球局时间</text>
-        <!-- <picker mode="date" value="{{date}}" start="{{date}}" end="2020-09-01" bindchange="bindDateChange">
-          <view class="value" name="endtime">{{date}}
-            <image class="arrow-r" src="/static/images/arrow-r-0.png"></image>
-          </view>
-        </picker> -->
         <picker mode="multiSelector" value="{{dateTime}}" bindchange="changeDateTime" bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray}}">
           <view class="tui-picker-detail">
              {{dateTimeArray[0][dateTime[0]]}}-{{dateTimeArray[1][dateTime[1]]}}-{{dateTimeArray[2][dateTime[2]]}} {{dateTimeArray[3][dateTime[3]]}}:{{dateTimeArray[4][dateTime[4]]}}

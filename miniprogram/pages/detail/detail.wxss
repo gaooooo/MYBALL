@@ -745,7 +745,6 @@ float: right;
   text-align: left;
   margin-top: 30rpx;
   margin-bottom: 10rpx;
-  border-top: 10rpx solid rgb(245, 245, 245);
 }
 
 .likeTitle {

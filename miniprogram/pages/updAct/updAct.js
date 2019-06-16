@@ -7,15 +7,11 @@ var optionId;
 var publisherId;
 var contactId;
 var eventMoreId;
-var myDate = new Date();
-//格式化日期
-function formate_data(myDate) {
-  let month_add = myDate.getMonth() + 1;
-  var formate_result = myDate.getFullYear() + '-'
-    + month_add + '-'
-    + myDate.getDate()
-  return formate_result;
-}
+var DateTimePicker = require('../../utils/dateTimePicker.js');
+var Util = require('../../utils/util.js');
+var obj = null;
+var obj1 = null;
+
 Page({
   /**
    * 页面的初始数据
@@ -26,7 +22,6 @@ Page({
     accountIndex: 0,
     peopleHide: false,
     isAgree: false,
-    date: formate_data(myDate),
     address: '点击选择位置',
     longitude: 0, //经度
     latitude: 0,//纬度
@@ -35,7 +30,7 @@ Page({
     noteMaxLen: 200,//备注最多字数
     content: "",
     noteNowLen: 0,//备注当前字数
-    types: ["运动", "游戏", "交友", "旅行", "读书", "竞赛", "电影", "音乐", "其他"],
+    types: ["常规球局", "自由球局", "训练局", "比赛局", "嗨皮局", "其他"],
     typeIndex: "0",
     showInput: false,//显示输入真实姓名,
   },
@@ -68,7 +63,21 @@ Page({
       content: value, noteNowLen: len
     })
   },
-
+  resetDatePicker: function() {
+    // 精确到分的处理，将数组的秒去掉
+    obj = new DateTimePicker.dateTimePicker(2000, 2050);
+    obj1 = new DateTimePicker.dateTimePicker(2000, 2050);
+    var lastArray = obj.dateTimeArray.pop();
+    var lastArray1 = obj1.dateTimeArray.pop();
+    var lastTime = obj.dateTime.pop();
+    var lastTime1 = obj1.dateTime.pop();
+    that.setData({//初始化数据
+      dateTimeArray: obj.dateTimeArray,
+      dateTimeArray1: obj1.dateTimeArray,
+      dateTime: obj.dateTime,
+      dateTime1: obj1.dateTime
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -85,6 +94,7 @@ Page({
       loading: true,
       isdisabled: false
     })
+    that.resetDatePicker();
     var Diary = Bmob.Object.extend("Events");
     var query = new Bmob.Query(Diary);
     query.equalTo("objectId", optionId);
@@ -286,11 +296,41 @@ Page({
     }
   },
 
-  //改变时间
-  bindDateChange: function (e) {
+  changeDateTime(e) {
+    this.setData({ dateTime: e.detail.value });
+    const starttime = obj.getValue(this.data.dateTimeArray, this.data.dateTime)
+    const endtime = obj1.getValue(this.data.dateTimeArray1, this.data.dateTime1)
+    console.log('starttime,endtime', Util.formatTime(starttime), Util.formatTime(endtime));
+    if (starttime > endtime) {
+      this.setData({
+        dateTimeArray1: [...this.data.dateTimeArray],
+        dateTime1: [...this.data.dateTime]
+      });
+    }
+  },
+  changeDateTimeColumn(e) {
+    var arr = this.data.dateTime, dateArr = this.data.dateTimeArray;
+    arr[e.detail.column] = e.detail.value;
+    dateArr[2] = DateTimePicker.getMonthDay(dateArr[0][arr[0]], dateArr[1][arr[1]]);
     this.setData({
-      date: e.detail.value
-    })
+      dateTimeArray: dateArr,
+      dateTime: arr
+    });
+  },
+  changeDateTime1(e) {
+    console.log(e);
+    this.setData({ dateTime1: e.detail.value });
+  },
+  changeDateTimeColumn1(e) {
+    var arr = this.data.dateTime1, dateArr = this.data.dateTimeArray1;
+
+    arr[e.detail.column] = e.detail.value;
+    dateArr[2] = DateTimePicker.getMonthDay(dateArr[0][arr[0]], dateArr[1][arr[1]]);
+    console.log(arr);
+    this.setData({
+      dateTimeArray1: dateArr,
+      dateTime1: arr
+    });
   },
 
   //改变活动类别
@@ -353,10 +393,10 @@ Page({
 
     var that = this;
     var title = e.detail.value.title;
-    var endtime = this.data.date;
+    const starttime = obj.getValue(this.data.dateTimeArray, this.data.dateTime);
+    const endtime = obj1.getValue(this.data.dateTimeArray1, this.data.dateTime1);
     var typeIndex = this.data.typeIndex;
     var acttype = 1 + parseInt(typeIndex);
-    var acttypename = getTypeName(acttype); //获得类型名称
     var address = this.data.address;
     var longitude = this.data.longitude; //经度
     var latitude = this.data.latitude;//纬度
@@ -435,7 +475,8 @@ Page({
           query.get(optionId, {
             success: function (result) {
               result.set("title", title);
-              result.set("endtime", endtime);
+              result.set("starttime", Util.formatTime(starttime));
+              result.set("endtime", Util.formatTime(endtime));
               result.set("acttype", acttype + "");
               if (that.data.upadnew) { //如果改变了地点
                 result.set("address", address);
@@ -590,20 +631,7 @@ Page({
     })
   },
 })
-//根据活动类型获取活动类型名称
-function getTypeName(acttype) {
-  var acttypeName = "";
-  if (acttype == 1) acttypeName = "运动";
-  else if (acttype == 2) acttypeName = "游戏";
-  else if (acttype == 3) acttypeName = "交友";
-  else if (acttype == 4) acttypeName = "旅行";
-  else if (acttype == 5) acttypeName = "读书";
-  else if (acttype == 6) acttypeName = "竞赛";
-  else if (acttype == 7) acttypeName = "电影";
-  else if (acttype == 8) acttypeName = "音乐";
-  else if (acttype == 9) acttypeName = "其他";
-  return acttypeName;
-}
+
 //根据联系方式确定序号
 function getContactIndex(name) {
   var accountIndex = 0;
