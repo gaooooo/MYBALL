@@ -44,7 +44,7 @@ font-size:14px;
   height: 200rpx;
   line-height: 200rpx;
   text-align: center;
-  background: url(http://bmob-cdn-14867.b0.upaiyun.com/2017/11/23/e93d28a14095af18801d3c1c68e08fe7.png) no-repeat left center;
+  background: url(https://6261-ballclub-55903b-1258499587.tcb.qcloud.la/images/e93d28a14095af18801d3c1c68e08fe7.png?sign=2220a447c79587c733a6c7f66b486aed&t=1560963210g) no-repeat left center;
   background-size: 160rpx auto;
   padding-left: 80rpx;
   color: #b2b2b2;
@@ -56,7 +56,7 @@ font-size:14px;
   height: 200rpx;
   line-height: 200rpx;
   text-align: center;
-  background: url(http://bmob-cdn-14867.b0.upaiyun.com/2017/11/23/e93d28a14095af18801d3c1c68e08fe7.png) no-repeat left center;
+  background: url(https://6261-ballclub-55903b-1258499587.tcb.qcloud.la/images/e93d28a14095af18801d3c1c68e08fe7.png?sign=2220a447c79587c733a6c7f66b486aed&t=1560963210) no-repeat left center;
   background-size: 160rpx auto;
   padding-left: 130rpx;
   color: #b2b2b2;
@@ -88,7 +88,7 @@ font-size:14px;
   top: -20rpx;
   width: 15px;
   height: 15px;
-  background: url(http://bmob-cdn-14867.b0.upaiyun.com/2017/11/23/b93323e440f4c3998034dbb9011a1e1d.png) no-repeat;
+  background: url(https://6261-ballclub-55903b-1258499587.tcb.qcloud.la/images/b93323e440f4c3998034dbb9011a1e1d.png?sign=c89ce2998eecd5b4ee07369d3d295ffd&t=1560963309) no-repeat;
   background-size: cover;
 }
 

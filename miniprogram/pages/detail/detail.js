@@ -1832,7 +1832,7 @@ Page({
         },
         {
           label: "修改报名信息",
-          icon: "/static/images/icon/jssq.png",
+          icon: "/static/images/more/times.png",
         },
       ],
       buttonClicked(index, item) {
@@ -1877,7 +1877,7 @@ Page({
     if (that.data.isMe) { //如果是当前用户的发起
       options.buttons.push({
         label: "修改活动信息",
-        icon: "/static/images/icon/times.png",
+        icon: "/static/images/more/times.png",
       })
     }
     this.button = $wuxButton.init('br', options);

@@ -100,9 +100,9 @@ Page({
           var _url
           var actpic = results[i].get("event").actpic;
           if (actpic) {
-            _url = results[i].get("event").actpic.url;
+            _url = results[i].get("event").actpic;
           } else {
-            _url = "http://bmob-cdn-14867.b0.upaiyun.com/2017/12/01/89a6eba340008dce801381c4550787e4.png";
+            _url = "cloud://ballclub-55903b.6261-ballclub-55903b/ic_activity.png";
           }
           var jsonA;
           jsonA = {

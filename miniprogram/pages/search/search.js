@@ -75,7 +75,7 @@ Page({
           if (actpic) {
             _url = results[i].get("actpic")._url;
           } else {
-            _url = "http://bmob-cdn-14867.b0.upaiyun.com/2017/12/01/89a6eba340008dce801381c4550787e4.png";
+            _url = "https://6261-ballclub-55903b-1258499587.tcb.qcloud.la/images/%E5%A4%A7Mlogo179x142%E5%BD%A9%E8%89%B2.png?sign=e3f4b376076bf658865cc341df698d72&t=1560963559";
           }
           var publisherName = results[i].get("publisher").nickname;
           var publisherPic = results[i].get("publisher").userPic;

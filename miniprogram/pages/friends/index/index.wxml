@@ -4,7 +4,7 @@
        
         <image class="avatar" src="{{item.userImg || defaultImg}}" mode="cover"></image>
          <view class='main'>
-             <view class='nickname'>{{item.username}}</view>
+             <view class='nickname'>{{item.username}}111</view>
              <view wx:if="{{item.content != 'null'}}">
                  <view class='main-comtent' style='{{isShowOrHideComtent ? "" : "max-height: 60pt"}}'>
                  {{item.content}}
