@@ -139,13 +139,22 @@ page {
 }
 
 /**/
-
-swiper {
+/* 用于滑动 tab 的 swiper 样式 */
+swiper.swiper-tab {
+  flex: 1;
+}
+.swiper-tab swiper-item {
+  overflow: scroll;
+}
+.swiper-tab scroll-view {
+  height: 100%;
+}
+swiper.swiper-ball {
   height: 380rpx;
   margin-bottom: 20rpx;
 }
 
-swiper-item, swiper-item image {
+.swiper-ball swiper-item, swiper-item image {
   width: 100%;
   height: 300rpx;
   border-radius: 15rpx;
@@ -488,4 +497,66 @@ html, body {
   opacity: 0.2;
   z-index: 1000;
   color: #fff;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding-bottom: 0;
+}
+
+/* tab选项卡 */
+.tab {
+  background: #fff;
+}
+.tab-bar {
+  width: 50%;
+  height: 100rpx;
+  display: flex;
+}
+
+.tab-item {
+  flex: 1;
+  display: inline-block;
+  background: #fff;
+  color: #959595;
+  text-align: center;
+  line-height: 100rpx;
+  font-size: 30rpx;
+}
+
+/* 选中样式 */
+
+.tab-Selected {
+  position: relative;
+  color: #118fff;
+  font-weight: 500;
+  font-size:20px;
+}
+
+.tab-Selected::after {
+  content: '';
+  height: 4rpx;
+  width: 40rpx;
+  background: #118fff;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  margin-left: -20rpx;
+}
+.tab-bar-icon {
+  position: absolute;
+  font-size: 20px;
+  top: 10px;
+}
+.tab-bar-icon__search {
+  right: 53px;
+}
+.tab-bar-icon__map {
+  width: 20px;
+  height: 20px;
+  right: 96px;  
+}
+.tab-bar-icon__publish {
+  right: 15px;
 }

@@ -15,6 +15,7 @@ var my_sex = wx.getStorageSync('my_sex')
 var my_avatar = wx.getStorageSync('my_avatar')
 Page({
   data: {
+    currentSwiper: '1',
     my_nick: my_nick,
     my_sex: my_sex,
     my_avatar: my_avatar,
@@ -70,7 +71,11 @@ Page({
     }
   },
 
-
+  addClick: function() {
+    wx.navigateTo({
+      url: '/pages/post/post',
+    });
+  },
   onLoad(t) {
     var self = this;
     //this.getAll();
@@ -523,6 +528,17 @@ Page({
       ui.offsetLeft = ui.menuWidth;
       this.setData({ ui: ui })
     }
+  },
+  switchSwiper(e)  {
+    let index = e.currentTarget.dataset.index
+    this.setData({
+      currentSwiper: index,
+    })
+  },
+  swiperChanged (e) {
+    this.setData({
+      currentSwiper: e.detail.currentItemId,
+    })
   },
 })
 
