@@ -7,11 +7,17 @@ var my_nick = wx.getStorageSync('my_nick')
 var my_sex = wx.getStorageSync('my_sex')
 var my_avatar = wx.getStorageSync('my_avatar')
 
+
+const config = getApp().globalData.config
 Page({
   data: {
     logs: [],
     defaultUrl: '/static/images/newF1.png',
-    username: '点击头像登录'
+    username: '点击头像登录',
+    
+    userInfo: {},
+    userNotificationNum: 0,
+    auth: {},
   },
    //进入我的发起
    click_myLaunch: function () {
@@ -40,70 +46,7 @@ Page({
       });
     }
   },
-  //进入项目简介
-  click_projectBrief: function () {
-    if (!this.buttonClicked) {
-      util.buttonClicked(this);
-      wx.navigateTo({
-        url: '/pages/my/projectbrief/projectbrief',
-      });
-    }
-  },
 
-  //进入反馈建议
-  click_Tick:function(){
-    if (!this.buttonClicked) {
-      util.buttonClicked(this);
-      wx.navigateTo({
-        url: '/pages/my/issues/issues',
-      });
-    }
-  },
-
-  //进入更多信息
-  click_more:function(){
-    if (!this.buttonClicked) {
-      util.buttonClicked(this);
-      wx.navigateTo({
-        url: '/pages/my/more/more',
-      });
-    }
-  },
-
-  //进入关于我们
-  click_aboutUs: function () {
-    if (!this.buttonClicked) {
-      util.buttonClicked(this);
-      wx.navigateTo({
-        url: '/pages/my/aboutus/aboutus',
-      });
-    }
-  },
-
-  click_myMessage: function() {
-    if (!this.buttonClicked) {
-      util.buttonClicked(this);
-      wx.navigateTo({
-        url: '/pages/my/message/message',
-      });
-    }
-  },
-  click_myFriend: function() {
-    if (!this.buttonClicked) {
-      util.buttonClicked(this);
-      wx.navigateTo({
-        url: '/pages/friends/upload/upload',
-      });
-    }
-  },
-  click_myComment: function() {
-    if (!this.buttonClicked) {
-      util.buttonClicked(this);
-      wx.navigateTo({
-        url: '/pages/friends/comment/comment',
-      });
-    }
-  },
   getUserInfoHandler: function(e){
     console.log(e)
     let d = e.detail.userInfo
@@ -267,5 +210,87 @@ Page({
         defaultUrl: avatar
       })
     }
-  }
+  },
+  onShow () {
+    // let auth = util.ifLogined()
+    // this.setData({
+    //   auth,
+    // })
+    // if (auth) {
+    //   this.getUserInfo()
+    //   this.userNotificationNum()
+    // } else {
+    //   this.setData({
+    //     userInfo: {},
+    //     userNotificationNum: 0,
+    //   })
+    // }
+  },
+  navigatItem (e) {
+    return util.navigatItem(e)
+  },
+  // 获取用户信息
+  getUserInfo() {
+    const auth = this.data.auth
+    wx.request({
+      url: `${config.apiRequestUrl}/getUserInfo`,
+      data: {
+        src: 'web',
+        device_id: auth.clientId,
+        uid: auth.uid,
+        token: auth.token,
+        current_uid: auth.uid,
+      },
+      success: (res) => {
+        let data = res.data
+        if (data.s === 1) {
+          this.setData({
+            userInfo: data.d,
+          })
+        } else {
+          wx.showToast({
+            title: data.m.toString(),
+            icon: 'none',
+          })
+        }
+      },
+      fail: () => {
+        wx.showToast({
+          title: '网路开小差，请稍后再试',
+          icon: 'none',
+        })
+      },
+    })
+  },
+  // 消息中心消息条数
+  userNotificationNum() {
+    const auth = this.data.auth
+    wx.request({
+      url: `${config.notifyRequestUrl}/getUserNotificationNum`,
+      data: {
+        src: 'web',
+        uid: auth.uid,
+        token: auth.token,
+      },
+      success: (res) => {
+        let data = res.data
+        if (data.s === 1) {
+          this.setData({
+            userNotificationNum: data.d && data.d.notification_num,
+          })
+        } else {
+          wx.showToast({
+            title: data.m.toString(),
+            icon: 'none',
+          })
+        }
+      },
+      fail: () => {
+        wx.showToast({
+          title: '网路开小差，请稍后再试',
+          icon: 'none',
+        })
+      },
+    })
+  },
 })

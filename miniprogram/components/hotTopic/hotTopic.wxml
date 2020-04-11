@@ -1,0 +1,20 @@
+<view class="selected-nav" wx:if="{{topNav.length != 0}}">
+    <view class='common-subtitle'>
+      <view class='common-subtitle-left'>热门话题</view>
+      <view class='common-subtitle-right'>查看更多</view>
+    </view>
+    <!-- 栏目列表 -->
+      <view class="selected-nav-list">
+        <block  wx:key="id" wx:for="{{topNav}}">
+            <view class="selected-nav-item" catchtap="onNavRedirect" id="{{item.id}}" data-redicttype="{{item.redirecttype}}" data-url="{{item.url}}" data-appid="{{item.appid}}" data-extraData="{{item.extraData}}">
+              <view>
+                <image mode="aspectFill" src="{{item.image}}"></image>
+                <view class="selected-nav-item-text">
+                <text>#{{item.name}}</text>
+                <text>{{item.count}}条内容</text>
+                </view>
+              </view>
+            </view>
+        </block>
+      </view>
+  </view>

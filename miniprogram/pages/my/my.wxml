@@ -1,71 +1,100 @@
-<!--logs.wxml-->
-<view class="user">
-<view class="user-box">
-  <view class="user-face-wrapper">
-    <image mode="aspectFill" src="/static/images/icon/backGround.png" style="height: 150px" class="loginbg"></image>
-    <label>
-    <image class="user-face" src="{{defaultUrl}}"></image>
-    <button open-type='getUserInfo' bindgetuserinfo='getUserInfoHandler'></button>
-    </label>
-    <view class='user-info'>
-      <text>{{username}}</text>
+<view class='wrapper'>
+  <view class='card profile'  catchtap='navigatItem' data-url='/pages/personal/personal'>
+    <view class='info'>
+      <jImage class='avatar' src='{{defaultUrl}}' wx:if='{{defaultUrl}}'></jImage>
+      <image class='avatar' src='/static/friend/empty_avatar_user.png'  wx:else></image>
+      <view class='text' open-type='getUserInfo' bindgetuserinfo='getUserInfoHandler'>
+        <view class='name'>{{username || '登录/注册'}}</view>
+        <view>{{'175cm' || '添加身高'}} @ {{ '5年球龄' || '添加球龄'}}</view>
+      </view>
+    </view>
+    <view class='more'>
+      <view class='reddot' wx:if='{{auth && !userInfo.company}}'></view>
+      <image src='/static/friend/profile_arrow.png'></image>
     </view>
   </view>
-  <!-- <view style='background-color: #fff;' class='bottom-box'>
-    <view class="list-box">
-      <view class="icon-text">
-        <span>步数</span>
+
+  <view class='card items'>
+    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/my/infoCenter/infoCenter'>
+      <view class='title'>
+        <image src='/static/friend/ic_notification.png'></image>
+        <view>消息中心</view>
       </view>
-      <text>2543</text>
+      <view class='count reddot' wx:if='{{userNotificationNum}}'>{{userNotificationNum}}</view>
     </view>
-    <view class="list-box " bindtap=" ">
-      <view class="icon-text ">
-        <span>排名</span>
+    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/my/favorate/favorate'>
+      <view class='title'>
+        <image src='/static/friend/ic_heart_entry_bottom_full.png'></image>
+        <view>我赞过的圈子</view>
       </view>
-      <text>21</text>
+      <view class='count'>{{userInfo.collectedEntriesCount || 0}}篇</view>
     </view>
-  </view> -->
+    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/myPins/myPins?liked=1'>
+      <view class='title'>
+        <image src='/static/friend/user_liked_pin.png'></image>
+        <view>我赞过的动态</view>
+      </view>
+      <view class='count'>{{userInfo.likedPinCount || 0}}个</view>
+    </view>
+    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/my/readHistory/readHistory'>
+      <view class='title'>
+        <image src='/static/friend/view.png'></image>
+        <view>我评论过的动态</view>
+      </view>
+      <view class='count'>{{userInfo.viewedEntriesCount || 0}}篇</view>
+    </view>
+    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/my/manageTag/manageTag'>
+      <view class='title'>
+        <image src='/static/friend/tag.png'></image>
+        <view>我关注的话题</view>
+      </view>
+      <view class='count'>{{userInfo.subscribedTagsCount || 0}}个</view>
+    </view>
+  </view>
+
+
+  <view class='card items'>
+    <view class='item' hover-class='hover-class' bindtap="click_myLaunch" data-index="2" data-url='/pages/my/feedback/feedback' data-open='true'>
+      <view class='title'>
+        <image src='/static/friend/user_buy.png'></image>
+        <view>我发布的球局</view>
+      </view>
+    </view>
+    <view class='item' hover-class='hover-class' bindtap="click_myJoin" data-index="3" data-url='/pages/my/setting/setting' data-open='true'>
+      <view class='title'>
+        <image src='/static/friend/settings.png'></image>
+        <view>我加入的球局</view>
+      </view>
+    </view>
+    <view class='item' hover-class='hover-class' bindtap="click_myCollection"  data-url='/pages/my/miniqrcode/miniqrcode' data-open='true'>
+      <view class='title'>
+        <image src='/static/friend/ic_collection_set.png' style='width:28rpx;height:28rpx;padding:10rpx'></image>
+        <view>我收藏的球局</view>
+      </view>
+    </view>
+  </view>
+
+
   
-  
-  <view class="thirdblock" style='margin-top:10px;'>
-    <view class="itemself" bindtap="click_myMessage" data-index="1">
-        <image src="/static/images/icon/plus.png" class="itemself_ico"></image>
-        <span>我的消息</span>
+  <view class='card items'>
+    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/my/feedback/feedback' data-open='true'>
+      <view class='title'>
+        <image src='/static/friend/icon_feed_back.png'></image>
+        <view>意见反馈</view>
       </view>
-    <view class="itemself" bindtap="click_myLaunch" data-index="2">
-      <image src="/static/images/icon/times.png" class="itemself_ico"></image>
-      <span>我发布的球局</span>
     </view>
-    <view class="itemself" bindtap="click_myJoin" data-index="3">
-      <image src="/static/images/icon/jssq.png" class="itemself_ico"></image>
-      <span>我加入的球局</span>
-    </view>
-    <view class="itemself" bindtap="click_myCollection" data-index="4">
-      <image src="/static/images/icon/status.png" class="itemself_ico"></image>
-      <span>我收藏的球局</span>
-    </view>
-    <view class="itemself" bindtap="click_myFriend" data-index="5">
-        <image src="/static/images/icon/times.png" class="itemself_ico"></image>
-        <span>我发布的球友圈</span>
+    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/my/setting/setting' data-open='true'>
+      <view class='title'>
+        <image src='/static/friend/settings.png'></image>
+        <view>设置</view>
       </view>
-      <view class="itemself" bindtap="click_myComment" data-index="6">
-        <image src="/static/images/icon/times.png" class="itemself_ico"></image>
-        <span>我评论的球友圈</span>
+    </view>
+    <view class='item' hover-class='hover-class' catchtap='navigatItem' data-url='/pages/my/miniqrcode/miniqrcode' data-open='true'>
+      <view class='title'>
+        <image src='/static/friend/qrcode.png' style='width:28rpx;height:28rpx;padding:10rpx'></image>
+        <view>小程序码</view>
       </view>
-    <view class="itemself" bindtap="click_projectBrief" data-index="7">
-      <image src="/static/images/icon/specialty.png" class="itemself_ico"></image>
-      <span>项目简介</span>
-    </view>
-    <view class="itemself" bindtap="click_Tick" data-index="8">
-      <image src="/static/images/icon/tick2.png " class="itemself_ico"></image>
-      <span>反馈建议</span>
-    </view>
-    <view class="itemself" bindtap="click_more" data-index="9">
-      <image src="/static/images/icon/about.png " class="itemself_ico"></image>
-      <span>更多信息</span>
     </view>
   </view>
-  <view class="h10"></view>
-  <view class="h10"></view>
-  </view>
+
 </view>

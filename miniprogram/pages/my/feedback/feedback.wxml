@@ -1,0 +1,35 @@
+<view class='container'>
+  <view class='content'>
+    <view class='item'>
+      <view class='title'>联系外联</view>
+      <view class='i' catchtap='copy' data-title='GitHub' data-content='{{github}}'>
+        <view class='icon'>
+          <image src='/static/friend/github.png'></image>
+        </view>
+        <view class='text'>
+          <view>通过 客服反馈</view>
+          <view>Monsterbeijing_2019</view>
+        </view>
+      </view>
+      <view class='i' catchtap='copy' data-title='邮箱' data-content='{{email}}'>
+        <view class='icon'>
+          <image src='/static/friend/email.png'></image>
+        </view>
+        <view class='text'>
+          <view>通过 公众号反馈</view>
+          <view>monsterbeijing</view>
+        </view>
+      </view>
+      <view class='i' catchtap='copy' data-title='QQ' data-content='{{qq}}'>
+        <view class='icon'>
+          <image src='/static/friend/qq.png'></image>
+        </view>
+        <view class='text'>
+          <view>通过 邮件反馈</view>
+          <view>bjmonster@163.com</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='footer'>Monster北京女篮</view>
+</view>

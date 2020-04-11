@@ -12,9 +12,9 @@
         <image class="wave wave-bg" src="/static/images/more/wave.png" mode="aspectFill"></image>
       </view>
       <view class="bd">
-         <image class="smalltitle" src="/static/images/more/confirm-word1.png"></image>
+         <image class="smalltitle" src="/static/images/more/confirm-word2.png"></image>
         <view class="confirm-btn" bindtap='goToIndex'>
-          <text >Let's find it!</text>
+          <text >Girls, Let's basketball!</text>
         </view>
         <text class="copyright">© 2019 Monster北京女篮俱乐部</text>
       </view>

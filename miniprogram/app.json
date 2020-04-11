@@ -2,15 +2,16 @@
   "pages": [
     "pages/start/start",
     "pages/index/index",
+    "pages/articleDetail/articleDetail",
+    "pages/topicDetail/topicDetail",
+    "pages/ball/ball",
     "pages/post/post",
     "pages/detail/detail",
     "pages/search/search",
     "pages/showinmap/showinmap",
-    "pages/friends/index/index",
-    "pages/friends/publish/publish",
-    "pages/friends/itemDetail/itemDetail",
-    "pages/friends/upload/upload",
-    "pages/friends/comment/comment",
+    "pages/friends/friends",
+    "pages/friendDetail/friendDetail",
+    "pages/personal/personal",
     "pages/logs/logs",
     "pages/updAct/updAct",
     "pages/my/projectbrief/projectbrief",
@@ -22,7 +23,14 @@
     "pages/my/more/more",
     "pages/my/logs/logs",
     "pages/my/message/message",
-    "pages/my/my"
+    "pages/my/my",
+    "pages/my/favorate/favorate",
+    "pages/my/feedback/feedback",
+    "pages/my/manageTag/manageTag",
+    "pages/my/miniqrcode/miniqrcode",
+    "pages/my/setting/setting",
+    "pages/my/readHistory/readHistory",
+    "pages/my/infoCenter/infoCenter"
   ],
   "window": {
     "navigationBarTextStyle": "white",
@@ -38,18 +46,18 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "球局",
+        "text": "首页",
         "iconPath": "static/images/tar-home.png",
         "selectedIconPath": "static/images/tar-home-on.png"
       },
       {
-        "pagePath": "pages/post/post",
-        "text": "发起球局",
+        "pagePath": "pages/ball/ball",
+        "text": "球局",
         "iconPath": "static/images/tar-about.png",
         "selectedIconPath": "static/images/tar-about-on.png"
       },
       {
-        "pagePath": "pages/friends/index/index",
+        "pagePath": "pages/friends/friends",
         "text": "球友圈",
         "iconPath": "static/images/tar-topic.png",
         "selectedIconPath": "static/images/tar-topic-on.png"

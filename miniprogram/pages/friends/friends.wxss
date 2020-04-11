@@ -1,0 +1,122 @@
+@import '/font.wxss';
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding-bottom: 0;
+}
+.recommendList {
+  white-space: nowrap;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  padding: 0 10rpx;
+}
+/* 用于滑动 tab 的 swiper 样式 */
+swiper.swiper {
+  flex: 1;
+}
+.swiper swiper-item {
+  overflow: scroll;
+}
+.swiper scroll-view {
+  height: 100%;
+}
+.recommendList swiper-item {
+  box-sizing: border-box;
+  padding: 20rpx 10rpx;
+}
+.recommendList .item {
+  background: #fff;
+  border-radius: 4rpx;
+  width: 100%;
+  display: inline-block;
+  padding: 30rpx 20rpx;
+  box-sizing: border-box;
+}
+.recommendList .title {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  margin-bottom: 10rpx;
+}
+.recommendList .title .icon {
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 10rpx;
+}
+.recommendList .content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 120rpx;
+  color: #666;
+}
+.recommendList .content .text {
+  flex: 1;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+.recommendList .content .img {
+  width: 100rpx;
+  height: 100rpx;
+  margin-left: 20rpx;
+}
+.recommendList .content image {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 4rpx;
+}
+/* tab选项卡 */
+.tab {
+  background: #fff;
+}
+.tab-bar {
+  width: 70%;
+  height: 100rpx;
+  display: flex;
+  margin: 0 auto;
+}
+
+.tab-item {
+  flex: 1;
+  display: inline-block;
+  background: #fff;
+  color: #959595;
+  text-align: center;
+  line-height: 100rpx;
+  font-size: 30rpx;
+}
+
+/* 选中样式 */
+
+.tab-Selected {
+  position: relative;
+  color: #118fff;
+  font-weight: 500;
+}
+
+.tab-Selected::after {
+  content: '';
+  height: 4rpx;
+  width: 40rpx;
+  background: #118fff;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  margin-left: -20rpx;
+}
+.tab-bar-icon {
+  position: absolute;
+  font-size: 20px;
+  top: 10px;
+  color: #118fff;
+}
+.tab-bar-icon__search {
+  left: 10px;
+}
+.tab-bar-icon__publish {
+  right: 10px;
+}

@@ -1,0 +1,29 @@
+
+.topic-list-item {
+    height: 240rpx;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .cover {
+    width: 100%;
+    height: 240rpx;
+    filter: brightness(80%);
+    position: absolute;
+  }
+  
+  .topic-content-brief {
+    width: 80%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 2;
+    text-align: center;
+  }
+  
+  .topic-content-brief text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #fff;
+  }

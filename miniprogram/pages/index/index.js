@@ -1,539 +1,368 @@
-//wx-drawer
-var common = require('../../utils/common.js')
-var Bmob = require("../../utils/bmob.js");
-var util = require('../../utils/util.js');
-var app = getApp()
-var curIndex  = 0 ;
-var that;
-const MENU_WIDTH_SCALE = 0.82;
-const FAST_SPEED_SECOND = 300;
-const FAST_SPEED_DISTANCE = 5;
-const FAST_SPEED_EFF_Y = 50;
 
-var my_nick = wx.getStorageSync('my_nick')
-var my_sex = wx.getStorageSync('my_sex')
-var my_avatar = wx.getStorageSync('my_avatar')
+
+var Api = require('../../utils/api.js');
+var util = require('../../utils/util.js');
+var WxParse = require('../../wxParse/wxParse.js');
+var wxApi = require('../../utils/wxApi.js')
+var wxRequest = require('../../utils/wxRequest.js')
+var config = require('../../utils/config.js');
+var pageCount = config.getPageCount;
+
+var webSiteName = config.getWebsiteName;
+var domain =config.getDomain;
+var topNav=config.getIndexNav;
+
 Page({
   data: {
-    my_nick: my_nick,
-    my_sex: my_sex,
-    my_avatar: my_avatar,
-    userInfo: [],
-    dialog:false,
-    autoplay:false,
-    ui: {
-      windowWidth: 0,
-      menuWidth: 0,
-      offsetLeft: 0,
-      tStart: true
-      
-    },
-    buttonClicked: false, //是否点击跳转
-    //--------首页显示内容---------
-    postsList: [], //总的活动
-    postsShowSwiperList: [], //轮播图显示的活动
-    currentPage: 0, //要跳过查询的页数
-    limitPage: 3,//首先显示3条数据（之后加载时都增加3条数据，直到再次加载不够3条）
-    isEmpty: false, //当前查询出来的数据是否为空
-    totalCount: 0, //总活动数量
-    endPage: 0, //最后一页加载多少条
-    totalPage: 0, //总页数
-    curIndex: 0,
-    windowHeight1: 0,
-    windowWidth1: 0,
-    
-  },
+    postsList: [],
+    postsShowSwiperList: [],
+    isLastPage: false,
+    page: 1,
+    search: '',
+    categories: 0,
+    showerror: "none",
+    showCategoryName: "",
+    categoryName: "",
+    showallDisplay: "block",
+    displayHeader: "none",
+    displaySwiper: "none",
+    floatDisplay: "none",
+    displayfirstSwiper: "none",
+    topNav: topNav,
+    listAdsuccess:true,
+    webSiteName:webSiteName,
+    domain:domain,
+    isFirst: false, // 是否第一次打开,
+    isLoading: false
 
-  //首页切换图片
-  onSwiperChange:function(event) {
-    curIndex = event.detail.current
-    this.changeCurIndex()
   },
-  changeCurIndex:function(){
-    this.setData({
-      curIndex:curIndex
-    })
-  },
-  onHide:function(){
-    this.setData({
-      autoplay:false
-    })
-  },
+  formSubmit: function (e) {
+    var url = '../list/list'
+    var key = '';
+    if (e.currentTarget.id == "search-input") {
+      key = e.detail.value;
+    } else {
 
-  //到地图模式
-  gotoMap:function(){
-    if (!this.buttonClicked) {
-      util.buttonClicked(this);
+      key = e.detail.value.input;
+
+    }
+    if (key != '') {
+      url = url + '?search=' + key;
       wx.navigateTo({
-        url: '/pages/showinmap/showinmap',
+        url: url
+      })
+    } else {
+      wx.showModal({
+        title: '提示',
+        content: '请输入内容',
+        showCancel: false,
       });
     }
   },
-
-
-  onLoad(t) {
-    var self = this;
-    //this.getAll();
-    //this.fetchTopThreePosts(); //获取轮播图的3篇文章
-    try {
-      let res = wx.getSystemInfoSync()
-      this.windowWidth = res.windowWidth;
-      this.data.ui.menuWidth = this.windowWidth * MENU_WIDTH_SCALE;
-      this.data.ui.offsetLeft = 0;
-      this.data.ui.windowWidth = res.windowWidth;
-      this.setData({ ui: this.data.ui })
-    } catch (e) {
+  onShareAppMessage: function () {
+    return {
+      title: '“' + webSiteName + '”小程序,基于微慕WordPress版小程序构建',
+      path: 'pages/index/index',
+      success: function (res) {
+        // 转发成功
+      },
+      fail: function (res) {
+        // 转发失败
+      }
     }
   },
-
-  onShow: function (e) {
-    this.getAll();
-    this.fetchTopThreePosts(); //获取轮播图的3篇文章
-    //this.onLoad();
-    console.log('加载头像')
-    var that = this
-   
-    app.getUserInfo(function (userInfo) {
-      that.setData({
-        userInfo: userInfo
-      })
-    })
-    wx.getSystemInfo({
-      success: (res) => {
-        this.setData({
-          windowHeight1: res.windowHeight,
-          windowWidth1: res.windowWidth,
-          autoplay: true
-        })
-      }
-    })
-  },
-
-  //数据存储
-  onSetData: function (data) {
-    console.log(data.length);
-    let page = this.data.currentPage + 1;
-    //设置数据
-    data = data || [];
-    this.setData({
-      postsList: page === 1 || page === undefined ? data : this.data.postsList.concat(data),
-    });
-    console.log(this.data.postsList, page);
-  },
-
-  //获取总的活动数
-  getAll: function () {
-    self = this;
-    var Diary = Bmob.Object.extend("Events");
-    var query = new Bmob.Query(Diary);
-    query.equalTo("isShow", 1); //只统计公开显示的活动
-    query.count({
-      success: function (count) {
-        var totalPage = 0;
-        var endPage = 0;
-        if (count % self.data.limitPage == 0) {//如果总数的为偶数
-          totalPage = parseInt(count / self.data.limitPage);
-        } else {
-          var lowPage = parseInt(count / self.data.limitPage);
-          endPage = count - (lowPage * self.data.limitPage);
-          totalPage = lowPage + 1;
-        }
-        self.setData({
-          totalCount: count,
-          endPage: endPage,
-          totalPage: totalPage
-        })
-        console.log("共有" + count + " 条记录");
-        console.log("共有" + totalPage + "页");
-        console.log("最后一页加载" + endPage + "条");
-      },
-    });
-  },
-
-
-
-
-  //获取轮播图的文章,点赞数最多的前3个
-  fetchTopThreePosts: function () {
-    var self = this;
-    var molist = new Array();
-    var Diary = Bmob.Object.extend("Events");
-    var query = new Bmob.Query(Diary);
-    query.equalTo("isShow", 1); //公开显示的
-    query.descending("likenum");
-    query.include("publisher");
-    query.limit(3);
-    query.find({
-      success: function (results) {
-        for (var i = 0; i < results.length; i++) {
-          var publisherId = results[i].get("publisher").objectId;
-          var title = results[i].get("title");
-          var content = results[i].get("content");
-          var acttype = results[i].get("acttype");
-          var isShow = results[i].get("isShow");
-          var endtime = results[i].get("endtime");
-          var starttime = results[i].get("starttime");
-          var address = results[i].get("address");
-          var addressdetail = results[i].get("addressdetail");
-          var peoplenum = results[i].get("peoplenum");
-          var likenum = results[i].get("likenum");
-          var liker = results[i].get("liker");
-          var joinArray = results[i].get("joinArray");
-          var isLike = 0;
-          var commentnum = results[i].get("commentnum");
-          
-          var id = results[i].id;
-          var createdAt = results[i].createdAt;
-          var pubtime = util.getDateDiff(createdAt);
-          var _url
-          var actpic = results[i].get("actpic");
-          if(actpic){
-            _url = results[i].get("actpic");
-          }else {
-            _url = "cloud://ballclub-55903b.6261-ballclub-55903b/ic_activity.png";
-          }
-          var publisherName = results[i].get("publisher").nickname;
-          var publisherPic = results[i].get("publisher").userPic;
-          var jsonA;
-          jsonA = {
-            "title": title || '',
-            "content": content || '',
-            "acttype": acttype || '',
-            "isShow": isShow,
-            "endtime": endtime || '',
-            "starttime": starttime || '',
-            "address": address || '',
-            "addressdetail": addressdetail || '',
-            "peoplenum": peoplenum || '',
-            "joinnumber": !joinArray ? 0 : joinArray.length, 
-            "id": id || '',
-            "publisherPic": publisherPic || '',
-            "publisherName": publisherName || '',
-            "publisherId": publisherId || '',
-            "pubtime": pubtime || '',
-            "actPic": _url || '',
-            "likenum": likenum,
-            "commentnum": commentnum,
-            "is_liked": isLike || ''
-          }
-          molist.push(jsonA);
-        }
-        self.setData({
-          postsShowSwiperList: molist
-        })
-       self.fetchPostsData(self.data); //加载首页信息
-      },
-      error: function (error) {
-        console.log(error)
-      }
-    })
-  },
-
-  //获取首页列表文章
-  fetchPostsData: function (data) {
-    var self = this;
-    //获取详询活动信息
-    var molist = new Array();
-    var Diary = Bmob.Object.extend("Events");
-    var query = new Bmob.Query(Diary);
-    query.equalTo("isShow", 1); //公开显示的
-    query.limit(self.data.limitPage);
-    console.log(self.data.limitPage);
-    query.skip( 3 * self.data.currentPage);
-    query.descending("createdAt"); //按照时间降序
-    query.include("publisher");
-    query.find({
-      success: function (results) {
-        for (var i = 0; i < results.length; i++) {
-          var publisherId =  results[i].get("publisher").objectId;
-          var title = results[i].get("title");
-          var content = results[i].get("content");
-          var acttype = results[i].get("acttype");
-          var endtime = results[i].get("endtime");
-          var starttime = results[i].get("starttime");
-          var address = results[i].get("address");
-          var acttypename = getTypeName(acttype); //根据类型id获取类型名称
-          var isShow = results[i].get("isShow");
-          var peoplenum = results[i].get("peoplenum");
-          var likenum = results[i].get("likenum");
-          var liker = results[i].get("liker");
-          var joinArray = results[i].get("joinArray");
-          var isLike = 0;
-          var commentnum = results[i].get("commentnum");
-          var id = results[i].id;
-          var createdAt = results[i].createdAt;
-          var pubtime = util.getDateDiff(createdAt);
-          var _url
-          var actpic = results[i].get("actpic");
-          if (actpic) {
-            _url = results[i].get("actpic");
-          } else {
-            _url = "cloud://ballclub-55903b.6261-ballclub-55903b/ic_activity.png";
-          }
-          var publisherName = results[i].get("publisher").nickname;
-          var publisherPic = results[i].get("publisher").userPic;
-          var jsonA;
-          jsonA = {
-            "title": title || '',
-            "content": content || '',
-            "acttype": acttype || '',
-            "acttypename": acttypename || '',
-            "isShow": isShow,
-            "endtime": endtime || '',
-            "starttime": starttime || '',
-            "address": address || '',
-            "peoplenum": peoplenum || '',
-            "joinnumber": !joinArray ? 0 : joinArray.length, 
-            "id": id || '',
-            "publisherPic": publisherPic || '',
-            "publisherName": publisherName || '',
-            "publisherId": publisherId || '',
-            "pubtime": pubtime || '',
-            "actPic": _url || '',
-            "likenum": likenum,
-            "commentnum": commentnum,
-            "is_liked": isLike || ''
-          }
-          molist.push(jsonA);
-        }
-        self.onSetData(molist, self.data.currentPage);
-
-        setTimeout(function () {
-          wx.hideLoading();
-        }, 900);
-      },
-      error: function (error) {
-        console.log(error)
-      }
-    })
-  },
-
-  //加载下一页
-  loadMore: function () {
-    wx.showLoading({
-      title: '正在加载',
-      mask: true
-    });
-    //一秒后关闭加载提示框
-    setTimeout(function () {
-      wx.hideLoading()
-    }, 1000)
+  onPullDownRefresh: function () {
     var self = this;
     self.setData({
-      currentPage: self.data.currentPage + 1
+      showerror: "none",
+      showallDisplay: "block",
+      displaySwiper: "none",
+      floatDisplay: "none",
+      isLastPage: false,
+      page: 1,
+      postsShowSwiperList: [],
+      listAdsuccess:true
+
     });
-    console.log("当前页"+self.data.currentPage);
-    //先判断是不是最后一页
-    if (self.data.currentPage + 1 == self.data.totalPage){
+    this.fetchTopFivePosts();
+    this.fetchPostsData(self.data);
+
+  },
+  onReachBottom: function () {
+
+    var self = this;
+    if (!self.data.isLastPage) {
       self.setData({
-        isEmpty: true
-      })
-      if (self.data.endPage != 0) { //如果最后一页的加载不等于0
-        self.setData({
-          limitPage: self.data.endPage,
-        })
-      }
+        page: self.data.page + 1
+      });
+      console.log('当前页' + self.data.page);
       this.fetchPostsData(self.data);
-    }else{
-      this.fetchPostsData(self.data);
-    }
-  },
-
-
-  //点击刷新
-  refresh: function () {
-    this.setData({
-      postsList: [], //总的活动
-      postsShowSwiperList: [], //轮播图显示的活动
-      currentPage: 0, //要跳过查询的页数
-      limitPage: 3,//首先显示3条数据（之后加载时都增加3条数据，直到再次加载不够3条）
-      isEmpty: false, //当前查询出来的数据是否为空
-      totalCount: 0, //总活动数量
-      endPage: 0, //最后一页加载多少条
-      totalPage: 0, //总页数
-      curIndex: 0,
-      windowHeight1: 0,
-      windowWidth1: 0,
-    })
-    this.onShow();
-  },
- 
-  // 点击活动进入活动详情页面
-  click_activity: function (e) {
-    if (!this.buttonClicked) {
-      util.buttonClicked(this);
-      let actid = e.currentTarget.dataset.actid;
-      let pubid = e.currentTarget.dataset.pubid;
-      let user_key = wx.getStorageSync('user_key');
-      wx.navigateTo({
-        url: '/pages/detail/detail?actid=' + actid + "&pubid=" + pubid
-      });
-    }
-  },
-  //点击搜索
-  click_search: function () {
-    if (!this.buttonClicked) {
-      util.buttonClicked(this);
-      console.log(getCurrentPages()) 
-      wx.navigateTo({
-        url: '/pages/search/search',
-      });
-    }
-  },
-  //进入我的发起
-  click_myLaunch: function () {
-    if (!this.buttonClicked) {
-      util.buttonClicked(this);
-      wx.navigateTo({
-        url: '/pages/my/mylaunch/mylaunch',
-      });
-    }
-  },
-  //进入我的加入
-  click_myJoin: function () {
-    if (!this.buttonClicked) {
-      util.buttonClicked(this);
-      wx.navigateTo({
-        url: '/pages/my/myjoin/myjoin',
-      });
-    }
-  },
-  //进入我的收藏
-  click_myCollection: function () {
-    if (!this.buttonClicked) {
-      util.buttonClicked(this);
-      wx.navigateTo({
-        url: '/pages/my/mycollection/mycollection',
-      });
-    }
-  },
-  //进入项目简介
-  click_projectBrief: function () {
-    if (!this.buttonClicked) {
-      util.buttonClicked(this);
-      wx.navigateTo({
-        url: '/pages/my/projectbrief/projectbrief',
-      });
-    }
-  },
-
-  //进入反馈建议
-  click_Tick:function(){
-    if (!this.buttonClicked) {
-      util.buttonClicked(this);
-      wx.navigateTo({
-        url: '/pages/my/issues/issues',
-      });
-    }
-  },
-
-  //进入更多信息
-  click_more:function(){
-    if (!this.buttonClicked) {
-      util.buttonClicked(this);
-      wx.navigateTo({
-        url: '/pages/my/more/more',
-      });
-    }
-  },
-
-  //进入关于我们
-  click_aboutUs: function () {
-    if (!this.buttonClicked) {
-      util.buttonClicked(this);
-      wx.navigateTo({
-        url: '/pages/my/aboutus/aboutus',
-      });
-    }
-  },
-
-
-
-
-
-  //--------------------------------------------------------------------------------------------------------
-  handlerStart(e) {
-    let { clientX, clientY } = e.touches[0];
-    this.tapStartX = clientX;
-    this.tapStartY = clientY;
-    this.tapStartTime = e.timeStamp;
-    this.startX = clientX;
-    this.data.ui.tStart = true;
-    this.setData({ ui: this.data.ui })
-   
-  },
-  handlerMove(e) {
-    let { clientX } = e.touches[0];
-    let { ui } = this.data;
-    let offsetX = this.startX - clientX;
-    this.startX = clientX;
-    ui.offsetLeft -= offsetX;
-    if (ui.offsetLeft <= 0) {
-      ui.offsetLeft = 0;
-    } else if (ui.offsetLeft >= ui.menuWidth) {
-      ui.offsetLeft = ui.menuWidth;
-    }
-    this.setData({ ui: ui })
-    
-  },
-  handlerCancel(e) {
-    // console.log(e);
-  },
-  handlerEnd(e) {
-    this.data.ui.tStart = false;
-    this.setData({ ui: this.data.ui })
-    let { ui } = this.data;
-    let { clientX, clientY } = e.changedTouches[0];
-    let endTime = e.timeStamp;
-    //快速滑动
-    if (endTime - this.tapStartTime <= FAST_SPEED_SECOND) {
-      //向左
-      if (this.tapStartX - clientX > FAST_SPEED_DISTANCE) {
-        ui.offsetLeft = 0;
-      } else if (this.tapStartX - clientX < -FAST_SPEED_DISTANCE && Math.abs(this.tapStartY - clientY) < FAST_SPEED_EFF_Y) {
-        ui.offsetLeft = ui.menuWidth;
-      } else {
-        if (ui.offsetLeft >= ui.menuWidth / 2) {
-          ui.offsetLeft = ui.menuWidth;
-        } else {
-          ui.offsetLeft = 0;
-        }
-      }
     } else {
-      if (ui.offsetLeft >= ui.menuWidth / 2) {
-        ui.offsetLeft = ui.menuWidth;
-      } else {
-        ui.offsetLeft = 0;
-      }
+      console.log('最后一页');
     }
-    this.setData({ ui: ui })
+
+  },
+  onLoad: function (options) {
+    var self = this;
+    self.fetchTopFivePosts();
+    self.fetchPostsData(self.data);  
+
+    // 判断用户是不是第一次打开，弹出添加到我的小程序提示
+    var isFirstStorage = wx.getStorageSync('isFirst');
+    // console.log(isFirstStorage);
+    if (!isFirstStorage) {
+      self.setData({
+        isFirst: true
+      });
+      wx.setStorageSync('isFirst', 'no')
+      // console.log(wx.getStorageSync('isFirst'));
+      setTimeout(function () {
+        self.setData({
+          isFirst: false
+        });
+      }, 5000)
+    }
+
+  },
+  onShow: function (options) {
+    wx.setStorageSync('openLinkCount', 0);
+
+    var nowDate = new Date();
+    nowDate = nowDate.getFullYear()+"-"+(nowDate.getMonth() + 1)+'-'+nowDate.getDate();
+    nowDate= new Date(nowDate).getTime();   
+    var _openAdLogs =wx.getStorageSync('openAdLogs')|| [];
+    var openAdLogs=[];
+    _openAdLogs.map(function (log) {   
+      if(new Date(log["date"]).getTime() >= nowDate)
+      {
+        openAdLogs.unshift(log);
+      }
+    
+    })
+    
+    wx.setStorageSync('openAdLogs',openAdLogs);
+    console.log(wx.getStorageSync('openAdLogs'));
+
+  },
+  fetchTopFivePosts: function () {
+    var self = this;
+    //获取滑动图片的文章
+    var getPostsRequest = wxRequest.getRequest(Api.getSwiperPosts());
+    getPostsRequest.then(response => {
+      if (response.data.status == '200' && response.data.posts.length > 0) {
+        self.setData({
+          postsShowSwiperList: self.data.postsShowSwiperList.concat(response.data.posts.map(function (item) {
+            if (!item.post_large_image) {
+              item.post_large_image = "../../static/images/logo700.png";
+            }
+            return item;
+          })),
+          displaySwiper: "block"
+        });
+      } else {
+        self.setData({
+          displaySwiper: "none"
+        });
+      }
+    }).catch(function (response) {
+      console.log(response);
+      self.setData({
+        showerror: "block",
+        floatDisplay: "none"
+      });
+    }).finally(function () { });
+  },
+
+  //获取文章列表数据
+  fetchPostsData: function (data) {
+    var self = this;
+    if (!data) data = {};
+    if (!data.page) data.page = 1;
+    if (!data.categories) data.categories = 0;
+    if (!data.search) data.search = '';
+    if (data.page === 1) {
+      self.setData({
+        postsList: []
+      });
+    };    
+    self.setData({ isLoading: true })
+    var getCategoriesRequest = wxRequest.getRequest(Api.getCategoriesIds());
+    getCategoriesRequest.then(res=>{
+        if(!res.data.Ids=="")
+        {
+          data.categories=res.data.Ids;
+          self.setData({categories:res.data.Ids})
+
+        }
+
+        var getPostsRequest = wxRequest.getRequest(Api.getPosts(data));
+        getPostsRequest
+          .then(response => {
+            if (response.statusCode === 200) {
+              if (response.data.length) {
+                if (response.data.length < pageCount) {
+                  self.setData({
+                    isLastPage: true,
+                    isLoading: false
+                  });
+                }    
+                self.setData({
+                  floatDisplay: "block",    
+                  postsList: self.data.postsList.concat(response.data.map(function (item) {
+    
+                    var strdate = item.date
+                    if (item.category_name != null) {
+    
+                      item.categoryImage = "../../static/images/category.png";
+                    } else {
+                      item.categoryImage = "";
+                    }
+    
+                    if (item.post_medium_image == null || item.post_medium_image == '') {
+                      item.post_medium_image = "../../static/images/logo700.png";
+                    }
+                    item.date = util.cutstr(strdate, 10, 1);
+                    return item;
+                  })),
+    
+                });
+                
+              } else {
+                if (response.data.code == "rest_post_invalid_page_number") {
+                  self.setData({
+                    isLastPage: true,
+                    isLoading: false
+                  });
+                  wx.showToast({
+                    title: '没有更多内容',
+                    mask: false,
+                    duration: 1500
+                  });
+                } else {
+                  wx.showToast({
+                    title: response.data.message,
+                    duration: 1500
+                  })
+                }
+              }
+            }
+          })
+          .catch(function (response) {
+            if (data.page == 1) {
+    
+              self.setData({
+                showerror: "block",
+                floatDisplay: "none"
+              });
+    
+            } else {
+              wx.showModal({
+                title: '加载失败',
+                content: '加载数据失败,请重试.',
+                showCancel: false,
+              });
+              self.setData({
+                page: data.page - 1
+              });
+            }
+    
+          })
+          .finally(function (response) {
+            wx.hideLoading();
+            self.setData({ isLoading: false })
+            wx.stopPullDownRefresh();
+          });
+
+    })
+
    
   },
-  handlerPageTap(e) {
-    let { ui } = this.data;
-    if (ui.offsetLeft != 0) {
-      ui.offsetLeft = 0;
-      this.setData({ ui: ui })
-     
+  //加载分页
+  loadMore: function (e) {
+
+    var self = this;
+    if (!self.data.isLastPage) {
+      self.setData({
+        page: self.data.page + 1
+      });
+      //console.log('当前页' + self.data.page);
+      this.fetchPostsData(self.data);
+    } else {
+      wx.showToast({
+        title: '没有更多内容',
+        mask: false,
+        duration: 1000
+      });
     }
   },
-  handlerAvatarTap(e) {
-    let { ui } = this.data;
-    if (ui.offsetLeft == 0) {
-      ui.offsetLeft = ui.menuWidth;
-      this.setData({ ui: ui })
+  // 跳转至查看文章详情
+  redictDetail: function (e) {
+    // console.log('查看文章');
+    var id = e.currentTarget.id,
+      url = '../articleDetail/articleDetail?id=' + id;
+    wx.navigateTo({
+      url: url
+    })
+  },
+  // 跳转至查看小程序列表页面或文章详情页
+  redictAppDetail: function (e) {
+    // console.log('查看文章');
+    var id = e.currentTarget.id;
+    var redicttype = e.currentTarget.dataset.redicttype;
+    var url = e.currentTarget.dataset.url == null ? '' : e.currentTarget.dataset.url;
+    var appid = e.currentTarget.dataset.appid == null ? '' : e.currentTarget.dataset.appid;
+
+    if (redicttype == 'detailpage') //跳转到内容页
+    {
+      url = '../detail/detail?id=' + id;
+      wx.navigateTo({
+        url: url
+      })
     }
+    if (redicttype == 'apppage') { //跳转到小程序内部页面         
+      wx.navigateTo({
+        url: url
+      })
+    } else if (redicttype == 'webpage') //跳转到web-view内嵌的页面
+    {
+      url = '../webpage/webpage?url=' + url;
+      wx.navigateTo({
+        url: url
+      })
+    } else if (redicttype == 'miniapp') //跳转到其他app
+    {
+      wx.navigateToMiniProgram({
+        appId: appid,
+        envVersion: 'release',
+        path: url,
+        success(res) {
+          // 打开成功
+        },
+        fail: function (res) {
+          console.log(res);
+        }
+      })
+    }
+  },
+  //返回首页
+  redictHome: function (e) {
+    //console.log('查看某类别下的文章');  
+    var id = e.currentTarget.dataset.id,
+      url = '/pages/index/index';
+    wx.switchTab({
+      url: url
+    });
+  },
+  adbinderror:function(e)
+  {
+    var self=this;
+    console.log(e.detail.errCode);
+    console.log(e.detail.errMsg);    
+    if (e.detail.errCode) {
+      self.setData({
+        listAdsuccess: false
+      })
+    }
+
   },
 })
-
-//根据活动类型获取活动类型名称
-function getTypeName(acttype) {
-  var acttypeName = "";
-  if (acttype == 1) acttypeName = "常规球局";
-  else if (acttype == 2) acttypeName = "自由球局";
-  else if (acttype == 3) acttypeName = "训练局";
-  else if (acttype == 4) acttypeName = "比赛局";
-  else if (acttype == 5) acttypeName = "嗨皮局";
-  else if (acttype == 6) acttypeName = "其他";
-  return acttypeName;
-}

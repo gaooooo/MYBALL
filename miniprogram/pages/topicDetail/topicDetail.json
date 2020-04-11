@@ -1,0 +1,7 @@
+{
+    "navigationBarTitleText": "话题",
+    "enablePullDownRefresh": true,
+    "usingComponents": {
+        "feidianItem": "/components/feidianItem/feidianItem/feidianItem"
+    }
+  }

@@ -1,0 +1,57 @@
+<view class='container'>
+  <!-- tab选项卡 -->
+
+<view class="tab">
+  <view class="iconfont icon-sousuo tab-bar-icon tab-bar-icon__search"></view>
+  <view  class='tab-bar'>
+    <view class='tab-item {{currentSwiper === "0" ? "tab-Selected" : ""}}' data-index='0' catchtap='switchSwiper'>关注</view>
+    <view class='tab-item {{currentSwiper === "1" ? "tab-Selected" : ""}}' data-index='1' catchtap='switchSwiper'>圈子</view>
+    <view class='tab-item {{currentSwiper === "2" ? "tab-Selected" : ""}}' data-index='2' catchtap='switchSwiper'>话题</view>
+  </view>
+  
+  <view class="iconfont icon-publish tab-bar-icon tab-bar-icon__publish"></view>
+</view>
+<swiper class='swiper' autoplay='{{false}}' indicator-dots='{{false}}' bindchange='swiperChanged' current='{{currentSwiper}}'>
+  
+ <swiper-item item-id='0'>
+  <view class='pinList'>
+    <feidianItem item='{{item}}' wx:for='{{list}}' wx:key='{{index}}'></feidianItem>
+  </view>
+  </swiper-item>
+  <swiper-item item-id='1'>
+    
+  <!-- 热门话题 -->
+  <hotTopic></hotTopic>
+  <!-- <view class='recommendList'>
+    <swiper autoplay='{{false}}' circular='{{false}}' duration="500" wx:if='{{recommendList.length}}' next-margin='100rpx' style='height:{{swiperHeight}}'>
+      <block wx:for="{{recommendList}}" wx:key="{{index}}">
+        <swiper-item catchtap='toFeidianDetail' data-id='{{item.objectId}}'>
+          <view class='item'>
+            <view class='title' wx:if='{{item.isRecommend}}'>
+              <image class='icon' src='/static/friend/ic_topic_star.png'></image>
+              <text>编辑推荐</text>
+            </view>
+            <view class='title' wx:else>
+              <image class='icon' src='/static/friend/pin_hot.png'></image>
+              <text>热门沸点</text>
+            </view>
+            <view class='content'>
+              <view class='text'>{{item.content}}</view>
+              <view class='img' wx:if='{{item.pictures && item.pictures.length}}'>
+                <image mode='aspectFill' src='{{item.pictures[0]}}'></image>
+              </view>
+            </view>
+          </view>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view> -->
+  <view class='pinList'>
+    <feidianItem item='{{item}}' wx:for='{{list}}' wx:key='{{index}}'></feidianItem>
+  </view>
+  </swiper-item>
+  <swiper-item item-id='2'>
+    <topic list='{{xiaoceList}}'></topic>
+  </swiper-item>
+</swiper>
+</view>

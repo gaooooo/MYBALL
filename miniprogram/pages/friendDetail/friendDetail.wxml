@@ -1,0 +1,3 @@
+<view class='container'>
+  <feidianItemTop wx:if='{{item}}' item='{{item}}' intro='{{false}}' isTopSelf='{{true}}'></feidianItemTop>
+</view>

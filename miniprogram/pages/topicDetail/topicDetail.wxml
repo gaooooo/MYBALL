@@ -1,0 +1,13 @@
+<view class="topic-common-list" style="display:block">
+    <view class="topic-list-item">
+      <image src="https://www.watch-life.net/images/2019/10/2019052613085115-745x1024-218x300.jpeg" class="cover" mode="aspectFill">
+      </image>
+      <view class="topic-content-brief">
+        <text>分享你的篮球故事</text>
+      </view>
+    </view>
+    <view class='pinList'>
+        <feidianItem item='{{item}}' wx:for='{{list}}' wx:key='{{index}}'></feidianItem>
+      </view>
+  </view>
+  

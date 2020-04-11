@@ -1,75 +1,94 @@
-<!-- index.wxml -->
-<view class="mpage {{!ui.tStart? 'withAnimate': ''}}" style="left:{{ui.offsetLeft}}px;width: {{ui.windowWidth}}px;" >
-  <scroll-view bindscroll="" scroll-y style="height: 100%;">
-    <view class="search">
-      <view catchtap="handlerAvatarTap" class="avatar">
-        <image src="{{userInfo.avatarUrl}}"></image>
-      </view>
-      <view class="search-wrapper {{show_search_back?'search-wrapper-blue':''}}">
-        <view class="search-button" bindtap="click_search">
-          <view class="iconfont icon-sousuo"></view>
-          搜索活动
-        </view>
-      </view>
-      <view bindtap='gotoMap' class="avatar_r">
-        <image src="/static/images/map7.png"></image>
-      </view>
-    </view>
-    <!-- 活动详情界面 -->
-    <swiper duration="300" interval="5000" autoplay="{{autoplay}}" bindchange="onSwiperChange" current="{{ curIndex }}" style="overflow: visible;">
-      <swiper-item wx:for="{{ postsShowSwiperList }}" style="overflow: visible;" wx:key="actpic">
-        <image src="{{ item.actPic }}" style="width: 100%; height: 300rpx; background: #fff; box-shadow: 0 10rpx 15rpx rgba(0, 0, 0, .1); -webkit-transform: scale({{ curIndex == index ? 0.9 : 0.65 }}) translate({{ (curIndex == index - 1 || curIndex == index + 1) ? (curIndex - index) * 30 : 0 }}%, 0); -webkit-transition: .3s; position: relative;"
-          data-actid="{{item.id}}" data-pubid='{{item.publisherId}}' bindtap="click_activity" mode="aspectFill" />
-        <view class="horizontal">
-          <view class="tag recommend">最热活动</view>
-          <text class="title">{{item.title}}</text>
-        </view>
-      </swiper-item>
-    </swiper>
+<!--
+ * WordPres版微信小程序
+ * author: jianbo
+ * organization: 守望轩  www.watch-life.net
+ * github:    https://github.com/iamxjb/winxin-app-watch-life.net
+ * 技术支持微信号：iamxjb
+ * 开源协议：MIT
+ * Copyright (c) 2017 https://www.watch-life.net All rights reserved.-->
 
-    <view class="activities">
-      <view class="subtitle">
-        <image src="/static/images/ic_activity.png" mode="aspectFit" />
-        <text>最新活动</text>
-        <space/>
-        <button bindtap="refresh">点击刷新</button>
-      </view>
-
-      <view class="activity" wx:for="{{postsList}}" wx:key="id">
-        <view class="list_header">
-          <view class="list_header_left">
-            <image mode="aspectFill" src="{{item.publisherPic}}" wx:if="publisherPic"></image>
-            <view>{{item.publisherName}}</view>
-          </view>
-          <view class="content-date list_header_right">
-            <image src="/static/images/calendar.png"></image>
-            <text>{{item.pubtime}}</text>
-            <image src="/static/images/comments.png"></image>
-            <text class="">{{item.commentnum}}</text>
-            <image src="/static/images/home-like.png"></image>
-            <text class="">{{item.likenum}}</text>
-          </view>
-        </view>
-        <view class="horizontal">
-          <view class="tag tag_{{item.acttype}}">{{item.acttypename}}</view>
-          <text class="title">{{ item.title }}</text>
-        </view>
-        <image mode="aspectFill" class="photo" src="{{item.actPic}}" wx:if="{{item.actPic}}" data-actid="{{item.id}}" data-pubid='{{item.publisherId}}' bindtap="click_activity"></image>
-        <text class="time">时间：{{item.starttime}} - {{ item.endtime }}</text>
-        <text class="location">地点：{{ item.address }}</text>
-        <text class="time">报名人数：{{ item.peoplenum < 0 ? '不限' : (item.joinnumber || 0) + '/' + item.peoplenum}}</text>
-
-      </view>
-
-    </view>
-    <view class="loadingmore">
-      <view wx:if="{{!isEmpty}}">
-        <button class="more-button" formType="submit" size="mini" bindtap="loadMore">加载更多...</button>
-      </view>
-      <view class="no-more" wx:if="{{isEmpty}}">---无更多活动---</view>
-    </view>
-    <tab-shadow/>
-  </scroll-view>
-
-
-</view>
+ <import src="../../templates/common-list.wxml" />
+ <import src="../../templates/copyright.wxml" />
+ <import src="../../templates/loading.wxml" />
+ 
+ 
+ <!-- 首次进入引导添加到“我的小程序” -->
+ <view class="addMyMiniapp"  wx:if="{{isFirst}}" catchtap="shutAddMyMiniapp">
+   <view>点击加入我的小程序 ↑</view>
+   <text>了解"{{webSiteName}}"最新文章</text>
+ </view>
+ 
+ <!-- 轮播图 -->
+ <view style="display:{{displaySwiper}}">
+   <swiper indicator-dots="true" interval="10000" autoplay="true" indicator-color="rgba(0, 0, 0, .1)" indicator-active-color="rgba(0, 0, 0, .6)">
+     <block wx:key="id" wx:for="{{postsShowSwiperList}}">
+       <swiper-item id="{{item.id}}" index="{{index}}" data-redicttype="{{item.type}}" data-appid="{{item.appid}}" data-url="{{item.url}}" bindtap="redictAppDetail">
+         <image mode="aspectFill" src="{{item.post_full_image}}" />
+         <view class="swiper-mask"></view>
+         <view class="swiper-desc">
+           <text>{{item.post_title}}</text>
+         </view>
+       </swiper-item>
+     </block>
+   </swiper>
+ </view>
+ 
+ <view style="display:{{showallDisplay}}">
+   <!-- 图标导航和搜索 -->
+   <view style="display:{{floatDisplay}}">
+     <!-- 图标导航 -->
+     <!-- <view class="nav-box">
+       <block wx:for="{{topNav}}" wx:key="id">
+         <view class="nav-item" catchtap="onNavRedirect" id="{{item.id}}" data-redicttype="{{item.redirecttype}}" data-url="{{item.url}}" data-appid="{{item.appid}}" data-extraData="{{item.extraData}}">
+           <view>
+             <image src="{{item.image}}"></image>
+           </view>
+           <view>
+             <text>{{item.name}}</text>
+           </view>
+         </view>
+       </block>
+     </view> -->
+ 
+     <!-- 热门话题 -->
+     <hotTopic></hotTopic>
+ 
+ 
+ 
+     <!-- 搜索 -->
+     <!-- <form catchsubmit="formSubmit" catchreset="formReset" id="search-form">
+       <view class="search-box">
+         <input value="" id="search-input" name="input" confirm-type="search" class="search-input" placeholder="搜索你感兴趣的内容..." bindconfirm="formSubmit"></input>
+         <button class="search-button" form-type="submit" size="mini" plain="true">
+           <icon type="search" color="#959595" size="16" />
+         </button>
+       </view>
+     </form> -->
+ 
+   </view>
+   <!-- 文章列表 -->
+   <view class="container">
+     <!-- 列表template模板 -->
+     <template is="tempCommonList" data="{{postsList:postsList,listAdsuccess:listAdsuccess}}" />
+     <view style='display:{{isLoading?"block":"none"}}'>
+         <template is="tempLoading" />
+       </view>
+     <!-- 无更多文章提示 -->
+     <view class="loadingmore" style="display:{{floatDisplay}}">
+     
+       <view class="no-more" hidden="{{!isLastPage}}">- 无更多文章 -</view>
+     </view>
+     <!-- 版权信息template模板 -->
+     <view class="copyright" style="display:{{floatDisplay}}">
+   <template is="tempCopyright" data="{{webSiteName:webSiteName,domain:domain}}"/>
+     </view>
+   </view>
+ </view>
+ 
+ <!-- 无法访问网络 -->
+ <view class="showerror" style="display:{{showerror}}">
+   <image src="../../static/images/cry80.png" style="height:100rpx;width:100rpx"></image>
+   <view class="errortext">
+     暂时无法访问网络，下拉重试...
+   </view>
+ </view>
