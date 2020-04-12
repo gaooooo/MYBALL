@@ -156,6 +156,12 @@ Page({
       },
     })
   },
+  toFriendPublish(e) {
+    let id = e.currentTarget.dataset.id
+    wx.navigateTo({
+      url: `/pages/friendPublish/friendPublish`,
+    })
+  },
   toFeidianDetail(e) {
     let id = e.currentTarget.dataset.id
     wx.navigateTo({

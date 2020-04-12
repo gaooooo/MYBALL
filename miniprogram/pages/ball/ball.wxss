@@ -513,6 +513,7 @@ html, body {
   width: 50%;
   height: 100rpx;
   display: flex;
+  margin: 0 auto;
 }
 
 .tab-item {
@@ -531,7 +532,6 @@ html, body {
   position: relative;
   color: #118fff;
   font-weight: 500;
-  font-size:20px;
 }
 
 .tab-Selected::after {
@@ -548,15 +548,11 @@ html, body {
   position: absolute;
   font-size: 20px;
   top: 10px;
+  color: #118fff;
 }
 .tab-bar-icon__search {
-  right: 53px;
+  left: 10px;
 }
 .tab-bar-icon__map {
-  width: 20px;
-  height: 20px;
-  right: 96px;  
-}
-.tab-bar-icon__publish {
-  right: 15px;
+  right: 10px;
 }

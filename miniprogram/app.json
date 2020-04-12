@@ -11,6 +11,7 @@
     "pages/showinmap/showinmap",
     "pages/friends/friends",
     "pages/friendDetail/friendDetail",
+    "pages/friendPublish/friendPublish",
     "pages/personal/personal",
     "pages/logs/logs",
     "pages/updAct/updAct",
@@ -49,6 +50,12 @@
         "text": "球局",
         "iconPath": "static/images/tar-about.png",
         "selectedIconPath": "static/images/tar-about-on.png"
+      },
+      {
+        "pagePath": "pages/post/post",
+        "text": "发布球局",
+        "iconPath": "static/images/tab-topic.png",
+        "selectedIconPath": "static/images/tab-topic-on.png"
       },
       {
         "pagePath": "pages/friends/friends",

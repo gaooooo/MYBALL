@@ -1,4 +1,5 @@
-@import '/font.wxss';
+
+@import '../../static/iconfont/iconfont.wxss';
 .container {
   display: flex;
   flex-direction: column;
@@ -119,4 +120,5 @@ swiper.swiper {
 }
 .tab-bar-icon__publish {
   right: 10px;
+  font-size: 16px;
 }

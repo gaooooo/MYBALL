@@ -12,8 +12,8 @@ const config = getApp().globalData.config
 Page({
   data: {
     logs: [],
-    defaultUrl: '/static/images/newF1.png',
-    username: '点击头像登录',
+    defaultUrl: '',
+    username: '未登录',
     
     userInfo: {},
     userNotificationNum: 0,
@@ -46,17 +46,21 @@ Page({
       });
     }
   },
-
+  loginClick: function(e) {
+    console.log('loginClick')
+  },
   getUserInfoHandler: function(e){
     console.log(e)
     let d = e.detail.userInfo
-    wx.setStorageSync('username', d.nickName)
-    wx.setStorageSync('avatar', d.avatarUrl)
+    if (d) {
+      wx.setStorageSync('username', d.nickName)
+      wx.setStorageSync('avatar', d.avatarUrl)
 
-    this.setData({
-      defaultUrl: d.avatarUrl,
-      username: d.nickName
-    })
+      this.setData({
+        defaultUrl: d.avatarUrl,
+        username: d.nickName
+      })
+    }
     var that = this;
     var userInfo = e.detail.userInfo
     wx.login({

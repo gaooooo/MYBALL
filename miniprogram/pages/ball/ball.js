@@ -70,12 +70,6 @@ Page({
       });
     }
   },
-
-  addClick: function() {
-    wx.navigateTo({
-      url: '/pages/post/post',
-    });
-  },
   onLoad(t) {
     var self = this;
     //this.getAll();

@@ -10,9 +10,8 @@
     <view class='tab-item {{currentSwiper === "2" ? "tab-Selected" : ""}}' data-index='2' catchtap='switchSwiper'>训练局</view>
   </view>
   <view class="iconfont icon-sousuo tab-bar-icon tab-bar-icon__search" bindtap="click_search"></view>
-  <view class="iconfont icon-publish tab-bar-icon tab-bar-icon__publish" bindtap='addClick'></view>
+  <view class="iconfont icon-publish tab-bar-icon tab-bar-icon__map" bindtap='gotoMap'></view>
 
-    <image  bindtap='gotoMap' src="/static/images/map7.png"  class="tab-bar-icon tab-bar-icon__map">地图模式</image>
 
 </view>
 <swiper class='swiper-tab' autoplay='{{false}}' indicator-dots='{{false}}' bindchange='swiperChanged' current='{{currentSwiper}}'>

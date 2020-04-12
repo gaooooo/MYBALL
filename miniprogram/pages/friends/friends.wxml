@@ -9,7 +9,7 @@
     <view class='tab-item {{currentSwiper === "2" ? "tab-Selected" : ""}}' data-index='2' catchtap='switchSwiper'>话题</view>
   </view>
   
-  <view class="iconfont icon-publish tab-bar-icon tab-bar-icon__publish"></view>
+  <view class="iconfont icon-xiangji tab-bar-icon tab-bar-icon__publish" catchtap="toFriendPublish"></view>
 </view>
 <swiper class='swiper' autoplay='{{false}}' indicator-dots='{{false}}' bindchange='swiperChanged' current='{{currentSwiper}}'>
   

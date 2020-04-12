@@ -1,14 +1,17 @@
 <view class='wrapper'>
-  <view class='card profile'  catchtap='navigatItem' data-url='/pages/personal/personal'>
+  <view class='card profile' catchtap='navigatItem'  data-url='/pages/personal/personal'>
     <view class='info'>
       <jImage class='avatar' src='{{defaultUrl}}' wx:if='{{defaultUrl}}'></jImage>
-      <image class='avatar' src='/static/friend/empty_avatar_user.png'  wx:else></image>
-      <view class='text' open-type='getUserInfo' bindgetuserinfo='getUserInfoHandler'>
+      <label catchtap='loginClick'  wx:else>
+        <image class='avatar' src='/static/friend/empty_avatar_user.png'> </image>
+        <button open-type='getUserInfo' bindgetuserinfo='getUserInfoHandler'></button>
+      </label>
+      <view class='text' open-type='getUserInfo'>
         <view class='name'>{{username || '登录/注册'}}</view>
-        <view>{{'175cm' || '添加身高'}} @ {{ '5年球龄' || '添加球龄'}}</view>
+        <view>{{'175cm   ' || '添加身高'}} {{ '5年球龄   ' || '添加球龄'}}{{ '天蝎座' || '添加星座'}}</view>
       </view>
     </view>
-    <view class='more'>
+    <view class='more'  >
       <view class='reddot' wx:if='{{auth && !userInfo.company}}'></view>
       <image src='/static/friend/profile_arrow.png'></image>
     </view>
