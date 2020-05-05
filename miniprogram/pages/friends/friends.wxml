@@ -5,8 +5,8 @@
   <view class="iconfont icon-sousuo tab-bar-icon tab-bar-icon__search"></view>
   <view  class='tab-bar'>
     <view class='tab-item {{currentSwiper === "0" ? "tab-Selected" : ""}}' data-index='0' catchtap='switchSwiper'>关注</view>
-    <view class='tab-item {{currentSwiper === "1" ? "tab-Selected" : ""}}' data-index='1' catchtap='switchSwiper'>圈子</view>
-    <view class='tab-item {{currentSwiper === "2" ? "tab-Selected" : ""}}' data-index='2' catchtap='switchSwiper'>话题</view>
+    <view class='tab-item {{currentSwiper === "1" ? "tab-Selected" : ""}}' data-index='1' catchtap='switchSwiper'>球话</view>
+    <view class='tab-item {{currentSwiper === "2" ? "tab-Selected" : ""}}' data-index='2' catchtap='switchSwiper'>圈子</view>
   </view>
   
   <view class="iconfont icon-xiangji tab-bar-icon tab-bar-icon__publish" catchtap="toFriendPublish"></view>

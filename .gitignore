@@ -1,14 +1,12 @@
-# Windows
-[Dd]esktop.ini
-Thumbs.db
-$RECYCLE.BIN/
-
-# macOS
 .DS_Store
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
+backend/
+fronted/
+models/
 
-# Node.js
-node_modules/
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
