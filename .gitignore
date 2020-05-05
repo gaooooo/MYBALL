@@ -1,7 +1,4 @@
 .DS_Store
-backend/
-fronted/
-models/
 
 # Editor directories and files
 .idea
