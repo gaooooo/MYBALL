@@ -7,7 +7,7 @@ module.exports = {
     host: 'localhost',
     port: '5432',
     username: 'postgres',
-    password: 'Gaoxin123',
+    password: '8D8FDBF4253B2C49E823141CEE57E009',
   },
   test: {
     dialect: 'postgres', // support: mysql, mariadb, postgres, mssql
@@ -15,7 +15,7 @@ module.exports = {
     host: 'localhost',
     port: '5432',
     username: 'postgres',
-    password: 'Gaoxin123',
+    password: '8D8FDBF4253B2C49E823141CEE57E009',
   },
   development: {
     dialect: 'postgres', // support: mysql, mariadb, postgres, mssql
@@ -23,6 +23,6 @@ module.exports = {
     host: 'localhost',
     port: '5432',
     username: 'postgres',
-    password: 'Gaoxin123',
+    password: '8D8FDBF4253B2C49E823141CEE57E009',
   },
 };
