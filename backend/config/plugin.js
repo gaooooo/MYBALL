@@ -26,4 +26,8 @@ module.exports = {
     enable: true,
     package: 'egg-oss',
   },
+  mp: {
+    enable: true,
+    package: 'egg-mp',
+  },
 };

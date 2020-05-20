@@ -23,4 +23,9 @@ module.exports = {
   stringify(obj) {
     return qs.stringify(obj);
   },
+
+  // 格式化JSON输出
+  JSONResponse({ data, message = '成功', code = '200' }) {
+    return { code, data, message };
+  },
 };

@@ -80,11 +80,26 @@ module.exports = appInfo => {
     },
     oss: {
       client: {
-        accessKeyId: 'LTAI4G5oGGYE51rHYbNkZzcC',
-        accessKeySecret: 'IegAsxHA8mCcTeQRjDMCln2zxJbQ0h',
+        accessKeyId: process.env.OSS_ACCESS_KEY_ID,
+        accessKeySecret: process.env.OSS_ACCESS_KEY_SECRET,
         bucket: 'myball',
-        endpoint: 'oss-cn-beijing.aliyuncs.com',
+        endpoint: process.env.OSS_ENDPOINT,
         timeout: '60s',
+      },
+    },
+    mp: {
+      appId: process.env.EGG_PASSPORT_WEAPP_CLIENT_ID, // 公众平台应用编号
+      appSecret: process.env.EGG_PASSPORT_WEAPP_CLIENT_SECRET, // 公众平台应用密钥
+      mchId: '', // 商户平台商家编号
+      apiKey: '', // 商户支付密钥
+      notifyUrl: '', // 支付结果回调地址
+    },
+    onerror: {
+      all(err, ctx) {
+        // 在此处定义针对所有响应类型的错误处理方法
+        // 注意，定义了 config.all 之后，其他错误处理方法不会再生效
+        ctx.body = this.JSONResponse({ code: 500, data: null, message: err.message });
+        ctx.status = 500;
       },
     },
   };

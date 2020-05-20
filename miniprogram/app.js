@@ -1,5 +1,8 @@
 //app.js
-import Touches from './utils/Touches.js'
+import { setBaseUrl, addDefaultInterceptor } from './utils/request';
+// setBaseUrl('/');
+addDefaultInterceptor();
+import Touches from './utils/Touches.js';
 var Bmob = require("utils/bmob.js");
 var common = require("utils/common.js");
 const __utils = require('utils/util')

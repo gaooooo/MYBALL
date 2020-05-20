@@ -9,3 +9,6 @@ node_modules/
 *.ntvs*
 *.njsproj
 *.sln
+
+.env.local
+.env.example

@@ -9,15 +9,17 @@ create table users (
    user_name            VARCHAR(50)          COLLATE "default",
    nick_name            VARCHAR(50)          COLLATE "default",
    real_name            VARCHAR(50)          COLLATE "default",
-   sex                  INT2                 null,
+   gender               INT2                 null,
    age                  INT4                 null,
    email                VARCHAR(255)         COLLATE "default",
    avatar               VARCHAR(225)         COLLATE "default",
    mobile_phone         VARCHAR(50)          COLLATE "default",
    id_card              VARCHAR(50)          COLLATE "default",
    job                  VARCHAR(50)          COLLATE "default",
-   wx_number            VARCHAR(50)          COLLATE "default",
+   wx_code              VARCHAR(50)          COLLATE "default",
    country              VARCHAR(50)          COLLATE "default",
+   province             VARCHAR(50)          COLLATE "default",
+   city                 VARCHAR(50)          COLLATE "default",
    height               INT4                 null,
    weight               INT4                 null,
    star_sign            INT4                 null,
@@ -29,11 +31,13 @@ create table users (
 ) WITH (OIDS=FALSE);
 
 COMMENT ON COLUMN "public"."users"."skill_level" IS '球技级别';
+COMMENT ON COLUMN "public"."users"."wx_code" IS '微信号';
 -- ----------------------------
 -- Alter Sequences Owned By 
 -- ----------------------------
 ALTER TABLE "public"."users" ADD UNIQUE ("nick_name");
 ALTER TABLE "public"."users" ADD UNIQUE ("user_name");
+ALTER TABLE "public"."users" ADD UNIQUE ("openid");
 -- ----------------------------
 -- Primary Key structure for table vul_task
 -- ----------------------------

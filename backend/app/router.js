@@ -11,6 +11,7 @@ module.exports = app => {
 
   router.get('/get-config', controller.home.getAppConfig);
   router.post('/login', controller.home.login);
+  router.post('/loginByMini', controller.home.loginByMini);
   router.get('/user-info', jwt, controller.home.userInfo);
   const isRevokedAsync = function(req, payload) {
     return new Promise(resolve => {

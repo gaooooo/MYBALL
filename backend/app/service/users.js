@@ -42,6 +42,21 @@ class UsersService extends Service {
     return user;
   }
 
+  async findByOpenId(openid) {
+    const { ctx: { model } } = this;
+    const user = await model.Users.findOne({
+      where: {
+        openid,
+      },
+      include: [{
+        model: model.Ball,
+        as: 'listBall',
+        attributes: [ 'id', 'title' ],
+      }],
+    });
+    return user;
+  }
+
   async create(user) {
     const { ctx: { model } } = this;
     return model.Users.create(user);

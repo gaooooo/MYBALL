@@ -22,7 +22,7 @@ module.exports = app => {
       type: STRING,
       allowNull: true,
     },
-    sex: {
+    gender: {
       type: INTEGER,
       allowNull: true,
     },
@@ -50,11 +50,19 @@ module.exports = app => {
       type: STRING,
       allowNull: true,
     },
-    wx_number: {
+    wx_code: {
       type: STRING,
       allowNull: true,
     },
     country: {
+      type: STRING,
+      allowNull: true,
+    },
+    province: {
+      type: STRING,
+      allowNull: true,
+    },
+    city: {
       type: STRING,
       allowNull: true,
     },

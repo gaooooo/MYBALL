@@ -7,7 +7,7 @@
         <button open-type='getUserInfo' bindgetuserinfo='getUserInfoHandler'></button>
       </label>
       <view class='text' open-type='getUserInfo'>
-        <view class='name'>{{username || '登录/注册'}}</view>
+        <view class='name'>{{username}}</view>
         <view>{{'175cm   ' || '添加身高'}} {{ '5年球龄   ' || '添加球龄'}}{{ '天蝎座' || '添加星座'}}</view>
       </view>
     </view>

@@ -18,6 +18,7 @@ import 'egg-redis';
 import 'egg-jwt';
 import 'egg-cors';
 import 'egg-oss';
+import 'egg-mp';
 import { EggPluginItem } from 'egg';
 declare module 'egg' {
   interface EggPlugin {
@@ -38,5 +39,6 @@ declare module 'egg' {
     jwt?: EggPluginItem;
     cors?: EggPluginItem;
     oss?: EggPluginItem;
+    mp?: EggPluginItem;
   }
 }

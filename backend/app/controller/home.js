@@ -12,13 +12,85 @@ class HomeController extends Controller {
     const { ctx, app } = this;
     ctx.body = app.config;
   }
+  async loginByMini() {
+    const { ctx, app, config, service, helper } = this;
+    const userData = ctx.request.body;
+    const { code } = ctx.request.body;
+    const res = await service.mp.login(code);
+    // session_key: '0XdJnk4go2n0RVjOxmTXsw==',
+    // expires_in: 7200,
+    // openid: 'o9OwI0fnvhCpLb8JGcztvbC37sxQ'
+    if (!res.openid) {
+      console.error('不存在的openid');
+      ctx.body = helper.JSONResponse({
+        code: 500,
+        message: '微信认证失败',
+      });
+    }
+    let userModel = await service.user.findByOpenId(res.openid);
+    if (!userModel) {
+      userModel = {
+        openid: res.openid,
+        user_name: 'BALLER_123',
+        nick_name: userData.nickName,
+        real_name: '',
+        gender: userData.gender,
+        age: 0,
+        email: '',
+        avatar: userData.avatarUrl,
+        mobile_phone: '',
+        id_card: '',
+        job: '',
+        wx_code: '',
+        country: userData.country,
+        province: userData.province,
+        city: userData.city,
+        height: 0,
+        weight: 0,
+        star_sign: 0,
+        skill_level: 0,
+        about: '',
+        password: '123456',
+      };
+      await service.user.create(userModel);
+    }
+    const token = app.jwt.sign({
+      id: userModel.openid,
+      name: userModel.user_name,
+      avatar: userModel.avatar,
+    }, config.jwt.secret, {
+      expiresIn: '2h',
+    });
+    try {
+
+      await app.redis.set(`token_${userModel.openid}`, token);
+      ctx.body = ctx.helper.JSONResponse({
+        code: 0,
+        message: 'Get token success',
+        data: token,
+      });
+    } catch (e) {
+      console.error(e);
+      ctx.body = helper.JSONResponse({
+        code: 500,
+        message: 'Server busy, please try again',
+      });
+    }
+  }
 
   async login() {
     const { ctx, app, config } = this;
     const { service, helper } = ctx;
+
     const { username, password } = ctx.request.body;
+    // admin表改为users表，给user一个password字段，如果user表不存在，则创建一条用户记录初始化密码，并且完成登录
+    // 如果存在users表，就返回用户信息
+    // 如果接口token过期返回了500，小程序端判断token无效时带openid重新通过一下认证即可，用户等待认证时间
+
+    // users列表中排序设置为admin角色的优先、添加时间
+    // 返回token、openid（简单做）
     const user = await service.admin.findByName(username);
-    console.log(999, username, user);
+
     if (!user) {
       ctx.status = 403;
       ctx.body = {
@@ -34,16 +106,16 @@ class HomeController extends Controller {
           role: user.role.name,
           avatar: user.avatar,
         }, config.jwt.secret, {
-          expiresIn: '1h',
+          expiresIn: '2h',
         });
         try {
 
           await app.redis.set(`token_${user.id}`, token);
-          ctx.body = {
+          ctx.body = ctx.helper.JSONResponse({
             code: 0,
             message: 'Get token success',
-            token,
-          };
+            data: token,
+          });
         } catch (e) {
           console.error(e);
           ctx.body = {
