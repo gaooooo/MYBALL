@@ -1,18 +1,21 @@
 <view class='wrapper'>
   <view class='card profile' catchtap='navigatItem'  data-url='/pages/personal/personal'>
     <view class='info'>
-      <jImage class='avatar' src='{{defaultUrl}}' wx:if='{{defaultUrl}}'></jImage>
-      <label catchtap='loginClick'  wx:else>
+      <jImage class='avatar' src='{{userInfo.avatar}}' wx:if='{{auth}}'></jImage>
+      <label wx:else>
         <image class='avatar' src='/static/friend/empty_avatar_user.png'> </image>
         <button open-type='getUserInfo' bindgetuserinfo='getUserInfoHandler'></button>
       </label>
-      <view class='text' open-type='getUserInfo'>
-        <view class='name'>{{username}}</view>
-        <view>{{userinfo.height||'完善个人信息'+'   '}} {{userinfo.ball_year||''+'   '}}{{userinfo.constellatory||'' +'   '}}</view>
+      <view class='text'  wx:if='{{!auth}}'>
+        <view class='name'>点击头像登录</view>
+      </view>
+      <view class='text' wx:else>
+        <view class='name'>{{userInfo.user_name}}</view>
+        <view>{{userinfo.height||'' + 'cm   '}} {{userinfo.ball_year||'' +'球龄  '}}{{userinfo.constellatory||'' +'星座'}}</view>
       </view>
     </view>
-    <view class='more'  >
-      <view class='reddot' wx:if='{{auth && !userInfo.company}}'></view>
+    <view class='more'  wx:if='{{auth}}' >
+      <view class='reddot' ></view>
       <image src='/static/friend/profile_arrow.png'></image>
     </view>
   </view>

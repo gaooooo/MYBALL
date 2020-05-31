@@ -61,7 +61,6 @@ class Request {
         }// 当有接口返回401时，拦截正在请求的接口
         // 将token添加到header里面
         let token = getToken()
-        console.log(123123123, token)
         if (token) {
             header.Authorization = token;
         }
@@ -135,14 +134,13 @@ function setBaseUrl(url) {
  * 默认response拦截器
  */
 function addDefaultInterceptor() {
-    const vm = this;
     interceptors.push((res, resolve, reject, option) => {
-        console.log(77777, res)
         const status = res.statusCode
-        if (status === 401) {
+        const user = wx.getUserInfo()
+        if (status === 401 && user) {
             // 1.当接口返回401时，需要请求新的接口获取access_token
             // 2.若同时触发多个请求，当有一个接口返回401时，就需要去请求新的token，此时，其他接口需要被拦截，并存放起来
-            const userId = vm.getUserInfo().id;
+            const userId = user.id;
             console.log('userId:', userId)
             if (!isRefreshing) {
                 isRefreshing = true
@@ -174,6 +172,7 @@ function addDefaultInterceptor() {
             return addPending(option);
           }
         if (status !== 200) {
+            removeToken()
             return reject(new Error(`internet error: ${status}`))
         }
         const body = res.data

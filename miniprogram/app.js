@@ -143,9 +143,10 @@ App({
       + date.getMinutes() + '分';
     return formate_result;
   },
-
+  setUserInfo: function (value) {
+    return wx.setStorageSync('userInfo', value)
+  },
   getUserInfo: function () {
-    var that = this;
     return wx.getStorageSync('userInfo') || {}
   },
   globalData: {

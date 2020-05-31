@@ -48,11 +48,11 @@ class UsersService extends Service {
       where: {
         openid,
       },
-      include: [{
-        model: model.Ball,
-        as: 'listBall',
-        attributes: [ 'id', 'title' ],
-      }],
+      // include: [{
+      //   model: model.Ball,
+      //   as: 'listBall',
+      //   attributes: [ 'id', 'title', 'openid' ],
+      // }],
     });
     return user;
   }

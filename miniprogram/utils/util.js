@@ -140,9 +140,9 @@ let isEmptyObject = (obj) => {
 }
 
 let ifLogined = () => {
-  let auth = wx.getStorageSync('auth') || {}
-  if (auth.token && auth.uid) {
-    return authauth
+  let token = wx.getStorageSync('Authorization') || ''
+  if (token) {
+    return true
   }
   return false
 }

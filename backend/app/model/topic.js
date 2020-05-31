@@ -29,11 +29,11 @@ module.exports = app => {
       type: INTEGER,
       allowNull: true,
     },
-    create_at: {
+    created_at: {
       type: DATE,
       allowNull: true,
     },
-    update_at: {
+    updated_at: {
       type: DATE,
       allowNull: true,
     },
@@ -51,7 +51,7 @@ module.exports = app => {
       // 是否采用外键进行物理关联
       constraints: false,
       foreignKey: 'topic_id',
-      otherKey: 'open_id',
+      otherKey: 'openid',
     });
     // 定义多对多关联话题-球话
     app.model.Topic.belongsToMany(app.model.Speaking, {

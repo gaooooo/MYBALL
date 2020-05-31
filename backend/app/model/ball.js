@@ -65,11 +65,11 @@ module.exports = app => {
       type: STRING,
       allowNull: true,
     },
-    create_at: {
+    created_at: {
       type: DATE,
       allowNull: true,
     },
-    update_at: {
+    updated_at: {
       type: DATE,
       allowNull: true,
     },
@@ -95,7 +95,7 @@ module.exports = app => {
       // 是否采用外键进行物理关联
       constraints: false,
       foreignKey: 'ball_id',
-      otherKey: 'open_id',
+      otherKey: 'openid',
     });
   // 这里如果一个模型和多个模型都有关联关系的话，关联关系需要统一定义在这里
   };

@@ -69,8 +69,8 @@ create table ball (
    content              text                 COLLATE "default",
     openid              VARCHAR(255)          not null,
    qrcode               VARCHAR(255)         COLLATE "default",
-   create_at            TIMESTAMP            null,
-   update_at            TIMESTAMP            null,
+   created_at            TIMESTAMP            null,
+   updated_at            TIMESTAMP            null,
    topic_id             uuid
 ) WITH (OIDS=FALSE);
 
@@ -94,8 +94,8 @@ create table ball_sign (
    ball_id              uuid         not null,
    openid               VARCHAR(255)         not null,
    sign_status          INT4                 null,
-   create_at            TIMESTAMP            null,
-   update_at            TIMESTAMP            null
+   created_at            TIMESTAMP            null,
+   updated_at            TIMESTAMP            null
 ) WITH (OIDS=FALSE);
 -- Primary Key structure for table vul_task
 -- ----------------------------
@@ -111,8 +111,8 @@ DROP TABLE IF EXISTS "public"."topic_focus";
 create table topic_focus (
     openid              VARCHAR(255)          not null,
    topic_id             uuid         not null,
-   create_at            TIMESTAMP            null,
-   update_at            TIMESTAMP            null
+   created_at            TIMESTAMP            null,
+   updated_at            TIMESTAMP            null
 ) WITH (OIDS=FALSE);
 -- Primary Key structure for table vul_task
 -- ----------------------------
@@ -128,8 +128,8 @@ DROP TABLE IF EXISTS "public"."users_focus";
 create table users_focus (
     openid              VARCHAR(255)          not null,
    focus_open_id        VARCHAR(255)           not null,
-   create_at            TIMESTAMP            null,
-   update_at            TIMESTAMP            null
+   created_at            TIMESTAMP            null,
+   updated_at            TIMESTAMP            null
 ) WITH (OIDS=FALSE);
 -- Primary Key structure for table vul_task
 -- ----------------------------
@@ -148,8 +148,8 @@ create table "topic" (
    content              VARCHAR(255)         COLLATE "default",
      openid              VARCHAR(255)          not null,
    "order"              INT8                 null,
-   create_at            TIMESTAMP            null,
-   update_at            TIMESTAMP            null
+   created_at            TIMESTAMP            null,
+   updated_at            TIMESTAMP            null
 ) WITH (OIDS=FALSE);
 
 COMMENT ON COLUMN "public"."topic"."type" IS '话题分类 (0无分类 1球局 2比赛)';
@@ -173,8 +173,8 @@ create table speaking (
    latitude             FLOAT8               null,
    address              VARCHAR(255)         COLLATE "default",
    openid               VARCHAR(255)          not null,
-   create_at            TIMESTAMP            null,
-   update_at            TIMESTAMP            null,
+   created_at            TIMESTAMP            null,
+   updated_at            TIMESTAMP            null,
    status               INT4                 null
 ) WITH (OIDS=FALSE);
 
@@ -195,8 +195,8 @@ DROP TABLE IF EXISTS "public"."topic_speaking";
 create table topic_speaking (
    topic_id            uuid                not null,
    speaking_id          uuid                not null,
-   create_at            TIMESTAMP            null,
-   update_at            TIMESTAMP            null,
+   created_at            TIMESTAMP            null,
+   updated_at            TIMESTAMP            null,
    "order"              INT8                 null
 ) WITH (OIDS=FALSE);
 -- Primary Key structure for table vul_task
@@ -218,8 +218,8 @@ create table speaking_comment (
    images               jsonb                null,
    speaking_id          uuid          not null,
    openid              VARCHAR(255)          not null,
-   create_at            TIMESTAMP            null,
-   update_at            TIMESTAMP            null
+   created_at            TIMESTAMP            null,
+   updated_at            TIMESTAMP            null
 );
 COMMENT ON COLUMN "public"."speaking_comment"."p_id" IS '评论父id';
 -- ----------------------------
@@ -238,8 +238,8 @@ create table speaking_favorite (
    id  uuid DEFAULT uuid_generate_v4() NOT NULL,
    speaking_id        uuid      not null,
    openid              VARCHAR(255)          not null,
-   create_at            TIMESTAMP            null,
-   update_at            TIMESTAMP            null
+   created_at            TIMESTAMP            null,
+   updated_at            TIMESTAMP            null
 );
 -- ----------------------------
 -- Primary Key structure for table vul_task

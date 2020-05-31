@@ -29,11 +29,11 @@ module.exports = app => {
       type: STRING,
       allowNull: true,
     },
-    create_at: {
+    created_at: {
       type: DATE,
       allowNull: true,
     },
-    update_at: {
+    updated_at: {
       type: DATE,
       allowNull: true,
     },

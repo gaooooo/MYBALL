@@ -35,6 +35,7 @@ Page({
       auth: {},
     })
     let auth = utils.ifLogined()
+    console.log(555555, auth)
     this.setData({
       auth,
     })

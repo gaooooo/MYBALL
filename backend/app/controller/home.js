@@ -53,7 +53,6 @@ class HomeController extends Controller {
         message: '微信认证失败',
       });
     }
-    debugger;
     let userModel = await service.users.findByOpenId(res.openid);
     if (!userModel) {
       userModel = {
@@ -79,21 +78,20 @@ class HomeController extends Controller {
         // skill_level: 0,
         // ball_year: 0,
         about: '',
-        password: '123456',
+        password: ctx.helper.encryptPwd('123456'),
       };
       userModel = await service.users.create(userModel);
     }
     const token = await tokenUtil.generatToken.call(this, userModel);
     try {
       await app.redis.set(`token_${userModel.id}`, token);
-      await app.redis.set(`openid_${userModel.openid}`, res.openid);
-      const { openid, ...user } = userModel;
+      await app.redis.set(`openid_${userModel.id}`, res.openid);
+      // const { openid, ...user } = userModel;
       ctx.body = ctx.helper.JSONResponse({
         code: 0,
         message: 'Get token success',
         data: {
           token,
-          user,
         },
       });
     } catch (e) {
