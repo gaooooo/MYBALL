@@ -101,8 +101,8 @@ Page({
   //   })
   // },
   onShow: function(){
-    let userOpenId = wx.getStorageSync('openId')
-    if (!userOpenId) {
+    let token = wx.getStorageSync('ball_token')
+    if (!token) {
       wx.showToast({
         title: '您还未登录,请先登录~',
         icon: 'none'
@@ -114,7 +114,7 @@ Page({
         })
       }, 1500)
     } else {
-      console.log(userOpenId)
+      console.log(token)
     }
   },
   getCount: function(){

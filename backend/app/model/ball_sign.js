@@ -1,17 +1,16 @@
 /* jshint indent: 2 */
 'use strict';
 module.exports = app => {
-  const { INTEGER, DATE } = app.Sequelize;
-  const BallUsers = app.model.define('ball_users', {
+  const { INTEGER, DATE, STRING, UUID } = app.Sequelize;
+  const BallSign = app.model.define('ball_sign', {
     ball_id: {
-      type: INTEGER,
+      type: UUID,
       allowNull: false,
       primaryKey: true,
     },
-    user_id: {
-      type: INTEGER,
+    openid: {
+      type: STRING,
       allowNull: false,
-      primaryKey: true,
     },
     sign_status: {
       type: INTEGER,
@@ -26,7 +25,7 @@ module.exports = app => {
       allowNull: true,
     },
   }, {
-    tableName: 'ball_users',
+    tableName: 'ball_sign',
   });
-  return BallUsers;
+  return BallSign;
 };

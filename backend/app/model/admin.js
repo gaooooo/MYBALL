@@ -5,6 +5,10 @@ module.exports = app => {
 
   const Admin = app.model.define('admin', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
+    openid: {
+      type: STRING,
+      allowNull: false,
+    },
     name: STRING(30),
     password: STRING(64),
     age: INTEGER,

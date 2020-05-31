@@ -1,9 +1,13 @@
 /* jshint indent: 2 */
 'use strict';
 module.exports = app => {
-  const { DATE, STRING, DOUBLE, INTEGER } = app.Sequelize;
+  const { DATE, STRING, DOUBLE, INTEGER, UUID, UUIDV4 } = app.Sequelize;
   const Speaking = app.model.define('speaking', {
-    id: { type: INTEGER, primaryKey: true, autoIncrement: true },
+    id: {
+      type: UUID,
+      defauleValue: UUIDV4,
+      primaryKey: true,
+    },
     image_url: {
       type: STRING,
       allowNull: true,
@@ -24,9 +28,9 @@ module.exports = app => {
       type: STRING,
       allowNull: true,
     },
-    user_id: {
-      type: INTEGER,
-      allowNull: true,
+    openid: {
+      type: String,
+      allowNull: false,
     },
     create_at: {
       type: DATE,
@@ -48,8 +52,8 @@ module.exports = app => {
   Speaking.associate = () => {
 
     // Speaking与comments是一对多关系，所以这里使用hasMany()
-    Speaking.hasMany(app.model.Comment, { foreignKey: 'speaking_id', targetKey: 'id' });
-    Speaking.hasMany(app.model.Favorite, { foreignKey: 'speaking_id', targetKey: 'id' });
+    Speaking.hasMany(app.model.SpeakingComment, { foreignKey: 'speaking_id', targetKey: 'id' });
+    Speaking.hasMany(app.model.SpeakingFavorite, { foreignKey: 'speaking_id', targetKey: 'id' });
   };
 
   return Speaking;

@@ -1,15 +1,15 @@
 /* jshint indent: 2 */
 'use strict';
 module.exports = app => {
-  const { DATE, INTEGER } = app.Sequelize;
+  const { STRING, DATE, INTEGER, UUID } = app.Sequelize;
   const TopicSpeaking = app.model.define('topic_speaking', {
     topic_id: {
-      type: INTEGER,
+      type: STRING,
       allowNull: false,
       primaryKey: true,
     },
     speaking_id: {
-      type: INTEGER,
+      type: UUID,
       allowNull: false,
       primaryKey: true,
     },

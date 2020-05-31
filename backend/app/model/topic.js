@@ -1,9 +1,13 @@
 /* jshint indent: 2 */
 'use strict';
 module.exports = app => {
-  const { DATE, STRING, INTEGER } = app.Sequelize;
+  const { DATE, STRING, INTEGER, UUID, UUIDV4 } = app.Sequelize;
   const Topic = app.model.define('topic', {
-    id: { type: INTEGER, primaryKey: true, autoIncrement: true },
+    id: {
+      type: UUID,
+      defauleValue: UUIDV4,
+      primaryKey: true,
+    },
     name: {
       type: STRING,
       allowNull: true,
@@ -17,8 +21,8 @@ module.exports = app => {
       type: STRING,
       allowNull: true,
     },
-    user_id: {
-      type: INTEGER,
+    openid: {
+      type: STRING,
       allowNull: true,
     },
     order: {
@@ -47,7 +51,7 @@ module.exports = app => {
       // 是否采用外键进行物理关联
       constraints: false,
       foreignKey: 'topic_id',
-      otherKey: 'user_id',
+      otherKey: 'open_id',
     });
     // 定义多对多关联话题-球话
     app.model.Topic.belongsToMany(app.model.Speaking, {

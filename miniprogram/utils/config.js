@@ -13,6 +13,7 @@
 
 //配置域名,域名只修改此处。
 //如果wordpress没有安装在网站根目录请加上目录路径,例如："www.watch-life.net/blog"
+var HOSTURL = "http://localhost:7001";
 var DOMAIN = "www.watch-life.net";
 var DOMAINBALL = "www.91weilan.com";
 var WEBSITENAME="Monster北京女篮"; //网站名称
@@ -46,6 +47,7 @@ var INDEXNAV = [
 export default {
   getDomain: DOMAIN,
   getDomainBall:DOMAINBALL,
+  getHostUrl:HOSTURL,
   getWebsiteName: WEBSITENAME,  
   getPayTemplateId: PAYTEMPPLATEID,
   getPageCount: PAGECOUNT,

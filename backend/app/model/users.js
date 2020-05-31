@@ -1,22 +1,25 @@
 /* jshint indent: 2 */
 'use strict';
 module.exports = app => {
-  const { DATE, STRING, INTEGER } = app.Sequelize;
+  const { DATE, STRING, INTEGER, UUID, UUIDV4 } = app.Sequelize;
   const Users = app.model.define('users', {
-    id: { type: INTEGER, primaryKey: true, autoIncrement: true },
+    id: {
+      type: UUID,
+      defauleValue: UUIDV4,
+      primaryKey: true,
+    },
     openid: {
       type: STRING,
       allowNull: false,
+      primaryKey: true,
     },
     user_name: {
       type: STRING,
       allowNull: true,
-      primaryKey: true,
     },
     nick_name: {
       type: STRING,
       allowNull: true,
-      primaryKey: true,
     },
     real_name: {
       type: STRING,
@@ -58,6 +61,10 @@ module.exports = app => {
       type: STRING,
       allowNull: true,
     },
+    constellatory: {
+      type: STRING,
+      allowNull: true,
+    },
     province: {
       type: STRING,
       allowNull: true,
@@ -82,6 +89,10 @@ module.exports = app => {
       type: INTEGER,
       allowNull: true,
     },
+    ball_year: {
+      type: INTEGER,
+      allowNull: true,
+    },
     about: {
       type: STRING,
       allowNull: true,
@@ -94,7 +105,7 @@ module.exports = app => {
       type: DATE,
       allowNull: true,
     },
-    update_at: {
+    updated_at: {
       type: DATE,
       allowNull: true,
     },
@@ -106,12 +117,12 @@ module.exports = app => {
   // 定义多对多关联用户-报名的球局
     Users.belongsToMany(app.model.Ball, {
       // 中间表的model
-      through: app.model.BallUsers,
+      through: app.model.BallSign,
       // 进行关联查询时，关联表查出来的数据模型的alias
       as: 'listBall',
       // 是否采用外键进行物理关联
       constraints: false,
-      foreignKey: 'user_id',
+      foreignKey: 'openid',
       otherKey: 'ball_id',
     });
     // 定义多对多关联用户-关注的话题
@@ -122,7 +133,7 @@ module.exports = app => {
       as: 'listTopicFocus',
       // 是否采用外键进行物理关联
       constraints: false,
-      foreignKey: 'user_id',
+      foreignKey: 'openid',
       otherKey: 'topic_id',
     });
     //   // 定义多对多关联用户-关注的用户

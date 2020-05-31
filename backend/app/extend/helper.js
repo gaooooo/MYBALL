@@ -26,6 +26,6 @@ module.exports = {
 
   // 格式化JSON输出
   JSONResponse({ data, message = '成功', code = '200' }) {
-    return { code, data, message };
+    return JSON.stringify({ code, data, message });
   },
 };

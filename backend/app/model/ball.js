@@ -1,9 +1,13 @@
 /* jshint indent: 2 */
 'use strict';
 module.exports = app => {
-  const { DATE, DOUBLE, STRING, INTEGER, TEXT } = app.Sequelize;
+  const { DATE, DOUBLE, STRING, INTEGER, TEXT, UUID, UUIDV4 } = app.Sequelize;
   const Ball = app.model.define('ball', {
-    id: { type: INTEGER, primaryKey: true, autoIncrement: true },
+    id: {
+      type: UUID,
+      defauleValue: UUIDV4,
+      primaryKey: true,
+    },
     title: {
       type: STRING,
       allowNull: false,
@@ -53,9 +57,9 @@ module.exports = app => {
       type: TEXT,
       allowNull: true,
     },
-    user_id: {
-      type: INTEGER,
-      allowNull: true,
+    openid: {
+      type: STRING,
+      allowNull: false,
     },
     qrcode: {
       type: STRING,
@@ -70,8 +74,8 @@ module.exports = app => {
       allowNull: true,
     },
     topic_id: {
-      type: INTEGER,
-      allowNull: true,
+      type: UUID,
+      allowNull: false,
     },
   }, {
     tableName: 'ball',
@@ -85,13 +89,13 @@ module.exports = app => {
     // 定义多对多关联球局-用户
     app.model.Ball.belongsToMany(app.model.Users, {
       // 中间表的model
-      through: app.model.BallUsers,
+      through: app.model.BallSign,
       // 进行关联查询时，关联表查出来的数据模型的alias
       as: 'listUser',
       // 是否采用外键进行物理关联
       constraints: false,
       foreignKey: 'ball_id',
-      otherKey: 'user_id',
+      otherKey: 'open_id',
     });
   // 这里如果一个模型和多个模型都有关联关系的话，关联关系需要统一定义在这里
   };

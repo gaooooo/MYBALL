@@ -1,11 +1,15 @@
 /* jshint indent: 2 */
 'use strict';
 module.exports = app => {
-  const { DATE, STRING, INTEGER, JSONB } = app.Sequelize;
-  const Comment = app.model.define('comment', {
-    id: { type: INTEGER, primaryKey: true, autoIncrement: true },
+  const { DATE, STRING, JSONB, UUID, UUIDV4 } = app.Sequelize;
+  const SpeakingComment = app.model.define('speaking_comment', {
+    id: {
+      type: UUID,
+      defauleValue: UUIDV4,
+      primaryKey: true,
+    },
     p_id: {
-      type: INTEGER,
+      type: STRING,
       allowNull: true,
       defaultValue: '0',
     },
@@ -18,11 +22,11 @@ module.exports = app => {
       allowNull: true,
     },
     speaking_id: {
-      type: INTEGER,
+      type: UUID,
       allowNull: true,
     },
-    user_id: {
-      type: INTEGER,
+    openid: {
+      type: STRING,
       allowNull: true,
     },
     create_at: {
@@ -34,13 +38,13 @@ module.exports = app => {
       allowNull: true,
     },
   }, {
-    tableName: 'comment',
+    tableName: 'speaking_comment',
   });
   // 定义关联关系
-  Comment.associate = () => {
+  SpeakingComment.associate = () => {
     // 与Speaking存在多对一关系，所以使用belongsTo()
-    Comment.belongsTo(app.model.Speaking, { foreignKey: 'speaking_id', targetKey: 'id' });
+    SpeakingComment.belongsTo(app.model.Speaking, { foreignKey: 'speaking_id', targetKey: 'id' });
 
   };
-  return Comment;
+  return SpeakingComment;
 };

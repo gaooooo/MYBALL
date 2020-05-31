@@ -8,7 +8,7 @@
       </label>
       <view class='text' open-type='getUserInfo'>
         <view class='name'>{{username}}</view>
-        <view>{{'175cm   ' || '添加身高'}} {{ '5年球龄   ' || '添加球龄'}}{{ '天蝎座' || '添加星座'}}</view>
+        <view>{{userinfo.height||'完善个人信息'+'   '}} {{userinfo.ball_year||''+'   '}}{{userinfo.constellatory||'' +'   '}}</view>
       </view>
     </view>
     <view class='more'  >

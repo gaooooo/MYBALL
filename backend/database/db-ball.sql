@@ -1,10 +1,11 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 DROP TABLE IF EXISTS "public"."users";
 
 /*==============================================================*/
 /* Table: users                                                 */
 /*==============================================================*/
 create table users (
-   id                   SERIAL               not null,
+   id  uuid DEFAULT uuid_generate_v4() NOT NULL,
    openid               VARCHAR(225)         not null,
    user_name            VARCHAR(50)          COLLATE "default",
    nick_name            VARCHAR(50)          COLLATE "default",
@@ -20,18 +21,21 @@ create table users (
    country              VARCHAR(50)          COLLATE "default",
    province             VARCHAR(50)          COLLATE "default",
    city                 VARCHAR(50)          COLLATE "default",
+   constellatory        VARCHAR(50)          COLLATE "default",
    height               INT4                 null,
    weight               INT4                 null,
    star_sign            INT4                 null,
    skill_level          INT4                 null,
+   ball_year            INT4                 null,
    about                VARCHAR(225)         COLLATE "default",
    password             VARCHAR(120)         COLLATE "default",
    created_at           TIMESTAMP            null,
-   update_at            TIMESTAMP            null
+   updated_at            TIMESTAMP            null
 ) WITH (OIDS=FALSE);
 
 COMMENT ON COLUMN "public"."users"."skill_level" IS '球技级别';
 COMMENT ON COLUMN "public"."users"."wx_code" IS '微信号';
+COMMENT ON COLUMN "public"."users"."constellatory" IS '星座';
 -- ----------------------------
 -- Alter Sequences Owned By 
 -- ----------------------------
@@ -41,7 +45,7 @@ ALTER TABLE "public"."users" ADD UNIQUE ("openid");
 -- ----------------------------
 -- Primary Key structure for table vul_task
 -- ----------------------------
-ALTER TABLE "public"."users" ADD PRIMARY KEY ("id");
+ALTER TABLE "public"."users" ADD PRIMARY KEY ("openid");
 
 
 
@@ -50,7 +54,7 @@ DROP TABLE IF EXISTS "public"."ball";
 /* Table: ball                                                 */
 /*==============================================================*/
 create table ball (
-   id                   SERIAL               not null,
+   id  uuid DEFAULT uuid_generate_v4() NOT NULL,
    title                VARCHAR(225)         not null,
    image_url            VARCHAR(255)         COLLATE "default",
    ball_type            INT4                 null,
@@ -63,11 +67,11 @@ create table ball (
    share_type           INT4                 null,
    price                DECIMAL(2)           not null,
    content              text                 COLLATE "default",
-   user_id              INT4,
+    openid              VARCHAR(255)          not null,
    qrcode               VARCHAR(255)         COLLATE "default",
    create_at            TIMESTAMP            null,
    update_at            TIMESTAMP            null,
-   topic_id             INT4
+   topic_id             uuid
 ) WITH (OIDS=FALSE);
 
 COMMENT ON COLUMN "public"."ball"."share_type" IS '球局权限(1公开局 2仅自己可见 3仅好友可见)';
@@ -87,16 +91,16 @@ DROP TABLE IF EXISTS "public"."ball_sign";
 /* Table: ball_sign                                            */
 /*==============================================================*/
 create table ball_sign (
-   ball_id              INT4                 not null,
-   user_id              INT4                 not null,
+   ball_id              uuid         not null,
+   openid               VARCHAR(255)         not null,
    sign_status          INT4                 null,
    create_at            TIMESTAMP            null,
    update_at            TIMESTAMP            null
 ) WITH (OIDS=FALSE);
 -- Primary Key structure for table vul_task
 -- ----------------------------
-ALTER TABLE "public"."ball_sign" ADD PRIMARY KEY ("ball_id", "user_id");
-CREATE INDEX "idx_ball_users" ON "ball_sign" ("ball_id");
+ALTER TABLE "public"."ball_sign" ADD PRIMARY KEY ("ball_id", "openid");
+CREATE INDEX "idx_ball_sign" ON "ball_sign" ("ball_id");
 
 
 DROP TABLE IF EXISTS "public"."topic_focus";
@@ -105,14 +109,14 @@ DROP TABLE IF EXISTS "public"."topic_focus";
 /* Table: topic_focus                                           */
 /*==============================================================*/
 create table topic_focus (
-   user_id              INT4                 not null,
-   topic_id             INT4                 not null,
+    openid              VARCHAR(255)          not null,
+   topic_id             uuid         not null,
    create_at            TIMESTAMP            null,
    update_at            TIMESTAMP            null
 ) WITH (OIDS=FALSE);
 -- Primary Key structure for table vul_task
 -- ----------------------------
-ALTER TABLE "public"."topic_focus" ADD PRIMARY KEY ("topic_id", "user_id");
+ALTER TABLE "public"."topic_focus" ADD PRIMARY KEY ("topic_id", "openid");
 CREATE INDEX "idx_topic_focus" ON "topic_focus" ("topic_id");
 
 
@@ -122,15 +126,15 @@ DROP TABLE IF EXISTS "public"."users_focus";
 /* Table: users_focus                                            */
 /*==============================================================*/
 create table users_focus (
-   user_id              INT4                 not null,
-   focus_user_id        INT4                 not null,
+    openid              VARCHAR(255)          not null,
+   focus_open_id        VARCHAR(255)           not null,
    create_at            TIMESTAMP            null,
    update_at            TIMESTAMP            null
 ) WITH (OIDS=FALSE);
 -- Primary Key structure for table vul_task
 -- ----------------------------
-ALTER TABLE "public"."users_focus" ADD PRIMARY KEY ("user_id", "focus_user_id");
-CREATE INDEX "idx_user_focus" ON "users_focus" ("user_id");
+ALTER TABLE "public"."users_focus" ADD PRIMARY KEY ("openid", "focus_open_id");
+CREATE INDEX "idx_user_focus" ON "users_focus" ("openid");
 
 
 DROP TABLE IF EXISTS "public"."topic";
@@ -138,11 +142,11 @@ DROP TABLE IF EXISTS "public"."topic";
 /* Table: "topic(话题表)"                                          */
 /*==============================================================*/
 create table "topic" (
-   id                   SERIAL               not null,
+   id  uuid DEFAULT uuid_generate_v4() NOT NULL,
    name                 VARCHAR(50)          COLLATE "default",
    type                 INT4                 null,
    content              VARCHAR(255)         COLLATE "default",
-   user_id              INT4                 null,
+     openid              VARCHAR(255)          not null,
    "order"              INT8                 null,
    create_at            TIMESTAMP            null,
    update_at            TIMESTAMP            null
@@ -157,36 +161,18 @@ ALTER TABLE "public"."topic" alter column type set default 0;
 
 
 
-DROP TABLE IF EXISTS "public"."speaking_topic";
-/*==============================================================*/
-/* Table: speaking_topic                                        */
-/*==============================================================*/
-create table topic_speaking (
-   topic_id             INT4                 not null,
-   speaking_id          INT4                 not null,
-   create_at            TIMESTAMP            null,
-   update_at            TIMESTAMP            null,
-   "order"              INT8                 null
-) WITH (OIDS=FALSE);
--- Primary Key structure for table vul_task
--- ----------------------------
-ALTER TABLE "public"."topic_speaking" ADD PRIMARY KEY ("topic_id", "speaking_id");
-CREATE INDEX "idx_topic_speaking" ON "topic_speaking" ("topic_id");
-
-
-
 DROP TABLE IF EXISTS "public"."speaking";
 /*==============================================================*/
 /* Table: speaking                                              */
 /*==============================================================*/
 create table speaking (
-   id                   SERIAL               not null,
+   id  uuid DEFAULT uuid_generate_v4() NOT NULL,
    image_url            VARCHAR(255)         COLLATE "default",
    content              VARCHAR(2048)        COLLATE "default",
    longitude            FLOAT8               null,
    latitude             FLOAT8               null,
    address              VARCHAR(255)         COLLATE "default",
-   user_id              INT4                 null,
+   openid               VARCHAR(255)          not null,
    create_at            TIMESTAMP            null,
    update_at            TIMESTAMP            null,
    status               INT4                 null
@@ -201,43 +187,62 @@ ALTER TABLE "public"."speaking" alter column status set default 1;
 
 
 
-DROP TABLE IF EXISTS "public"."comment";
+
+DROP TABLE IF EXISTS "public"."topic_speaking";
+/*==============================================================*/
+/* Table: speaking_topic                                        */
+/*==============================================================*/
+create table topic_speaking (
+   topic_id            uuid                not null,
+   speaking_id          uuid                not null,
+   create_at            TIMESTAMP            null,
+   update_at            TIMESTAMP            null,
+   "order"              INT8                 null
+) WITH (OIDS=FALSE);
+-- Primary Key structure for table vul_task
+-- ----------------------------
+ALTER TABLE "public"."topic_speaking" ADD PRIMARY KEY ("topic_id", "speaking_id");
+CREATE INDEX "idx_topic_speaking" ON "topic_speaking" ("topic_id");
+
+
+
+
+DROP TABLE IF EXISTS "public"."speaking_comment";
 /*==============================================================*/
 /* Table: comment                                               */
 /*==============================================================*/
-create table comment (
-   id                   SERIAL               not null,
-   p_id                 INT4,
+create table speaking_comment (
+   id  uuid DEFAULT uuid_generate_v4() NOT NULL,
+   p_id                 uuid           null,
    content              VARCHAR(255)         COLLATE "default",
    images               jsonb                null,
-   speaking_id          INT4,
-   user_id              INT4,
+   speaking_id          uuid          not null,
+   openid              VARCHAR(255)          not null,
    create_at            TIMESTAMP            null,
    update_at            TIMESTAMP            null
 );
-COMMENT ON COLUMN "public"."comment"."p_id" IS '评论父id';
+COMMENT ON COLUMN "public"."speaking_comment"."p_id" IS '评论父id';
 -- ----------------------------
 -- Primary Key structure for table vul_task
 -- ----------------------------
-ALTER TABLE "public"."comment" ADD PRIMARY KEY ("id");
-ALTER TABLE "public"."comment" alter column p_id set default 0;
+ALTER TABLE "public"."speaking_comment" ADD PRIMARY KEY ("id");
 
-CREATE INDEX "idx_comment" ON "comment" ("speaking_id");
+CREATE INDEX "idx_speaking_comment" ON "speaking_comment" ("speaking_id");
 
 
-DROP TABLE IF EXISTS "public"."favorite";
+DROP TABLE IF EXISTS "public"."speaking_favorite";
 /*==============================================================*/
-/* Table: favorite                                              */
+/* Table: speaking_favorite                                              */
 /*==============================================================*/
-create table favorite (
-   id                   SERIAL               not null,
-   speaking_id          INT4                 null,
-   user_id              INT4                 null,
+create table speaking_favorite (
+   id  uuid DEFAULT uuid_generate_v4() NOT NULL,
+   speaking_id        uuid      not null,
+   openid              VARCHAR(255)          not null,
    create_at            TIMESTAMP            null,
    update_at            TIMESTAMP            null
 );
 -- ----------------------------
 -- Primary Key structure for table vul_task
 -- ----------------------------
-ALTER TABLE "public"."favorite" ADD PRIMARY KEY ("id");
-CREATE INDEX "idx_favorite" ON "favorite" ("speaking_id");
+ALTER TABLE "public"."speaking_favorite" ADD PRIMARY KEY ("id");
+CREATE INDEX "idx_speaking_favorite" ON "speaking_favorite" ("speaking_id");

@@ -193,8 +193,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    let userOpenId = wx.getStorageSync('user_openid')
-    if (!userOpenId) {
+    let token = wx.getStorageSync('ball_token')
+    if (!token) {
       wx.showToast({
         title: '您还未登录,请先登录~',
         icon: 'none'

@@ -1,15 +1,15 @@
 /* jshint indent: 2 */
 'use strict';
 module.exports = app => {
-  const { DATE, INTEGER } = app.Sequelize;
+  const { STRING, DATE } = app.Sequelize;
   const UsersFocus = app.model.define('users_focus', {
-    user_id: {
-      type: INTEGER,
+    openid: {
+      type: STRING,
       allowNull: false,
       primaryKey: true,
     },
-    focus_user_id: {
-      type: INTEGER,
+    focus_open_id: {
+      type: STRING,
       allowNull: false,
       primaryKey: true,
     },

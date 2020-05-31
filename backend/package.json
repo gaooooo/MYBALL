@@ -39,7 +39,7 @@
   "scripts": {
     "start": "egg-scripts start --daemon --title=admin-system",
     "stop": "egg-scripts stop --title=admin-system",
-    "dev": "NODE_ENV=development egg-bin dev",
+    "dev": "set NODE_ENV=development egg-bin dev",
     "debug": "egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",
     "test-local": "egg-bin test",

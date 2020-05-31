@@ -1,6 +1,7 @@
 //logs.js
 var Bmob = require("../../utils/bmob.js");
 var util = require('../../utils/util.js');
+var tokenUtil = require('../../utils/util-token.js');
 var app = getApp()
 
 var my_nick = wx.getStorageSync('my_nick')
@@ -8,6 +9,7 @@ var my_sex = wx.getStorageSync('my_sex')
 var my_avatar = wx.getStorageSync('my_avatar')
 
 import MyService from '../../server/my.js';
+
 
 const config = getApp().globalData.config
 Page({
@@ -62,91 +64,25 @@ Page({
         username: d.nickName
       })
     }
-    var that = this;
+    var vm = this;
     var userInfo = e.detail.userInfo
     wx.login({
           success: async function (res) {
             console.log(1111, res.code, userInfo)
-            let token = await MyService.postLogin(Object.assign({code: res.code}, userInfo));
-            console.log(222, token)
-            wx.setStorageSync('ball_token', token)
-            // console.log('login success', res)
-            // if (res.code) {
-            //   Bmob.User.requestOpenId(res.code, {
-            //     success: function (userData) {
-            //       var nickName = userInfo.nickName
-            //       var avatarUrl = userInfo.avatarUrl
-            //       var sex = userInfo.gender
-            //       Bmob.User.logIn(nickName, userData.openid, {
-            //         success: function (user) {
-            //           try {
-            //             wx.setStorageSync('user_openid', user.get('userData').openid)
-            //             wx.setStorageSync('user_id', user.id)
-            //             wx.setStorageSync('my_nick', user.get("nickname"))
-            //             wx.setStorageSync('my_username', user.get("username"))
-            //             wx.setStorageSync('my_sex', user.get("sex"))
-            //             wx.setStorageSync('my_avatar', user.get("userPic"))
-            //           } catch (e) {
-            //           }
-            //           console.log("登录成功");
-            //         },
-            //         error: function (user, error) {
-            //           if (error.code == '101') {
-            //             var user = new Bmob.User();//开始注册用户
-            //             user.set('username', nickName);
-            //             user.set('password', userData.openid);
-            //             user.set("nickname", nickName);
-            //             user.set("userPic", avatarUrl);
-            //             user.set("userData", userData);
-            //             user.set('sex', sex);
-            //             user.set('feednum',0);
-            //             user.signUp(null, {
-            //               success: function (result) {
-            //                 console.log('注册成功');
-            //                 try {//将返回的3rd_session存储到缓存中
-            //                   wx.setStorageSync('user_openid', user.get('userData').openid)
-            //                   wx.setStorageSync('user_id', user.id)
-            //                   wx.setStorageSync('my_nick', user.get("nickname"))
-            //                   wx.setStorageSync('my_username', user.get("username"))
-            //                   wx.setStorageSync('my_sex', user.get("sex"))
-            //                   wx.setStorageSync('my_avatar', user.get("userPic"))
-            //                 } catch (e) {
-            //                 }
-            //               },
-            //               error: function (userData, error) {
-            //                 console.log("openid=" + userData);
-            //                 console.log(error)
-            //               }
-            //             });
-
-            //           }
-            //         }
-            //       })
-
-            //       that.saveCloudUser(userData.openid, userInfo);
-            //     },
-            //     error: function (error) {
-            //       console.log("Error: " + error.code + " " + error.message);
-            //     }
-            //   });
-            // } else {
-            //   console.log('获取用户登录态失败1！' + res.errMsg)
-            // }
+            let data = await MyService.postLogin(Object.assign({code: res.code}, userInfo));
+            
+            console.log(222, data.token)
+            // tokenUtil.updateToken(data.token)
+            // wx.setStorageSync('ball_token', data.token)
+            wx.setStorageSync('userInfo', data.user)
+            vm.setData({
+              userInfo: data.user
+            })
           },
           complete: function (e) {
             console.log('获取用户登录态失败2！' + e)
           }
         });
-
-
-    // avatarUrl: "https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eoLPB1plCstcPmaz5gTiaJMicYjJFYcw97ibvolyib8ziayzzFDEttNviaPePACh30naC3O1Qiczr0dVt7fw/132"
-    // city: "Chaoyang"
-    // country: "China"
-    // gender: 2
-    // language: "zh_CN"
-    // nickName: "小七"
-    // province: "Beijing"
-    
   },
   saveCloudUser(openId, userInfo) {
     // 用户写入云数据库

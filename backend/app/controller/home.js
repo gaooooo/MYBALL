@@ -1,7 +1,7 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-
+const tokenUtil = require('../utils/util-token');
 class HomeController extends Controller {
   async index() {
     const { ctx } = this;
@@ -12,8 +12,34 @@ class HomeController extends Controller {
     const { ctx, app } = this;
     ctx.body = app.config;
   }
+
+  async refreshToken() {
+    const { ctx, app, service } = this;
+    const { id } = ctx.query;
+    console.log(8765, id);
+    const userModel = await service.users.find(id);
+
+    const token = await tokenUtil.generatToken.call(this, userModel);
+    try {
+
+      await app.redis.set(`token_${userModel.id}`, token);
+      ctx.body = ctx.helper.JSONResponse({
+        code: 0,
+        message: 'Get token success',
+        data: { access_token: token },
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
+  async loginout() {
+    const { ctx, app } = this;
+    console.log(666, app.redis);
+    // 移除redis
+    // await app.redis(`token_${user.id}`, token);
+  }
   async loginByMini() {
-    const { ctx, app, config, service, helper } = this;
+    const { ctx, app, service } = this;
     const userData = ctx.request.body;
     const { code } = ctx.request.body;
     const res = await service.mp.login(code);
@@ -22,16 +48,17 @@ class HomeController extends Controller {
     // openid: 'o9OwI0fnvhCpLb8JGcztvbC37sxQ'
     if (!res.openid) {
       console.error('不存在的openid');
-      ctx.body = helper.JSONResponse({
+      ctx.body = ctx.helper.JSONResponse({
         code: 500,
         message: '微信认证失败',
       });
     }
-    let userModel = await service.user.findByOpenId(res.openid);
+    debugger;
+    let userModel = await service.users.findByOpenId(res.openid);
     if (!userModel) {
       userModel = {
         openid: res.openid,
-        user_name: 'BALLER_123',
+        user_name: 'BALLER_123', // TODO 随机数
         nick_name: userData.nickName,
         real_name: '',
         gender: userData.gender,
@@ -42,39 +69,35 @@ class HomeController extends Controller {
         id_card: '',
         job: '',
         wx_code: '',
+        constellatory: '',
         country: userData.country,
         province: userData.province,
         city: userData.city,
-        height: 0,
-        weight: 0,
-        star_sign: 0,
-        skill_level: 0,
+        // height: 0,
+        // weight: 0,
+        // star_sign: 0,
+        // skill_level: 0,
+        // ball_year: 0,
         about: '',
         password: '123456',
       };
-      await service.user.create(userModel);
+      userModel = await service.users.create(userModel);
     }
-    const token = app.jwt.sign({
-      id: userModel.openid,
-      name: userModel.user_name,
-      avatar: userModel.avatar,
-    }, config.jwt.secret, {
-      expiresIn: '2h',
-    });
+    const token = await tokenUtil.generatToken.call(this, userModel);
     try {
-
-      await app.redis.set(`token_${userModel.openid}`, token);
+      await app.redis.set(`token_${userModel.id}`, token);
+      await app.redis.set(`openid_${userModel.openid}`, res.openid);
+      const { openid, ...user } = userModel;
       ctx.body = ctx.helper.JSONResponse({
         code: 0,
         message: 'Get token success',
-        data: token,
+        data: {
+          token,
+          user,
+        },
       });
     } catch (e) {
-      console.error(e);
-      ctx.body = helper.JSONResponse({
-        code: 500,
-        message: 'Server busy, please try again',
-      });
+      throw e;
     }
   }
 
@@ -90,7 +113,6 @@ class HomeController extends Controller {
     // users列表中排序设置为admin角色的优先、添加时间
     // 返回token、openid（简单做）
     const user = await service.admin.findByName(username);
-
     if (!user) {
       ctx.status = 403;
       ctx.body = {
@@ -200,7 +222,7 @@ class HomeController extends Controller {
         role: 'editor',
         avatar: regRes.avatar,
       }, app.config.jwt.secret, {
-        expiresIn: '1h',
+        expiresIn: '2h',
       });
       await app.redis.set(`token_${regRes.id}`, token);
 
