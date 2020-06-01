@@ -29,10 +29,20 @@
           end-placeholder="结束日期"
         />
       </el-form-item>
-      <el-form-item label="球局地址">
+      <el-form-item label="球局地址" required>
         <el-input v-model="form.address" />
       </el-form-item>
-      <el-form-item label="价格">
+      <el-form-item label="是否限制人数">
+        <el-switch
+          v-model="isLimitPeople"
+          active-color="#13ce66"
+          inactive-color="#ff4949"
+        />
+      </el-form-item>
+      <el-form-item v-show="isLimitPeople" label="人数">
+        <el-input v-model.number="form.people_num" />
+      </el-form-item>
+      <el-form-item label="价格" required>
         <el-input v-model="form.price" />
       </el-form-item>
       <el-form-item label="球局类型" required prop="ball_type">
@@ -45,6 +55,22 @@
           <el-option v-for="user in shareTypeList" :key="user.id" :label="user.name" :value="user.id" />
         </el-select>
       </el-form-item>
+      <el-form-item label="球局服务">
+        <el-select
+          v-model="form.services"
+          multiple
+          filterable
+          allow-create
+          default-first-option
+          placeholder="请选择本场球局服务"
+        >
+          <el-option
+            v-for="item in servicesData"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select></el-form-item>
       <el-form-item label="球局描述" required prop="content">
         <el-input v-model="form.content" type="textarea" placeholder="please input content" />
       </el-form-item>
@@ -64,6 +90,7 @@ export default {
     return {
       dateValue: [+new Date(), +new Date()],
       fileList: [],
+      isLimitPeople: false,
       form: {
         title: '',
         content: '',
@@ -77,8 +104,32 @@ export default {
         longitude: '',
         latitude: '',
         topic_id: '',
-        user_id: 'admin'
+        user_id: 'admin',
+        people_num: 0,
+        services: []
       },
+      servicesData: [{
+        value: 1,
+        label: '组织者带球'
+      }, {
+        value: 2,
+        label: '停车场'
+      }, {
+        value: 3,
+        label: '卫生间'
+      }, {
+        value: 4,
+        label: '提供饮用水'
+      }, {
+        value: 5,
+        label: '24小时可退'
+      }, {
+        value: 6,
+        label: '充电器'
+      }, {
+        value: 7,
+        label: '更衣室'
+      }],
       formRules: {
         title: [
           { required: true, message: 'please input title', trigger: 'blur' }

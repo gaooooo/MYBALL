@@ -66,6 +66,9 @@ create table ball (
    end_time             TIMESTAMP            null,
    share_type           INT4                 null,
    price                DECIMAL(2)           not null,
+   is_limit_num         INT4                 null,
+   people_num           INT4                 null,
+   services             INT4[]         null,
    content              text                 COLLATE "default",
     openid              VARCHAR(255)          not null,
    qrcode               VARCHAR(255)         COLLATE "default",
@@ -76,6 +79,7 @@ create table ball (
 
 COMMENT ON COLUMN "public"."ball"."share_type" IS '球局权限(1公开局 2仅自己可见 3仅好友可见)';
 COMMENT ON COLUMN "public"."ball"."ball_type" IS '球局类别(1 4x4 2 3x3 3 5x5)';
+COMMENT ON COLUMN "public"."ball"."services" IS '球局服务(1 组织者带局 2 停车场 3 卫生间)';
 -- ----------------------------
 -- Alter Sequences Owned By 
 -- ----------------------------

@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 'use strict';
 module.exports = app => {
-  const { DATE, DOUBLE, STRING, INTEGER, TEXT, UUID, UUIDV4 } = app.Sequelize;
+  const { DATE, DOUBLE, STRING, INTEGER, TEXT, UUID, UUIDV4, ARRAY } = app.Sequelize;
   const Ball = app.model.define('ball', {
     id: {
       type: UUID,
@@ -49,9 +49,21 @@ module.exports = app => {
       type: INTEGER,
       allowNull: true,
     },
+    is_limit_num: {
+      type: INTEGER,
+      allowNull: true,
+    },
+    people_num: {
+      type: INTEGER,
+      allowNull: true,
+    },
     price: {
       type: DOUBLE,
       allowNull: false,
+    },
+    services: {
+      type: ARRAY(app.Sequelize.INTEGER),
+      allowNull: true,
     },
     content: {
       type: TEXT,
