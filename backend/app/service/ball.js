@@ -21,8 +21,8 @@ class ballService extends Service {
         attributes: [ 'id', 'name' ],
       }, {
         model: model.Users,
-        as: 'listSign',
-        attributes: [ 'id', 'name' ],
+        as: 'listUser',
+        attributes: [ 'id', 'nick_name' ],
       }],
     });
     if (!ball) {
@@ -43,7 +43,6 @@ class ballService extends Service {
 
   async create(ball) {
     const { ctx: { model } } = this;
-    console.log(888);
     return model.Ball.create(ball);
   }
 

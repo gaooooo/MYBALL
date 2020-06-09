@@ -2,7 +2,7 @@
 
 const { Controller } = require('egg');
 
-class UserController extends Controller {
+class SpeakingController extends Controller {
   async index() {
     const { ctx } = this;
     const { query, model, service, helper } = ctx;
@@ -10,7 +10,7 @@ class UserController extends Controller {
       limit: helper.parseInt(query.limit),
       offset: helper.parseInt(query.offset),
     };
-    const data = await service.users.list(options);
+    const data = await service.speaking.list(options);
     ctx.body = {
       code: 0,
       data: {
@@ -24,7 +24,7 @@ class UserController extends Controller {
     const { ctx } = this;
     const { params, service, helper } = ctx;
     const id = helper.parseInt(params.id);
-    ctx.body = await service.users.find(id);
+    ctx.body = await service.speaking.find(id);
   }
 
   async create() {
@@ -33,7 +33,7 @@ class UserController extends Controller {
     const body = ctx.request.body;
     // should encrypt password
     body.password = helper.encryptPwd(body.password);
-    const user = await service.users.create(body);
+    const user = await service.speaking.create(body);
     ctx.status = 201;
     ctx.body = user;
   }
@@ -43,7 +43,7 @@ class UserController extends Controller {
     const { params, service, helper } = ctx;
     const body = ctx.request.body;
     const id = helper.parseInt(params.id);
-    ctx.body = await service.users.update({
+    ctx.body = await service.speaking.update({
       id,
       updates: body,
     });
@@ -53,9 +53,9 @@ class UserController extends Controller {
     const { ctx } = this;
     const { params, service, helper } = ctx;
     const id = helper.parseInt(params.id);
-    await service.users.destroy(id);
+    await service.speaking.destroy(id);
     ctx.status = 200;
   }
 }
 
-module.exports = UserController;
+module.exports = SpeakingController;

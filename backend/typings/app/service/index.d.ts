@@ -10,6 +10,8 @@ import ExportAdmin = require('../../../app/service/admin');
 import ExportBall = require('../../../app/service/ball');
 import ExportPost = require('../../../app/service/post');
 import ExportRole = require('../../../app/service/role');
+import ExportSpeaking = require('../../../app/service/speaking');
+import ExportTopic = require('../../../app/service/topic');
 import ExportUsers = require('../../../app/service/users');
 
 declare module 'egg' {
@@ -18,6 +20,8 @@ declare module 'egg' {
     ball: AutoInstanceType<typeof ExportBall>;
     post: AutoInstanceType<typeof ExportPost>;
     role: AutoInstanceType<typeof ExportRole>;
+    speaking: AutoInstanceType<typeof ExportSpeaking>;
+    topic: AutoInstanceType<typeof ExportTopic>;
     users: AutoInstanceType<typeof ExportUsers>;
   }
 }

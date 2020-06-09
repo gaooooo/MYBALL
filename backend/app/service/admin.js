@@ -29,7 +29,6 @@ class AdminService extends Service {
 
   async findByName(name) {
     const { ctx: { model } } = this;
-    console.log(777, name, model);
     const user = await model.Admin.findOne({
       where: {
         name,

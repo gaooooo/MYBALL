@@ -16,7 +16,6 @@ class HomeController extends Controller {
   async refreshToken() {
     const { ctx, app, service } = this;
     const { id } = ctx.query;
-    console.log(8765, id);
     const userModel = await service.users.find(id);
 
     const token = await tokenUtil.generatToken.call(this, userModel);
@@ -34,7 +33,6 @@ class HomeController extends Controller {
   }
   async loginout() {
     const { ctx, app } = this;
-    console.log(666, app.redis);
     // 移除redis
     // await app.redis(`token_${user.id}`, token);
   }
@@ -121,6 +119,7 @@ class HomeController extends Controller {
       if (user.password === helper.encryptPwd(password)) {
         ctx.status = 200;
         const token = app.jwt.sign({
+          openid: user.openid,
           id: user.id,
           name: user.name,
           role: user.role.name,

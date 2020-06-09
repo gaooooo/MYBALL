@@ -25,7 +25,7 @@ class AppBootHook {
     // For example: loading data from the database into the in-memory cache
     // TODO: init db migrate locally, it can not sync in scf,
     // TODO: better db miration method is using remote connection, and run `sequelize db:migrate` locally
-    console.log(11111);
+
     // const isDev = process.env.NODE_ENV === 'development';
     // if (isDev && this.app.config.sequelize.sync) {
     //   try {

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="postForm" enctype="multipart/form-data" :model="form" :rules="formRules" label-width="120px">
+    <el-form ref="postForm" method="POST" :model="form" :rules="formRules" label-width="120px">
       <el-form-item label="球局标题" required prop="title">
         <el-input v-model="form.title" placeholder="please input title" />
       </el-form-item>
@@ -12,6 +12,7 @@
           :on-preview="handlePreview"
           :on-remove="handleRemove"
           :before-remove="beforeRemove"
+          :limit="1"
           :on-exceed="handleExceed"
           :file-list="fileList"
           :auto-upload="false"
@@ -31,6 +32,14 @@
       </el-form-item>
       <el-form-item label="球局地址" required>
         <el-input v-model="form.address" />
+        <div>
+          <label>关键词：<input v-model="keyword"></label>
+          <label>地区：<input v-model="location"></label>
+          <baidu-map>
+            <bm-view class="map" />
+            <bm-local-search :keyword="keyword" :auto-viewport="true" :location="location" @infohtmlset="handleClick" />
+          </baidu-map>
+        </div>
       </el-form-item>
       <el-form-item label="是否限制人数">
         <el-switch
@@ -71,11 +80,17 @@
             :value="item.value"
           />
         </el-select></el-form-item>
+      <el-form-item label="选择球话" required prop="topic_id">
+        <el-select v-model="form.topic_id" placeholder="please select topic">
+          <el-option v-for="topic in topicList" :key="topic.id" :label="topic.name" :value="topic.id" />
+        </el-select>
+      </el-form-item>
       <el-form-item label="球局描述" required prop="content">
         <el-input v-model="form.content" type="textarea" placeholder="please input content" />
       </el-form-item>
+
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">Create</el-button>
+        <el-button type="primary submit" @click.stop="onSubmit">Create</el-button>
         <el-button @click="onCancel">Cancel</el-button>
       </el-form-item>
     </el-form>
@@ -83,30 +98,36 @@
 </template>
 
 <script>
-import { create as createPost } from '@/api/ball'
+import { create as createPost, getItem, putItem } from '@/api/ball'
 
 export default {
   data() {
     return {
+      location: '北京',
+      keyword: '百度',
       dateValue: [+new Date(), +new Date()],
       fileList: [],
       isLimitPeople: false,
       form: {
         title: '',
         content: '',
-        ball_type: undefined,
-        share_type: undefined,
+        ball_type: 1,
+        share_type: 1,
+        country: '',
+        province: '',
+        city: '',
         address: '',
         price: 0,
         image_url: '',
         start_time: undefined,
         end_time: undefined,
-        longitude: '',
-        latitude: '',
-        topic_id: '',
+        longitude: 0,
+        latitude: 0,
         user_id: 'admin',
         people_num: 0,
-        services: []
+        services: [],
+        status: 0,
+        topic_id: '396db878-2aad-4edb-bf82-58d001bfd666'
       },
       servicesData: [{
         value: 1,
@@ -142,23 +163,47 @@ export default {
         ]
       },
       ballTypeList: [{ id: 1, name: '4x4' }, { id: 2, name: '3x3' }, { id: 3, name: '5x5' }],
-      shareTypeList: [{ id: 1, name: '公开' }, { id: 2, name: '仅自己可见' }, { id: 3, name: '好友可见' }]
+      shareTypeList: [{ id: 1, name: '公开' }, { id: 2, name: '仅自己可见' }, { id: 3, name: '好友可见' }],
+      topicList: [{ id: '396db878-2aad-4edb-bf82-58d001bfd666', name: '东边球局集合' }, { id: '2', name: '装备圈' }, { id: '3', name: '哪挡得了我们' }]
     }
   },
-  created() {
+  async created() {
+    const id = this.$route.query.id
+    if (id) {
+      const res = await getItem(id)
+      if (res.code === 0) {
+        this.form = res.data
+        const imageUrl = this.form.image_url
+        if (imageUrl) {
+          this.fileList = [{ name: imageUrl.slice(imageUrl.lastIndexOf('/') + 1), url: imageUrl }]
+        }
+        if (this.form.is_limit_num === 1) {
+          this.isLimitPeople = true
+        }
+      }
+    }
   },
   methods: {
-    async onSubmit() {
+    async onSubmit(e) {
+      e.preventDefault()
+      if (this.fileList.length === 0 && this.$refs.upload.uploadFiles.length === 0) {
+        this.$message.warning(`请选择封面图！`)
+        return
+      }
       this.$refs.postForm.validate(async valid => {
         if (valid) {
-          this.form.start_time = +this.dateValue[0]
-          this.form.end_time = +this.dateValue[1]
+          this.form.start_time = +new Date(this.dateValue[0])
+          this.form.end_time = +new Date(this.dateValue[1])
+          this.form.is_limit_num = Number(this.isLimitPeople)
           const formData = new FormData()
           Object.keys(this.form).forEach(key => {
             formData.append(key, this.form[key])
           })
-          formData.append('imageData', this.$refs.upload.uploadFiles[0].raw)
-          const res = await createPost(formData)
+          if (this.$refs.upload.uploadFiles.length > 0) {
+            formData.append('imageData', this.$refs.upload.uploadFiles[0].raw)
+          }
+          const id = this.$route.query.id
+          const res = !id ? await createPost(formData) : await putItem(id, formData)
           if (res.code === 0) {
             this.$message({
               message: 'Create success',
@@ -187,6 +232,15 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
+    },
+    handleClick(poi) {
+      console.log('poi', poi)
+      this.form.latitude = poi.point.lat
+      this.form.longitude = poi.point.lng
+      this.form.country = 'CN'
+      this.form.province = poi.province
+      this.form.city = poi.city
+      this.form.address = poi.address
     }
   }
 }

@@ -11,30 +11,35 @@
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">{{ scope.$index }}</template>
       </el-table-column>
-      <el-table-column label="Title">
-        <template slot-scope="scope">{{ scope.row.title }}</template>
+      <el-table-column label="name">
+        <template slot-scope="scope">{{ scope.row.name }}</template>
       </el-table-column>
-      <el-table-column label="Content">
+      <el-table-column label="内容">
         <template slot-scope="scope">{{ scope.row.content }}</template>
       </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
+      <el-table-column label="发布者" width="110" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.user && scope.row.user.name }}</span>
+          <span>{{ scope.row.openid }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="Display_time" width="200">
+      <el-table-column align="center" prop="created_at" label="发布时间" width="200">
         <template slot-scope="scope">
           <i class="el-icon-time" />
           <span>{{ scope.row.created_at }}</span>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="Operation" width="120">
+      <el-table-column fixed="right" label="操作" width="120">
         <template slot-scope="scope">
           <el-button
             type="text"
             size="small"
+            @click.native.prevent="edit(scope.row.id)"
+          >编辑</el-button>
+          <el-button
+            type="text"
+            size="small"
             @click.native.prevent="deletePost(scope.row.id)"
-          >Delete</el-button>
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -42,7 +47,7 @@
 </template>
 
 <script>
-import { getList, destroy } from '@/api/post'
+import { getList, destroy } from '@/api/topic'
 
 export default {
   filters: {
@@ -70,6 +75,9 @@ export default {
       const { data } = await getList()
       this.list = data.items
       this.listLoading = false
+    },
+    edit(id) {
+      this.$router.push({ path: '/speaking/create-topic', query: { id }})
     },
     async deletePost(id) {
       const res = await destroy(id)

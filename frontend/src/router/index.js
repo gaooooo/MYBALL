@@ -87,12 +87,6 @@ export const constantRoutes = [
         name: 'List',
         component: () => import('@/views/users'),
         meta: { title: '用户列表', icon: 'table' }
-      },
-      {
-        path: 'create',
-        name: 'List',
-        component: () => import('@/views/users'),
-        meta: { title: '创建用户', icon: 'table' }
       }
     ]
   },

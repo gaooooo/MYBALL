@@ -12,23 +12,23 @@
         <template slot-scope="scope">{{ scope.$index }}</template>
       </el-table-column>
       <el-table-column label="用户id">
-        <template slot-scope="scope">{{ scope.row.title }}</template>
+        <template slot-scope="scope">{{ scope.row.id }}</template>
       </el-table-column>
-      <el-table-column label="Content">
-        <template slot-scope="scope">{{ scope.row.content }}</template>
+      <el-table-column label="用户昵称">
+        <template slot-scope="scope">{{ scope.row.nick_name }}</template>
       </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
+      <el-table-column label="openid" width="110" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.user && scope.row.user.name }}</span>
+          <span>{{ scope.row.openid }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="Display_time" width="200">
+      <el-table-column align="center" prop="created_at" label="注册时间" width="200">
         <template slot-scope="scope">
           <i class="el-icon-time" />
           <span>{{ scope.row.created_at }}</span>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="Operation" width="120">
+      <el-table-column fixed="right" label="操作" width="120">
         <template slot-scope="scope">
           <el-button
             type="text"
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { getList, destroy } from '@/api/post'
+import { getList, destroy } from '@/api/user'
 
 export default {
   filters: {

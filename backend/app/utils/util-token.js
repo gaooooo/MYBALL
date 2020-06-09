@@ -4,6 +4,7 @@ module.exports = {
   async generatToken(userModel) {
     const { app, config } = this;
     const token = app.jwt.sign({
+      openid: userModel.openid,
       id: userModel.id,
       user_name: userModel.user_name,
       nick_name: userModel.nickName,

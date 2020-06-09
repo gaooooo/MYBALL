@@ -1,5 +1,7 @@
 /* jshint indent: 2 */
 'use strict';
+
+const { uuid } = require('uuidv4');
 module.exports = app => {
   const { DATE, DOUBLE, STRING, INTEGER, TEXT, UUID, UUIDV4, ARRAY } = app.Sequelize;
   const Ball = app.model.define('ball', {
@@ -25,9 +27,22 @@ module.exports = app => {
       type: STRING,
       allowNull: true,
     },
+    country: {
+      type: STRING,
+      allowNull: true,
+    },
+    province: {
+      type: STRING,
+      allowNull: true,
+    },
+    city: {
+      type: STRING,
+      allowNull: true,
+    },
     status: {
       type: INTEGER,
       allowNull: true,
+      defaultValue: 0,
     },
     longitude: {
       type: DOUBLE,
@@ -60,6 +75,7 @@ module.exports = app => {
     price: {
       type: DOUBLE,
       allowNull: false,
+      defaultValue: 0,
     },
     services: {
       type: ARRAY(app.Sequelize.INTEGER),
@@ -97,7 +113,7 @@ module.exports = app => {
   Ball.associate = () => {
 
     // 与TopPic存在多对一关系，所以使用belongsTo()
-    app.model.Ball.belongsTo(app.model.Topic, { foreignKey: 'topic_id', targetKey: 'id' });
+    app.model.Ball.belongsTo(app.model.Topic, { as: 'modelTopic', foreignKey: 'topic_id', targetKey: 'id' });
     // 定义多对多关联球局-用户
     app.model.Ball.belongsToMany(app.model.Users, {
       // 中间表的model
@@ -111,5 +127,9 @@ module.exports = app => {
     });
   // 这里如果一个模型和多个模型都有关联关系的话，关联关系需要统一定义在这里
   };
+  Ball.beforeCreate((ball, _) => {
+    return ball.id = uuid();
+  });
+
   return Ball;
 };

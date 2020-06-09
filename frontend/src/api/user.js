@@ -24,7 +24,7 @@ export function logout() {
 
 export function getList() {
   return request({
-    url: '/admins',
+    url: '/users',
     method: 'get'
   })
 }

@@ -1,5 +1,6 @@
 /* jshint indent: 2 */
 'use strict';
+const { uuid } = require('uuidv4');
 module.exports = app => {
   const { DATE, STRING, INTEGER, UUID, UUIDV4 } = app.Sequelize;
   const Topic = app.model.define('topic', {
@@ -69,5 +70,8 @@ module.exports = app => {
     app.model.Topic.hasMany(app.model.Ball, { foreignKey: 'topic_id', targetKey: 'id' });
   };
 
+  Topic.beforeCreate((topic, _) => {
+    return topic.id = uuid();
+  });
   return Topic;
 };

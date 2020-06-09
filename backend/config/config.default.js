@@ -40,6 +40,10 @@ module.exports = appInfo => {
     // TODO: should change to deploy url.
     deployUrl: isLocal ? 'http://127.0.0.1:7001/' : 'https://service-f1bhmhk4-1251556596.gz.apigw.tencentcs.com/release/',
     authRedirectUrl: isLocal ? 'http://localhost:9528/#/login' : 'https://sls-admin.yugasun.com/#/login',
+    multipart: {
+      mode: 'file',
+      fields: '100',
+    },
     // myAppName: 'egg',
     sequelize: {
       sync: true, // whether sync when app init

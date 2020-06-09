@@ -38,9 +38,11 @@ module.exports = app => {
 
   router.get('/authing/auth', controller.home.authingAuth);
 
-
   router.resources('roles', '/roles', controller.role);
   router.resources('admins', '/admins', controller.admin);
   router.resources('posts', '/posts', controller.post);
-  router.resources('balls', '/balls', controller.ball);
+  router.resources('balls', '/balls', jwt, controller.ball);
+  router.resources('topics', '/topics', jwt, controller.topic);
+  router.resources('speakings', '/speakings', jwt, controller.speaking);
+  router.resources('users', '/users', jwt, controller.user);
 };

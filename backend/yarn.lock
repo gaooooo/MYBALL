@@ -2937,6 +2937,14 @@ egg-mock@^3.21.0:
     supertest "^4.0.2"
     urllib "^2.33.3"
 
+egg-mp@^1.0.21:
+  version "1.0.21"
+  resolved "https://registry.npm.taobao.org/egg-mp/download/egg-mp-1.0.21.tgz#e3a5aeb11eeead54272327e3b3e48e4dac7094ce"
+  integrity sha1-46WusR7urVQnIyfjs+SOTaxwlM4=
+  dependencies:
+    egg "^2.23.0"
+    xml-js "^1.6.11"
+
 egg-multipart@^2.4.0:
   version "2.10.2"
   resolved "https://registry.npm.taobao.org/egg-multipart/download/egg-multipart-2.10.2.tgz#d6dbe55e39792a746f1db09fe90dac651f229d21"
@@ -3108,6 +3116,52 @@ egg@^2.15.1:
   version "2.26.0"
   resolved "https://registry.npm.taobao.org/egg/download/egg-2.26.0.tgz#534a80bcdf27eb3a15cf5fae8a8d2677cae9b744"
   integrity sha1-U0qAvN8n6zoVz1+uio0md8rpt0Q=
+  dependencies:
+    "@types/accepts" "^1.3.5"
+    "@types/koa" "^2.0.48"
+    "@types/koa-router" "^7.0.40"
+    accepts "^1.3.5"
+    agentkeepalive "^4.0.2"
+    cache-content-type "^1.0.1"
+    circular-json-for-egg "^1.0.0"
+    cluster-client "^3.0.1"
+    debug "^4.1.1"
+    delegates "^1.0.0"
+    egg-cluster "^1.23.0"
+    egg-cookies "^2.3.0"
+    egg-core "^4.16.1"
+    egg-development "^2.4.2"
+    egg-i18n "^2.0.0"
+    egg-jsonp "^2.0.0"
+    egg-logger "^2.3.2"
+    egg-logrotator "^3.0.5"
+    egg-multipart "^2.4.0"
+    egg-onerror "^2.1.0"
+    egg-schedule "^3.6.0"
+    egg-security "^2.4.3"
+    egg-session "^3.1.0"
+    egg-static "^2.2.0"
+    egg-view "^2.1.2"
+    egg-watcher "^3.1.0"
+    extend2 "^1.0.0"
+    graceful "^1.0.2"
+    humanize-ms "^1.2.1"
+    is-type-of "^1.2.1"
+    koa-bodyparser "^4.2.1"
+    koa-is-json "^1.0.0"
+    koa-override "^3.0.0"
+    ms "^2.1.1"
+    mz "^2.7.0"
+    on-finished "^2.3.0"
+    sendmessage "^1.1.0"
+    urllib "^2.33.0"
+    utility "^1.15.0"
+    ylru "^1.2.1"
+
+egg@^2.23.0:
+  version "2.26.1"
+  resolved "https://registry.npm.taobao.org/egg/download/egg-2.26.1.tgz#32348c65e2301fbca37d72ea69ba4fef826e142c"
+  integrity sha1-MjSMZeIwH7yjfXLqabpP74JuFCw=
   dependencies:
     "@types/accepts" "^1.3.5"
     "@types/koa" "^2.0.48"
@@ -6916,7 +6970,7 @@ safe-timers@^1.1.0:
   resolved "https://registry.npm.taobao.org/safer-buffer/download/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha1-RPoWGwGHuVSd2Eu5GAL5vYOFzWo=
 
-sax@>=0.6.0:
+sax@>=0.6.0, sax@^1.2.4:
   version "1.2.4"
   resolved "https://registry.npm.taobao.org/sax/download/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha1-KBYjTiN4vdxOU1T6tcqold9xANk=
@@ -7916,10 +7970,22 @@ utility@^1.12.0, utility@^1.13.1, utility@^1.14.0, utility@^1.15.0, utility@^1.1
     mz "^2.7.0"
     unescape "^1.0.1"
 
+uuid@8.1.0:
+  version "8.1.0"
+  resolved "https://registry.npm.taobao.org/uuid/download/uuid-8.1.0.tgz?cache=0&sync_timestamp=1590000998251&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fuuid%2Fdownload%2Fuuid-8.1.0.tgz#6f1536eb43249f473abc6bd58ff983da1ca30d8d"
+  integrity sha1-bxU260Mkn0c6vGvVj/mD2hyjDY0=
+
 uuid@^3.0.1, uuid@^3.3.2, uuid@^3.3.3:
   version "3.4.0"
   resolved "https://registry.npm.taobao.org/uuid/download/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha1-sj5DWK+oogL+ehAK8fX4g/AgB+4=
+
+uuidv4@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.npm.taobao.org/uuidv4/download/uuidv4-6.1.0.tgz#a8d50c71e46da4dd0edc887a2b766a75e48e5740"
+  integrity sha1-qNUMceRtpN0O3Ih6K3ZqdeSOV0A=
+  dependencies:
+    uuid "8.1.0"
 
 validate-npm-package-license@^3.0.1:
   version "3.0.4"
@@ -8028,6 +8094,13 @@ wt@^1.2.0:
     debug "^2.2.0"
     ndir "^0.1.5"
     sdk-base "^2.0.1"
+
+xml-js@^1.6.11:
+  version "1.6.11"
+  resolved "https://registry.npm.taobao.org/xml-js/download/xml-js-1.6.11.tgz#927d2f6947f7f1c19a316dd8eea3614e8b18f8e9"
+  integrity sha1-kn0vaUf38cGaMW3Y7qNhTosY+Ok=
+  dependencies:
+    sax "^1.2.4"
 
 xml2js@^0.4.16:
   version "0.4.23"

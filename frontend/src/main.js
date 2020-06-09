@@ -9,6 +9,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
+import BaiduMap from 'vue-baidu-map'
 import '@/styles/index.scss' // global css
 
 import App from './App'
@@ -18,6 +19,10 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+Vue.use(BaiduMap, {
+  // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
+  ak: 'CNf9uuexAWL3yncAAm0GnAOk9AtK4wga'
+})
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
