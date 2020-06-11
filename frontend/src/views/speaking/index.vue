@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { getList, destroy } from '@/api/post'
+import { getList, destroy } from '@/api/speaking'
 
 export default {
   filters: {

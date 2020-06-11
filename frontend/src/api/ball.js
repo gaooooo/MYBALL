@@ -27,7 +27,7 @@ export function putItem(id, payload) {
   return request({
     url: `/balls/${id}`,
     method: 'put',
-    payload
+    data: payload
   })
 }
 

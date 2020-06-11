@@ -9,6 +9,10 @@ module.exports = app => {
       defauleValue: UUIDV4,
       primaryKey: true,
     },
+    image_url: {
+      type: STRING,
+      allowNull: true,
+    },
     name: {
       type: STRING,
       allowNull: true,

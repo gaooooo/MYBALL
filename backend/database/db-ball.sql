@@ -151,6 +151,7 @@ DROP TABLE IF EXISTS "public"."topic";
 create table "topic" (
    id  uuid DEFAULT uuid_generate_v4() NOT NULL,
    name                 VARCHAR(50)          COLLATE "default",
+   image_url            VARCHAR(255)         COLLATE "default",
    type                 INT4                 null,
    content              VARCHAR(255)         COLLATE "default",
      openid              VARCHAR(255)          not null,

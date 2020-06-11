@@ -54,6 +54,22 @@ export const constantRoutes = [
       meta: { title: '女篮吧管理系统', icon: 'dashboard' }
     }]
   },
+
+  {
+    path: '/users',
+    component: Layout,
+    redirect: '/users/list',
+    name: 'Users',
+    meta: { title: '用户管理', icon: 'example' },
+    children: [
+      {
+        path: 'list',
+        name: 'List',
+        component: () => import('@/views/users'),
+        meta: { title: '用户列表', icon: 'table' }
+      }
+    ]
+  },
   {
     path: '/balls',
     component: Layout,
@@ -72,21 +88,6 @@ export const constantRoutes = [
         name: 'BallsCreate',
         component: () => import('@/views/balls/create'),
         meta: { title: '添加球局', icon: 'form' }
-      }
-    ]
-  },
-  {
-    path: '/users',
-    component: Layout,
-    redirect: '/users/list',
-    name: 'Users',
-    meta: { title: '用户管理', icon: 'example' },
-    children: [
-      {
-        path: 'list',
-        name: 'List',
-        component: () => import('@/views/users'),
-        meta: { title: '用户列表', icon: 'table' }
       }
     ]
   },

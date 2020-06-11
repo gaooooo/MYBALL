@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getList(params) {
   return request({
-    url: '/topics',
+    url: '/speakings',
     method: 'get',
     params
   })
@@ -10,7 +10,7 @@ export function getList(params) {
 
 export function create(data) {
   return request({
-    url: '/topics',
+    url: '/speakings',
     method: 'post',
     data
   })
@@ -18,14 +18,14 @@ export function create(data) {
 
 export function destroy(id) {
   return request({
-    url: `/topics/${id}`,
+    url: `/speakings/${id}`,
     method: 'delete'
   })
 }
 
 export function putItem(id, payload) {
   return request({
-    url: `/topics/${id}`,
+    url: `/speakings/${id}`,
     method: 'put',
     data: payload
   })
@@ -33,7 +33,7 @@ export function putItem(id, payload) {
 
 export function getItem(id) {
   return request({
-    url: `/topics/${id}`,
+    url: `/speakings/${id}`,
     method: 'get'
   })
 }

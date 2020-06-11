@@ -4,14 +4,13 @@ const { Controller } = require('egg');
 const path = require('path');
 const sendToWormhole = require('stream-wormhole');
 const fs = require('mz/fs');
-const pump = require('mz-modules/pump');
 class BallController extends Controller {
   async index() {
     const { ctx } = this;
     const { query, model, service, helper } = ctx;
     const options = {
-      limit: helper.parseInt(query.limit),
-      offset: helper.parseInt(query.offset),
+      limit: helper.parseInt(query.pageSize),
+      offset: helper.parseInt((query.currentPage - 1) * query.pageSize),
     //   include: [{
     //     model: model.Topic,
     //     as: 'modelTopic',
@@ -96,6 +95,24 @@ class BallController extends Controller {
     const { params, service, helper } = ctx;
     const body = ctx.request.body;
     const id = params.id;
+    const file = ctx.request.files[0];
+    let fileOss = null;
+    if (file) {
+      const name = 'test/' + file.filename;
+      // 文件处理，上传到云存储等等
+      try {
+        fileOss = await ctx.oss.put(name, file.filepath);
+
+      } catch (err) {
+      // 必须将上传的文件流消费掉，要不然浏览器响应会卡死
+      // await sendToWormhole(stream);
+      // throw err;
+      } finally {
+      // 需要删除临时文件
+        await fs.unlink(file.filepath);
+      }
+    }
+    body.image_url = !fileOss ? 'test/default.png' : fileOss.url;
     const data = await service.ball.update({
       id,
       updates: body,

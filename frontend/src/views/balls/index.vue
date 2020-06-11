@@ -59,6 +59,11 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      v-bind="pageOptions"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
   </div>
 </template>
 
@@ -79,7 +84,14 @@ export default {
   data() {
     return {
       list: null,
-      listLoading: true
+      listLoading: true,
+      pageOptions: {
+        pageSizes: [10, 50, 100, 200, 300, 400],
+        pageSize: 10,
+        currentPage: 1,
+        layout: 'total, sizes, prev, pager, next, jumper',
+        total: 0
+      }
     }
   },
   created() {
@@ -88,8 +100,12 @@ export default {
   methods: {
     async fetchData() {
       this.listLoading = true
-      const { data } = await getList()
+      const { data } = await getList({
+        pageSize: this.pageOptions.pageSize,
+        currentPage: this.pageOptions.currentPage
+      })
       this.list = data.items
+      this.pageOptions.total = data.count
       this.listLoading = false
     },
     editBall(id) {
@@ -115,6 +131,14 @@ export default {
         case 3:
           return '5x5'
       }
+    },
+    handleCurrentChange(val) {
+      this.pageOptions.currentPage = val
+      this.fetchData()
+    },
+    handleSizeChange(val) {
+      this.pageOptions.pageSize = val
+      this.fetchData()
     }
   }
 }

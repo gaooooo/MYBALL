@@ -11,6 +11,11 @@
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">{{ scope.$index }}</template>
       </el-table-column>
+      <el-table-column label="背景图">
+        <template slot-scope="scope">
+          <el-avatar shape="square" :size="100" fit="fill" :src="scope.row.image_url" />
+        </template>
+      </el-table-column>
       <el-table-column label="name">
         <template slot-scope="scope">{{ scope.row.name }}</template>
       </el-table-column>
@@ -43,6 +48,11 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      v-bind="pageOptions"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
   </div>
 </template>
 
@@ -63,7 +73,14 @@ export default {
   data() {
     return {
       list: null,
-      listLoading: true
+      listLoading: true,
+      pageOptions: {
+        pageSizes: [10, 50, 100, 200, 300, 400],
+        pageSize: 10,
+        currentPage: 1,
+        layout: 'total, sizes, prev, pager, next, jumper',
+        total: 0
+      }
     }
   },
   created() {
@@ -72,8 +89,12 @@ export default {
   methods: {
     async fetchData() {
       this.listLoading = true
-      const { data } = await getList()
+      const { data } = await getList({
+        pageSize: this.pageOptions.pageSize,
+        currentPage: this.pageOptions.currentPage
+      })
       this.list = data.items
+      this.pageOptions.total = data.count
       this.listLoading = false
     },
     edit(id) {
@@ -89,6 +110,14 @@ export default {
 
         this.fetchData()
       }
+    },
+    handleCurrentChange(val) {
+      this.pageOptions.currentPage = val
+      this.fetchData()
+    },
+    handleSizeChange(val) {
+      this.pageOptions.pageSize = val
+      this.fetchData()
     }
   }
 }
