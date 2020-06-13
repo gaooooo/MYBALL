@@ -38,9 +38,10 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=admin-system",
-    "stop": "egg-scripts stop --title=admin-system",
-    "dev": "set NODE_ENV=development egg-bin dev",
+    "start": "egg-scripts start --title=myball-server",
+    "stop": "egg-scripts stop --title=myball-server",
+    "publish": "npx cross-env EGG_SERVER_ENV=prod egg-bin dev",
+    "dev": "npx cross-env NODE_ENV=development egg-bin dev",
     "debug": "egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",
     "test-local": "egg-bin test",

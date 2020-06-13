@@ -38,7 +38,7 @@ module.exports = {
     },
     proxy: {
       '/api/v1': {
-        target: 'http://localhost:7001/',
+        target: 'http://47.95.223.187:7001/',
         pathRewrite: { '^/api/v1': '' },
         changeOrigin: true,
         logLevel: 'debug',

@@ -1,9 +1,10 @@
 {
   "development": {
+    
     "username": "postgres",
     "password": "8D8FDBF4253B2C49E823141CEE57E009",
     "database": "myball",
-    "host": "localhost",
+    "host": "127.0.0.1",
     "dialect": "postgres",
     "port": "5432"
   },
@@ -11,7 +12,7 @@
     "username": "postgres",
     "password": "8D8FDBF4253B2C49E823141CEE57E009",
     "database": "myball",
-    "host": "localhost",
+    "host": "127.0.0.1",
     "dialect": "postgres",
     "port": "5432"
   },
@@ -19,7 +20,7 @@
     "username": "postgres",
     "password": "8D8FDBF4253B2C49E823141CEE57E009",
     "database": "myball",
-    "host": "localhost",
+    "host": "127.0.0.1",
     "dialect": "postgres",
     "port": "5432"
   }

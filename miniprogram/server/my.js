@@ -1,7 +1,7 @@
 import config from '../utils/config.js';
 const domain = config.getDomainBall;
 const pageCount = 10;
-const HOST_URI = 'http://localhost:7001';
+const HOST_URI = config.getHostUrl;
 
 
 import  {request} from '../utils/request';
