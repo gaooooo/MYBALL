@@ -88,6 +88,17 @@ export const constantRoutes = [
         name: 'BallsCreate',
         component: () => import('@/views/balls/create'),
         meta: { title: '添加球局', icon: 'form' }
+      },
+      {
+        path: 'sign-up',
+        name: 'signUp',
+        component: () => import('@/views/balls/sign-up'),
+        meta: { title: '报名球局', icon: 'form' }
+      }, {
+        path: 'sign-list',
+        name: 'signList',
+        component: () => import('@/views/balls/sign-list'),
+        meta: { title: '报名列表', icon: 'table' }
       }
     ]
   },

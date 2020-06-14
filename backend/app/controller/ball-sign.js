@@ -2,15 +2,15 @@
 
 const { Controller } = require('egg');
 
-class UserController extends Controller {
+class BallSignController extends Controller {
   async index() {
     const { ctx } = this;
-    const { query, model, service, helper } = ctx;
+    const { query, service, helper } = ctx;
     const options = {
       limit: helper.parseInt(query.pageSize),
       offset: helper.parseInt((query.currentPage - 1) * query.pageSize),
     };
-    const data = await service.users.list(options);
+    const data = await service.ballSign.list(options);
     ctx.body = {
       code: 0,
       data: {
@@ -24,7 +24,7 @@ class UserController extends Controller {
     const { ctx } = this;
     const { params, service, helper } = ctx;
     const id = helper.parseInt(params.id);
-    ctx.body = await service.users.find(id);
+    ctx.body = await service.ballSign.find(id);
   }
 
   async create() {
@@ -33,9 +33,9 @@ class UserController extends Controller {
     const body = ctx.request.body;
     // should encrypt password
     body.password = helper.encryptPwd(body.password);
-    const user = await service.users.create(body);
+    const ballSign = await service.ballSign.create(body);
     ctx.status = 201;
-    ctx.body = user;
+    ctx.body = ballSign;
   }
 
   async update() {
@@ -43,7 +43,7 @@ class UserController extends Controller {
     const { params, service, helper } = ctx;
     const body = ctx.request.body;
     const id = helper.parseInt(params.id);
-    ctx.body = await service.users.update({
+    ctx.body = await service.ballSign.update({
       id,
       updates: body,
     });
@@ -53,25 +53,9 @@ class UserController extends Controller {
     const { ctx } = this;
     const { params, service, helper } = ctx;
     const id = helper.parseInt(params.id);
-    await service.users.destroy(id);
+    await service.ballSign.destroy(id);
     ctx.status = 200;
-  }
-
-  async findByOpenId() {
-    const { ctx } = this;
-    const { ctx: { model } } = this;
-    const { openid } = ctx.request.query;
-    const user = await model.Users.findOne({
-      where: {
-        openid,
-      },
-    });
-    ctx.body = ctx.helper.JSONResponse({
-      code: 0,
-      message: 'Get user success',
-      data: user,
-    });
   }
 }
 
-module.exports = UserController;
+module.exports = BallSignController;

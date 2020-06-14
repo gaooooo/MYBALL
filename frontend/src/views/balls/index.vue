@@ -44,8 +44,18 @@
           <span>{{ scope.row.end_time }}</span>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="120">
+      <el-table-column fixed="right" label="操作" width="220">
         <template slot-scope="scope">
+          <el-button
+            type="text"
+            size="small"
+            @click.native.prevent="signUpBall(scope.row.id)"
+          >报名</el-button>
+          <el-button
+            type="text"
+            size="small"
+            @click.native.prevent="signUpList(scope.row.id)"
+          >查看报名列表</el-button>
           <el-button
             type="text"
             size="small"
@@ -107,6 +117,12 @@ export default {
       this.list = data.items
       this.pageOptions.total = data.count
       this.listLoading = false
+    },
+    signUpBall(id) {
+      this.$router.push({ path: '/balls/sign-up', query: { id }})
+    },
+    signUpList(id) {
+      this.$router.push({ path: '/balls/sign-list', query: { id }})
     },
     editBall(id) {
       this.$router.push({ path: '/balls/create', query: { id }})

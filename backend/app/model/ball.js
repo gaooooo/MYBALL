@@ -117,7 +117,10 @@ module.exports = app => {
     // 定义多对多关联球局-用户
     app.model.Ball.belongsToMany(app.model.Users, {
       // 中间表的model
-      through: app.model.BallSign,
+      through: {
+        model: app.model.BallSign,
+        unique: false,
+      },
       // 进行关联查询时，关联表查出来的数据模型的alias
       as: 'listUser',
       // 是否采用外键进行物理关联

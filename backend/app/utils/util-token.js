@@ -1,4 +1,4 @@
-
+'use strict';
 // token工具函数
 module.exports = {
   async generatToken(userModel) {

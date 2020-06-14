@@ -7,8 +7,8 @@ class PostController extends Controller {
     const { ctx } = this;
     const { query, model, service, helper } = ctx;
     const options = {
-      limit: helper.parseInt(query.limit),
-      offset: helper.parseInt(query.offset),
+      limit: helper.parseInt(query.pageSize),
+      offset: helper.parseInt((query.currentPage - 1) * query.pageSize),
       include: [{
         model: model.Admin,
         as: 'admin',

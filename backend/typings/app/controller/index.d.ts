@@ -3,6 +3,7 @@
 
 import 'egg';
 import ExportAdmin = require('../../../app/controller/admin');
+import ExportBallSign = require('../../../app/controller/ball-sign');
 import ExportBall = require('../../../app/controller/ball');
 import ExportHome = require('../../../app/controller/home');
 import ExportPost = require('../../../app/controller/post');
@@ -14,6 +15,7 @@ import ExportUser = require('../../../app/controller/user');
 declare module 'egg' {
   interface IController {
     admin: ExportAdmin;
+    ballSign: ExportBallSign;
     ball: ExportBall;
     home: ExportHome;
     post: ExportPost;

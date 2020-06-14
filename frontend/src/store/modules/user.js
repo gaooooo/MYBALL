@@ -1,5 +1,5 @@
 import AuthingSSO from '@authing/sso'
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout, getInfo, getUserByOpenid } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -13,6 +13,7 @@ const getDefaultState = () => {
   return {
     authing,
     token: getToken(),
+    userId: '',
     name: '',
     avatar: ''
   }
@@ -32,7 +33,22 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_OPENID: (state, openid) => {
+    state.openid = openid
   }
+  // SET_USER_ID: (state, userId) => {
+  //   state.userId = userId
+  // },
+  // SET_USER_REAL_NAME: (state, real_name) => {
+  //   state.userRealName = real_name
+  // },
+  // SET_USER_AVATAR: (state, avatar) => {
+  //   state.userAvatar = avatar
+  // },
+  // SET_USER_MOBILE: (state, mobile_phone) => {
+  //   state.userMobilePhone = mobile_phone
+  // }
 }
 
 const actions = {
@@ -54,17 +70,22 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
+      getInfo(state.token).then(async response => {
         const { data } = response
 
         if (!data) {
           reject('Verification failed, please Login again.')
         }
 
-        const { name, avatar } = data
-
+        const { name, avatar, openid } = data
+        // const user = await getUserByOpenid(openid)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
+        commit('SET_OPENID', openid)
+        // commit('SET_USER_ID', name, user.id)
+        // commit('SET_USER_REAL_NAME', name, user.real_name)
+        // commit('SET_USER_AVATAR', name, user.avatar)
+        // commit('SET_USER_MOBILE', name, user.mobile_phone)
         resolve(data)
       }).catch(error => {
         reject(error)

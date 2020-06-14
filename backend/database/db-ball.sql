@@ -98,6 +98,7 @@ DROP TABLE IF EXISTS "public"."ball_sign";
 /* Table: ball_sign                                            */
 /*==============================================================*/
 create table ball_sign (
+   id  uuid DEFAULT uuid_generate_v4() NOT NULL,
    ball_id              uuid         not null,
    openid               VARCHAR(255)         not null,
    sign_status          INT4                 null,
@@ -106,8 +107,8 @@ create table ball_sign (
 ) WITH (OIDS=FALSE);
 -- Primary Key structure for table vul_task
 -- ----------------------------
-ALTER TABLE "public"."ball_sign" ADD PRIMARY KEY ("ball_id", "openid");
-CREATE INDEX "idx_ball_sign" ON "ball_sign" ("ball_id");
+ALTER TABLE "public"."ball_sign" ADD PRIMARY KEY ("id");
+COMMENT ON COLUMN "public"."ball_sign"."sign_status" IS '报名状态 ( 0等待 1报名)';
 
 
 DROP TABLE IF EXISTS "public"."topic_focus";

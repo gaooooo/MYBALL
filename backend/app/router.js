@@ -14,6 +14,8 @@ module.exports = app => {
   router.get('/refresh-token', controller.home.refreshToken);
   router.post('/login-mini', controller.home.loginByMini);
   router.get('/user-info', jwt, controller.home.userInfo);
+  router.get('/user-info-byopenid', jwt, controller.user.findByOpenId);
+
   const isRevokedAsync = function(req, payload) {
     return new Promise(resolve => {
       try {
@@ -41,8 +43,13 @@ module.exports = app => {
   router.resources('roles', '/roles', controller.role);
   router.resources('admins', '/admins', controller.admin);
   router.resources('posts', '/posts', controller.post);
-  router.resources('balls', '/balls', jwt, controller.ball);
+  router.resources('users', '/users', jwt, controller.user);
+
   router.resources('topics', '/topics', jwt, controller.topic);
   router.resources('speakings', '/speakings', jwt, controller.speaking);
-  router.resources('users', '/users', jwt, controller.user);
+
+  router.post('/balls/sign-up', jwt, controller.ball.signUp);
+  // router.get('/balls/sign-list', jwt, controller.ball.signUpListById);
+  router.resources('balls', '/balls', jwt, controller.ball);
+  router.resources('ball-signs', '/ball-signs', jwt, controller.ballSign);
 };

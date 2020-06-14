@@ -136,6 +136,94 @@ class BallController extends Controller {
     });
     ctx.status = 200;
   }
+
+  async signUp() {
+    const { ctx } = this;
+    const { service, helper } = ctx;
+    const body = ctx.request.body;
+
+    const { user } = ctx.state;
+
+    const userModel = await service.users.findByOpenId(user.openid);
+    if (!userModel) {
+      ctx.body = helper.JSONResponse({
+        code: 1,
+        data: null,
+        message: '用户未注册',
+      });
+      return;
+    }
+    // 若报名球局未注册过手机号
+    if (!userModel.mobile_phone) {
+      const { mobile_phone, real_name } = ctx.request.body;
+      await service.users.update({
+        openid: userModel.openid,
+        updates: { mobile_phone, real_name },
+      });
+    }
+    // 报名时 检测报名是否已满
+    if (body.sign_status === 1) {
+      const ball = await service.ball.find(body.ball_id);
+      if (!ball) {
+        ctx.body = helper.JSONResponse({
+          code: 1,
+          data: null,
+          message: '活动不存在',
+        });
+        return;
+      }
+      if (ball.people_num === ball.listUser.length) {
+        ctx.body = helper.JSONResponse({
+          code: 0,
+          data: {
+            isNum: false,
+          },
+          message: '报名已满，是否等坑？',
+        });
+        return;
+      }
+    }
+    const data = await service.ballSign.create({
+      openid: userModel.openid,
+      ...body,
+    });
+    ctx.body = helper.JSONResponse({
+      code: 0,
+      data,
+      message: 'success',
+    });
+  }
+
+  //   async signUpListById() {
+  //     const { ctx } = this;
+  //     const { query, service, helper } = ctx;
+  //     const ballId = query.id;
+  //     const options = {
+  //       limit: 1,
+  //       offset: 100,
+  //       where: {
+  //         ball_id: ballId,
+  //       },
+  //     };
+  //     const ball = await service.ball.find(ballId);
+  //     const ballsigns = await service.ballSign.list(options);
+
+//     if (ball.listUser.length > 0 && ballsigns.rows.length > 0) {
+//       ball.listUser.map(user => {
+//         const sign = ballsigns.rows.find(sign => sign.openid === user.openid);
+//         return {
+//           ...user,
+//           sign_status: sign.sign_status,
+//           sign_id: sign.id,
+//         };
+//       });
+//     }
+//     ctx.body = helper.JSONResponse({
+//       code: 0,
+//       data: ball,
+//       message: 'success',
+//     });
+//   }
 }
 
 module.exports = BallController;

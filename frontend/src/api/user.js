@@ -28,3 +28,11 @@ export function getList() {
     method: 'get'
   })
 }
+
+export function getUserByOpenid(openid) {
+  return request({
+    url: `/user-info-byopenid`,
+    method: 'get',
+    params: openid
+  })
+}

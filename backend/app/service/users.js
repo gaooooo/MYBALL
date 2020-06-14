@@ -62,8 +62,8 @@ class UsersService extends Service {
     return model.Users.create(user);
   }
 
-  async update({ id, updates }) {
-    const user = await this.ctx.model.Users.findByPk(id);
+  async update({ openid, updates }) {
+    const user = await this.ctx.model.Users.findByPk(openid);
     if (!user) {
       this.ctx.throw(404, 'user not found');
     }

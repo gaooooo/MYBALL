@@ -114,16 +114,16 @@ module.exports = app => {
   // 定义关联关系
   Users.associate = () => {
   // 定义多对多关联用户-报名的球局
-    // Users.belongsToMany(app.model.Ball, {
-    //   // 中间表的model
-    //   through: app.model.BallSign,
-    //   // 进行关联查询时，关联表查出来的数据模型的alias
-    //   as: 'listBall',
-    //   // 是否采用外键进行物理关联
-    //   constraints: false,
-    //   foreignKey: 'openid',
-    //   otherKey: 'ball_id',
-    // });
+    Users.belongsToMany(app.model.Ball, {
+      // 中间表的model
+      through: app.model.BallSign,
+      // 进行关联查询时，关联表查出来的数据模型的alias
+      as: 'listBall',
+      // 是否采用外键进行物理关联
+      constraints: false,
+      foreignKey: 'openid',
+      otherKey: 'ball_id',
+    });
     // // 定义多对多关联用户-关注的话题
     // Users.belongsToMany(app.model.Topic, {
     // // 中间表的model

@@ -2,6 +2,7 @@
 
 const Controller = require('egg').Controller;
 const tokenUtil = require('../utils/util-token');
+const dateUtil = require('../utils/util-date');
 class HomeController extends Controller {
   async index() {
     const { ctx } = this;
@@ -55,7 +56,7 @@ class HomeController extends Controller {
     if (!userModel) {
       userModel = {
         openid: res.openid,
-        user_name: 'BALLER_123', // TODO 随机数
+        user_name: 'BALLER_' + dateUtil.parseTime(new Date(), '{y}{m}{d}{h}{i}{s}') + Math.floor(Math.random() * 1000), // TODO 随机数
         nick_name: userData.nickName,
         real_name: '',
         gender: userData.gender,

@@ -18,13 +18,12 @@ class ballService extends Service {
       include: [{
         model: model.Topic,
         as: 'modelTopic',
-        attributes: [ 'id', 'name' ],
       }, {
         model: model.Users,
         as: 'listUser',
-        attributes: [ 'id', 'nick_name' ],
       }],
     });
+    console.log(9999, JSON.stringify(ball.listUser));
     if (!ball) {
       this.ctx.throw(404, 'ball not found');
     }
