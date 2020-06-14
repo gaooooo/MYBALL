@@ -37,7 +37,7 @@
           <el-button
             type="text"
             size="small"
-            @click.native.prevent="deletePost(scope.row.id)"
+            @click.native.prevent="deletePost(scope.row.ball_sign.id)"
           >Delete</el-button>
         </template>
       </el-table-column>

@@ -17,14 +17,21 @@ class BallSignController extends Controller {
         count: data.count,
         items: data.rows,
       },
+      message: 'success',
     };
   }
 
   async show() {
     const { ctx } = this;
     const { params, service, helper } = ctx;
-    const id = helper.parseInt(params.id);
-    ctx.body = await service.ballSign.find(id);
+    const id = params.id;
+    const data = await service.ballSign.find(id);
+    ctx.body = helper.JSONResponse({
+      code: 0,
+      data,
+      message: 'success',
+    });
+    ctx.status = 200;
   }
 
   async create() {
@@ -34,26 +41,42 @@ class BallSignController extends Controller {
     // should encrypt password
     body.password = helper.encryptPwd(body.password);
     const ballSign = await service.ballSign.create(body);
+    ctx.body = helper.JSONResponse({
+      code: 0,
+      data: ballSign,
+      message: 'success',
+    });
     ctx.status = 201;
-    ctx.body = ballSign;
   }
 
   async update() {
     const { ctx } = this;
     const { params, service, helper } = ctx;
+    const id = params.id;
     const body = ctx.request.body;
-    const id = helper.parseInt(params.id);
-    ctx.body = await service.ballSign.update({
+    const data = await service.ballSign.update({
       id,
       updates: body,
     });
+    ctx.body = helper.JSONResponse({
+      code: 0,
+      data,
+      message: 'success',
+    });
+    ctx.status = 200;
   }
 
   async destroy() {
     const { ctx } = this;
     const { params, service, helper } = ctx;
-    const id = helper.parseInt(params.id);
+    const id = params.id;
+    console.log(1111, id);
     await service.ballSign.destroy(id);
+    ctx.body = helper.JSONResponse({
+      code: 0,
+      data: null,
+      message: 'success',
+    });
     ctx.status = 200;
   }
 }
