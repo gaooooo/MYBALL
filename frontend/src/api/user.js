@@ -29,10 +29,10 @@ export function getList() {
   })
 }
 
-export function getUserByOpenid(openid) {
+export function getUserByOpenid(params) {
   return request({
     url: `/user-info-byopenid`,
     method: 'get',
-    params: openid
+    params
   })
 }

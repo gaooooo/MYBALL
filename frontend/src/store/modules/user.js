@@ -36,19 +36,19 @@ const mutations = {
   },
   SET_OPENID: (state, openid) => {
     state.openid = openid
+  },
+  SET_USER_ID: (state, userId) => {
+    state.userId = userId
+  },
+  SET_USER_REAL_NAME: (state, real_name) => {
+    state.userRealName = real_name
+  },
+  SET_USER_AVATAR: (state, avatar) => {
+    state.userAvatar = avatar
+  },
+  SET_USER_MOBILE: (state, mobile_phone) => {
+    state.userMobilePhone = mobile_phone
   }
-  // SET_USER_ID: (state, userId) => {
-  //   state.userId = userId
-  // },
-  // SET_USER_REAL_NAME: (state, real_name) => {
-  //   state.userRealName = real_name
-  // },
-  // SET_USER_AVATAR: (state, avatar) => {
-  //   state.userAvatar = avatar
-  // },
-  // SET_USER_MOBILE: (state, mobile_phone) => {
-  //   state.userMobilePhone = mobile_phone
-  // }
 }
 
 const actions = {
@@ -78,14 +78,14 @@ const actions = {
         }
 
         const { name, avatar, openid } = data
-        // const user = await getUserByOpenid(openid)
+        const userData = await getUserByOpenid({ openid })
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         commit('SET_OPENID', openid)
-        // commit('SET_USER_ID', name, user.id)
-        // commit('SET_USER_REAL_NAME', name, user.real_name)
-        // commit('SET_USER_AVATAR', name, user.avatar)
-        // commit('SET_USER_MOBILE', name, user.mobile_phone)
+        commit('SET_USER_ID', userData.data.id)
+        commit('SET_USER_REAL_NAME', userData.data.real_name)
+        commit('SET_USER_AVATAR', userData.data.avatar)
+        commit('SET_USER_MOBILE', userData.data.mobile_phone)
         resolve(data)
       }).catch(error => {
         reject(error)
