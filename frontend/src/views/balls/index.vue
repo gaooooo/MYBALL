@@ -1,7 +1,12 @@
 <template>
   <div class="app-container">
+    <div class="search-ball">
+      <el-input v-model="input" placeholder="请输入球局名称、城市名称" />
+      <el-button type="primary" @click="handleSearch">搜索</el-button>
+    </div>
     <el-table
       v-loading="listLoading"
+      class="table-ball"
       :data="list"
       element-loading-text="Loading"
       border
@@ -16,6 +21,9 @@
         <template slot-scope="scope">
           <el-avatar shape="square" :size="100" fit="fill" :src="scope.row.image_url" />
         </template>
+      </el-table-column>
+      <el-table-column label="球局城市">
+        <template slot-scope="scope">{{ scope.row.city }}</template>
       </el-table-column>
       <el-table-column label="球局地址">
         <template slot-scope="scope">{{ scope.row.address }}</template>
@@ -95,6 +103,7 @@ export default {
     return {
       list: null,
       listLoading: true,
+      input: '',
       pageOptions: {
         pageSizes: [10, 50, 100, 200, 300, 400],
         pageSize: 10,
@@ -112,7 +121,8 @@ export default {
       this.listLoading = true
       const { data } = await getList({
         pageSize: this.pageOptions.pageSize,
-        currentPage: this.pageOptions.currentPage
+        currentPage: this.pageOptions.currentPage,
+        search: this.input
       })
       this.list = data.items
       this.pageOptions.total = data.count
@@ -155,7 +165,21 @@ export default {
     handleSizeChange(val) {
       this.pageOptions.pageSize = val
       this.fetchData()
+    },
+    handleSearch() {
+      this.fetchData()
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.search-ball {
+  .el-input {
+    width: 300px;
+  }
+}
+.table-ball {
+  margin-top: 20px;
+}
+</style>

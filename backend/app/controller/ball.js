@@ -2,11 +2,14 @@
 
 const { Controller } = require('egg');
 const path = require('path');
-const sendToWormhole = require('stream-wormhole');
+// const sendToWormhole = require('stream-wormhole');
 const fs = require('mz/fs');
+
+
 class BallController extends Controller {
   async index() {
-    const { ctx } = this;
+    const { ctx, app } = this;
+    const Op = app.Sequelize.Op;
     const { query, model, service, helper } = ctx;
     const options = {
       limit: helper.parseInt(query.pageSize),
@@ -21,6 +24,19 @@ class BallController extends Controller {
     //     attributes: [ 'id', 'name' ],
     //   }],
     };
+    if (query.search) {
+      options.where = {
+        [Op.or]: [
+          {
+            title: { [Op.like]: `%${query.search}%` },
+          },
+          {
+            city: { [Op.like]: `%${query.search}%` },
+          },
+        ],
+      };
+      options.raw = true;
+    }
     const data = await service.ball.list(options);
     ctx.body = helper.JSONResponse({
       code: 0,
